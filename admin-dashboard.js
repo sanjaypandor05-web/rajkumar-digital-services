@@ -1,22 +1,19 @@
 /* =====================================================
    RAJKUMAR ADMIN DASHBOARD JS
+   FINAL CORRECTED VERSION
 ===================================================== */
 
 
 /* =====================================================
-   LOGIN BACKEND
+   GOOGLE APPS SCRIPT URL
 ===================================================== */
 
-const LOGIN_SCRIPT_URL =
-  "const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";
 
+const LOGIN_SCRIPT_URL = SCRIPT_URL;
 
-/* =====================================================
-   APPLICATION BACKEND
-===================================================== */
-
-const APPLICATION_SCRIPT_URL =
-  "PASTE_OLD_APPLICATION_TRACKING_EXEC_URL_HERE";
+const APPLICATION_SCRIPT_URL = SCRIPT_URL;
 
 
 /* =====================================================
@@ -34,7 +31,7 @@ let currentApplication = null;
 
 document.addEventListener(
   "DOMContentLoaded",
-  function() {
+  function () {
 
     checkAdminLogin();
 
@@ -54,7 +51,10 @@ function checkAdminLogin() {
     );
 
 
-  if (role !== "admin") {
+  if (
+    role !== "admin" &&
+    role !== "Admin"
+  ) {
 
     window.location.href =
       "login.html";
@@ -114,13 +114,11 @@ async function apiCall(
 ) {
 
   if (
-    !APPLICATION_SCRIPT_URL ||
-    APPLICATION_SCRIPT_URL ===
-    "PASTE_OLD_APPLICATION_TRACKING_EXEC_URL_HERE"
+    !APPLICATION_SCRIPT_URL
   ) {
 
     throw new Error(
-      "Application backend URL is not configured."
+      "Backend URL is not configured."
     );
 
   }
@@ -140,8 +138,7 @@ async function apiCall(
 
         body: JSON.stringify({
 
-          action:
-            action,
+          action: action,
 
           ...data
 
@@ -161,7 +158,35 @@ async function apiCall(
   }
 
 
-  return await response.json();
+  const text =
+    await response.text();
+
+
+  let result;
+
+
+  try {
+
+    result =
+      JSON.parse(text);
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Invalid server response:",
+      text
+    );
+
+    throw new Error(
+      "Invalid response from Google Apps Script."
+    );
+
+  }
+
+
+  return result;
 
 }
 
@@ -180,7 +205,7 @@ function showSection(
       ".page-section"
     )
     .forEach(
-      function(item) {
+      function (item) {
 
         item.classList.remove(
           "active"
@@ -195,7 +220,7 @@ function showSection(
       ".nav-item"
     )
     .forEach(
-      function(item) {
+      function (item) {
 
         item.classList.remove(
           "active"
@@ -246,35 +271,55 @@ function showSection(
   };
 
 
-  document.getElementById(
-    "pageTitle"
-  ).textContent =
-    titles[section] ||
-    "Admin Dashboard";
+  const pageTitle =
+    document.getElementById(
+      "pageTitle"
+    );
 
 
-  if (section === "dashboard") {
+  if (pageTitle) {
+
+    pageTitle.textContent =
+      titles[section] ||
+      "Admin Dashboard";
+
+  }
+
+
+  if (
+    section ===
+    "dashboard"
+  ) {
 
     loadDashboard();
 
   }
 
 
-  if (section === "applications") {
+  if (
+    section ===
+    "applications"
+  ) {
 
     loadApplications();
 
   }
 
 
-  if (section === "retailers") {
+  if (
+    section ===
+    "retailers"
+  ) {
 
     loadRetailers();
 
   }
 
 
-  if (section === "services") {
+  if (
+    section ===
+    "services"
+  ) {
 
     loadServices();
 
@@ -285,13 +330,19 @@ function showSection(
     window.innerWidth <= 900
   ) {
 
-    document
-      .getElementById(
+    const sidebar =
+      document.getElementById(
         "sidebar"
-      )
-      .classList.remove(
+      );
+
+
+    if (sidebar) {
+
+      sidebar.classList.remove(
         "open"
       );
+
+    }
 
   }
 
@@ -306,15 +357,43 @@ function showSectionByName(
   section
 ) {
 
-  const button =
-    document.querySelector(
-      `.nav-item[onclick*="'${section}'"]`
+  const buttons =
+    document.querySelectorAll(
+      ".nav-item"
     );
+
+
+  let selectedButton =
+    null;
+
+
+  buttons.forEach(
+    function (button) {
+
+      const onclick =
+        button.getAttribute(
+          "onclick"
+        ) || "";
+
+
+      if (
+        onclick.includes(
+          "'" + section + "'"
+        )
+      ) {
+
+        selectedButton =
+          button;
+
+      }
+
+    }
+  );
 
 
   showSection(
     section,
-    button
+    selectedButton
   );
 
 }
@@ -326,13 +405,20 @@ function showSectionByName(
 
 function toggleSidebar() {
 
-  document
-    .getElementById(
+  const sidebar =
+    document.getElementById(
       "sidebar"
-    )
-    .classList.toggle(
-      "open"
     );
+
+
+  if (!sidebar) {
+    return;
+  }
+
+
+  sidebar.classList.toggle(
+    "open"
+  );
 
 }
 
@@ -351,10 +437,13 @@ async function loadDashboard() {
       );
 
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success === false
+    ) {
 
       throw new Error(
-        result.message ||
+        result?.message ||
         "Dashboard loading failed."
       );
 
@@ -401,11 +490,14 @@ async function loadDashboard() {
   catch (error) {
 
     console.error(
+      "Dashboard Error:",
       error
     );
 
+
     showToast(
-      error.message,
+      error.message ||
+      "Dashboard loading failed.",
       true
     );
 
@@ -426,6 +518,11 @@ async function loadApplications() {
     );
 
 
+  if (!table) {
+    return;
+  }
+
+
   table.innerHTML = `
 
     <tr>
@@ -435,7 +532,6 @@ async function loadApplications() {
         class="empty-row"
       >
         Loading applications...
-
       </td>
 
     </tr>
@@ -451,10 +547,13 @@ async function loadApplications() {
       );
 
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success === false
+    ) {
 
       throw new Error(
-        result.message ||
+        result?.message ||
         "Applications loading failed."
       );
 
@@ -462,7 +561,11 @@ async function loadApplications() {
 
 
     allApplications =
-      result.applications || [];
+      Array.isArray(
+        result.applications
+      )
+        ? result.applications
+        : [];
 
 
     renderApplications(
@@ -474,6 +577,7 @@ async function loadApplications() {
   catch (error) {
 
     console.error(
+      "Applications Error:",
       error
     );
 
@@ -486,8 +590,9 @@ async function loadApplications() {
           colspan="10"
           class="empty-row"
         >
-          ${escapeHtml(error.message)}
-
+          ${escapeHtml(
+            error.message
+          )}
         </td>
 
       </tr>
@@ -513,7 +618,15 @@ function renderApplications(
     );
 
 
-  if (!applications.length) {
+  if (!table) {
+    return;
+  }
+
+
+  if (
+    !applications ||
+    !applications.length
+  ) {
 
     table.innerHTML = `
 
@@ -524,7 +637,6 @@ function renderApplications(
           class="empty-row"
         >
           No applications found.
-
         </td>
 
       </tr>
@@ -539,7 +651,7 @@ function renderApplications(
   table.innerHTML =
     applications
       .map(
-        function(app, index) {
+        function (app, index) {
 
           return `
 
@@ -547,45 +659,73 @@ function renderApplications(
 
               <td>
                 <strong>
-                  ${escapeHtml(app.applicationId)}
+                  ${escapeHtml(
+                    app.applicationId ||
+                    "-"
+                  )}
                 </strong>
               </td>
 
               <td>
-                ${escapeHtml(app.customerName)}
+                ${escapeHtml(
+                  app.customerName ||
+                  app.finalName ||
+                  app.name ||
+                  "-"
+                )}
               </td>
 
               <td>
-                ${escapeHtml(app.mobile)}
+                ${escapeHtml(
+                  app.mobile ||
+                  "-"
+                )}
               </td>
 
               <td>
-                ${escapeHtml(app.retailerName)}
+                ${escapeHtml(
+                  app.retailerName ||
+                  "-"
+                )}
               </td>
 
               <td>
-                ${escapeHtml(app.service)}
+                ${escapeHtml(
+                  app.service ||
+                  "-"
+                )}
               </td>
 
               <td>
-                ₹${Number(app.amount || 0)}
+                ₹${Number(
+                  app.amount || 0
+                )}
               </td>
 
               <td>
-                ${statusBadge(app.paymentStatus)}
+                ${statusBadge(
+                  app.paymentStatus
+                )}
               </td>
 
               <td>
-                ${statusBadge(app.applicationStatus)}
+                ${statusBadge(
+                  app.applicationStatus
+                )}
               </td>
 
               <td>
-                ${escapeHtml(app.applicationDate)}
+                ${escapeHtml(
+                  app.applicationDate ||
+                  app.date ||
+                  "-"
+                )}
               </td>
 
               <td>
 
                 <button
+                  type="button"
                   class="table-action"
                   onclick="openApplication(${index})"
                 >
@@ -611,43 +751,63 @@ function renderApplications(
 
 function filterApplications() {
 
+  const searchElement =
+    document.getElementById(
+      "applicationSearch"
+    );
+
+
+  const paymentElement =
+    document.getElementById(
+      "paymentFilter"
+    );
+
+
+  const statusElement =
+    document.getElementById(
+      "statusFilter"
+    );
+
+
   const search =
-    document
-      .getElementById(
-        "applicationSearch"
-      )
-      .value
-      .toLowerCase()
-      .trim();
+    searchElement
+      ? searchElement.value
+          .toLowerCase()
+          .trim()
+      : "";
 
 
   const payment =
-    document
-      .getElementById(
-        "paymentFilter"
-      )
-      .value;
+    paymentElement
+      ? paymentElement.value
+      : "";
 
 
   const status =
-    document
-      .getElementById(
-        "statusFilter"
-      )
-      .value;
+    statusElement
+      ? statusElement.value
+      : "";
 
 
   const filtered =
     allApplications.filter(
-      function(app) {
+      function (app) {
 
         const searchable =
           [
+
             app.applicationId,
+
             app.customerName,
+
+            app.finalName,
+
             app.mobile,
+
             app.retailerName,
+
             app.service
+
           ]
           .join(" ")
           .toLowerCase();
@@ -662,14 +822,22 @@ function filterApplications() {
 
         const paymentMatch =
           !payment ||
-          app.paymentStatus ===
-          payment;
+          normalizeStatus(
+            app.paymentStatus
+          ) ===
+          normalizeStatus(
+            payment
+          );
 
 
         const statusMatch =
           !status ||
-          app.applicationStatus ===
-          status;
+          normalizeStatus(
+            app.applicationStatus
+          ) ===
+          normalizeStatus(
+            status
+          );
 
 
         return (
@@ -684,6 +852,108 @@ function filterApplications() {
 
   renderApplications(
     filtered
+  );
+
+}
+
+
+/* =====================================================
+   GET FILTERED APPLICATIONS
+===================================================== */
+
+function getFilteredApplications() {
+
+  const searchElement =
+    document.getElementById(
+      "applicationSearch"
+    );
+
+
+  const paymentElement =
+    document.getElementById(
+      "paymentFilter"
+    );
+
+
+  const statusElement =
+    document.getElementById(
+      "statusFilter"
+    );
+
+
+  const search =
+    searchElement
+      ? searchElement.value
+          .toLowerCase()
+          .trim()
+      : "";
+
+
+  const payment =
+    paymentElement
+      ? paymentElement.value
+      : "";
+
+
+  const status =
+    statusElement
+      ? statusElement.value
+      : "";
+
+
+  return allApplications.filter(
+    function (app) {
+
+      const searchable =
+        [
+
+          app.applicationId,
+
+          app.customerName,
+
+          app.finalName,
+
+          app.mobile,
+
+          app.retailerName,
+
+          app.service
+
+        ]
+        .join(" ")
+        .toLowerCase();
+
+
+      return (
+
+        (!search ||
+          searchable.includes(
+            search
+          ))
+
+        &&
+
+        (!payment ||
+          normalizeStatus(
+            app.paymentStatus
+          ) ===
+          normalizeStatus(
+            payment
+          ))
+
+        &&
+
+        (!status ||
+          normalizeStatus(
+            app.applicationStatus
+          ) ===
+          normalizeStatus(
+            status
+          ))
+
+      );
+
+    }
   );
 
 }
@@ -706,7 +976,14 @@ function openApplication(
 
 
   if (!currentApplication) {
+
+    showToast(
+      "Application not found.",
+      true
+    );
+
     return;
+
   }
 
 
@@ -714,173 +991,152 @@ function openApplication(
     currentApplication;
 
 
-  document.getElementById(
-    "applicationDetails"
-  ).innerHTML = `
-
-    ${detail(
-      "Application ID",
-      app.applicationId
-    )}
-
-    ${detail(
-      "Customer Name",
-      app.customerName
-    )}
-
-    ${detail(
-      "Mobile",
-      app.mobile
-    )}
-
-    ${detail(
-      "Retailer",
-      app.retailerName
-    )}
-
-    ${detail(
-      "Village",
-      app.village
-    )}
-
-    ${detail(
-      "Taluka",
-      app.taluka
-    )}
-
-    ${detail(
-      "District",
-      app.district
-    )}
-
-    ${detail(
-      "Service",
-      app.service
-    )}
-
-    ${detail(
-      "Amount",
-      "₹" + Number(app.amount || 0)
-    )}
-
-    ${detail(
-      "Transaction ID",
-      app.transactionId
-    )}
-
-    ${detail(
-      "Payment Screenshot",
-      app.paymentScreenshot,
-      true
-    )}
-
-    ${detail(
-      "Aadhaar Document",
-      app.aadhaarDocument,
-      true
-    )}
-
-    ${detail(
-      "Service Document",
-      app.serviceDocument,
-      true
-    )}
-
-  `;
+  const details =
+    document.getElementById(
+      "applicationDetails"
+    );
 
 
-  document.getElementById(
-    "modalPaymentStatus"
-  ).value =
-    app.paymentStatus ||
-    "Pending";
+  if (details) {
+
+    details.innerHTML = `
+
+      ${detail(
+        "Application ID",
+        app.applicationId
+      )}
+
+      ${detail(
+        "Customer Name",
+        app.customerName ||
+        app.finalName ||
+        app.name
+      )}
+
+      ${detail(
+        "Mobile",
+        app.mobile
+      )}
+
+      ${detail(
+        "Retailer",
+        app.retailerName
+      )}
+
+      ${detail(
+        "Village",
+        app.village
+      )}
+
+      ${detail(
+        "Taluka",
+        app.taluka
+      )}
+
+      ${detail(
+        "District",
+        app.district
+      )}
+
+      ${detail(
+        "Service",
+        app.service
+      )}
+
+      ${detail(
+        "Amount",
+        "₹" +
+        Number(
+          app.amount || 0
+        )
+      )}
+
+      ${detail(
+        "Transaction ID",
+        app.transactionId
+      )}
+
+      ${detail(
+        "Payment Screenshot",
+        app.paymentScreenshot,
+        true
+      )}
+
+      ${detail(
+        "Aadhaar Document",
+        app.aadhaarDocument,
+        true
+      )}
+
+      ${detail(
+        "Service Document",
+        app.serviceDocument,
+        true
+      )}
+
+    `;
+
+  }
 
 
-  document.getElementById(
-    "modalApplicationStatus"
-  ).value =
-    app.applicationStatus ||
-    "Pending";
+  const paymentSelect =
+    document.getElementById(
+      "modalPaymentStatus"
+    );
 
 
-  document.getElementById(
-    "modalRemarks"
-  ).value =
-    app.adminRemarks ||
-    "";
+  const applicationSelect =
+    document.getElementById(
+      "modalApplicationStatus"
+    );
 
 
-  document
-    .getElementById(
+  const remarks =
+    document.getElementById(
+      "modalRemarks"
+    );
+
+
+  if (paymentSelect) {
+
+    paymentSelect.value =
+      app.paymentStatus ||
+      "Pending";
+
+  }
+
+
+  if (applicationSelect) {
+
+    applicationSelect.value =
+      app.applicationStatus ||
+      "Pending";
+
+  }
+
+
+  if (remarks) {
+
+    remarks.value =
+      app.adminRemarks ||
+      "";
+
+  }
+
+
+  const modal =
+    document.getElementById(
       "applicationModal"
-    )
-    .classList.add(
+    );
+
+
+  if (modal) {
+
+    modal.classList.add(
       "active"
     );
 
-}
-
-
-/* =====================================================
-   FILTERED ARRAY
-===================================================== */
-
-function getFilteredApplications() {
-
-  const search =
-    document
-      .getElementById(
-        "applicationSearch"
-      )
-      .value
-      .toLowerCase()
-      .trim();
-
-
-  const payment =
-    document
-      .getElementById(
-        "paymentFilter"
-      )
-      .value;
-
-
-  const status =
-    document
-      .getElementById(
-        "statusFilter"
-      )
-      .value;
-
-
-  return allApplications.filter(
-    function(app) {
-
-      const searchable =
-        [
-          app.applicationId,
-          app.customerName,
-          app.mobile,
-          app.retailerName,
-          app.service
-        ]
-        .join(" ")
-        .toLowerCase();
-
-
-      return (
-        (!search ||
-          searchable.includes(search)) &&
-
-        (!payment ||
-          app.paymentStatus === payment) &&
-
-        (!status ||
-          app.applicationStatus === status)
-      );
-
-    }
-  );
+  }
 
 }
 
@@ -892,26 +1148,36 @@ function getFilteredApplications() {
 async function saveApplicationChanges() {
 
   if (!currentApplication) {
+
+    showToast(
+      "No application selected.",
+      true
+    );
+
     return;
+
   }
 
 
   const paymentStatus =
     document.getElementById(
       "modalPaymentStatus"
-    ).value;
+    )?.value ||
+    "Pending";
 
 
   const applicationStatus =
     document.getElementById(
       "modalApplicationStatus"
-    ).value;
+    )?.value ||
+    "Pending";
 
 
   const remarks =
     document.getElementById(
       "modalRemarks"
-    ).value;
+    )?.value ||
+    "";
 
 
   try {
@@ -934,10 +1200,14 @@ async function saveApplicationChanges() {
       );
 
 
-    if (!paymentResult.success) {
+    if (
+      !paymentResult ||
+      paymentResult.success === false
+    ) {
 
       throw new Error(
-        paymentResult.message
+        paymentResult?.message ||
+        "Payment status update failed."
       );
 
     }
@@ -961,10 +1231,14 @@ async function saveApplicationChanges() {
       );
 
 
-    if (!statusResult.success) {
+    if (
+      !statusResult ||
+      statusResult.success === false
+    ) {
 
       throw new Error(
-        statusResult.message
+        statusResult?.message ||
+        "Application status update failed."
       );
 
     }
@@ -986,6 +1260,12 @@ async function saveApplicationChanges() {
 
   catch (error) {
 
+    console.error(
+      "Save Application Error:",
+      error
+    );
+
+
     showToast(
       error.message,
       true
@@ -1003,7 +1283,9 @@ async function saveApplicationChanges() {
 async function deleteCurrentApplication() {
 
   if (!currentApplication) {
+
     return;
+
   }
 
 
@@ -1014,7 +1296,9 @@ async function deleteCurrentApplication() {
 
 
   if (!confirmed) {
+
     return;
+
   }
 
 
@@ -1032,10 +1316,14 @@ async function deleteCurrentApplication() {
       );
 
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success === false
+    ) {
 
       throw new Error(
-        result.message
+        result?.message ||
+        "Delete failed."
       );
 
     }
@@ -1057,6 +1345,12 @@ async function deleteCurrentApplication() {
 
   catch (error) {
 
+    console.error(
+      "Delete Error:",
+      error
+    );
+
+
     showToast(
       error.message,
       true
@@ -1073,13 +1367,19 @@ async function deleteCurrentApplication() {
 
 function closeApplicationModal() {
 
-  document
-    .getElementById(
+  const modal =
+    document.getElementById(
       "applicationModal"
-    )
-    .classList.remove(
+    );
+
+
+  if (modal) {
+
+    modal.classList.remove(
       "active"
     );
+
+  }
 
 
   currentApplication =
@@ -1100,6 +1400,27 @@ async function loadRetailers() {
     );
 
 
+  if (!table) {
+    return;
+  }
+
+
+  table.innerHTML = `
+
+    <tr>
+
+      <td
+        colspan="8"
+        class="empty-row"
+      >
+        Loading retailers...
+      </td>
+
+    </tr>
+
+  `;
+
+
   try {
 
     const result =
@@ -1108,17 +1429,25 @@ async function loadRetailers() {
       );
 
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success === false
+    ) {
 
       throw new Error(
-        result.message
+        result?.message ||
+        "Retailers loading failed."
       );
 
     }
 
 
     const retailers =
-      result.retailers || [];
+      Array.isArray(
+        result.retailers
+      )
+        ? result.retailers
+        : [];
 
 
     if (!retailers.length) {
@@ -1132,7 +1461,6 @@ async function loadRetailers() {
             class="empty-row"
           >
             No retailers found.
-
           </td>
 
         </tr>
@@ -1147,7 +1475,20 @@ async function loadRetailers() {
     table.innerHTML =
       retailers
         .map(
-          function(retailer) {
+          function (retailer) {
+
+            const status =
+              retailer.status ||
+              "Inactive";
+
+
+            const newStatus =
+              normalizeStatus(
+                status
+              ) === "active"
+                ? "Inactive"
+                : "Active";
+
 
             return `
 
@@ -1155,54 +1496,71 @@ async function loadRetailers() {
 
                 <td>
                   <strong>
-                    ${escapeHtml(retailer.retailerId)}
+                    ${escapeHtml(
+                      retailer.retailerId ||
+                      "-"
+                    )}
                   </strong>
                 </td>
 
                 <td>
-                  ${escapeHtml(retailer.name)}
-                </td>
-
-                <td>
-                  ${escapeHtml(retailer.mobile)}
-                </td>
-
-                <td>
-                  ${escapeHtml(retailer.username)}
-                </td>
-
-                <td>
-                  ${statusBadge(retailer.status)}
-                </td>
-
-                <td>
-                  ${Number(
-                    retailer.totalApplications || 0
+                  ${escapeHtml(
+                    retailer.name ||
+                    "-"
                   )}
                 </td>
 
                 <td>
                   ${escapeHtml(
-                    retailer.lastLogin || "-"
+                    retailer.mobile ||
+                    "-"
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    retailer.username ||
+                    "-"
+                  )}
+                </td>
+
+                <td>
+                  ${statusBadge(
+                    status
+                  )}
+                </td>
+
+                <td>
+                  ${Number(
+                    retailer.totalApplications ||
+                    0
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    retailer.lastLogin ||
+                    "-"
                   )}
                 </td>
 
                 <td>
 
                   <button
+                    type="button"
                     class="table-action"
                     onclick="toggleRetailerStatus(
                       '${escapeAttribute(
                         retailer.retailerId
                       )}',
                       '${escapeAttribute(
-                        retailer.status
+                        status
                       )}'
                     )"
                   >
-                    ${retailer.status === "Active"
-                      ? "Deactivate"
-                      : "Activate"}
+                    ${newStatus === "Active"
+                      ? "Activate"
+                      : "Deactivate"}
                   </button>
 
                 </td>
@@ -1219,6 +1577,12 @@ async function loadRetailers() {
 
   catch (error) {
 
+    console.error(
+      "Retailer Error:",
+      error
+    );
+
+
     table.innerHTML = `
 
       <tr>
@@ -1227,8 +1591,9 @@ async function loadRetailers() {
           colspan="8"
           class="empty-row"
         >
-          ${escapeHtml(error.message)}
-
+          ${escapeHtml(
+            error.message
+          )}
         </td>
 
       </tr>
@@ -1246,38 +1611,65 @@ async function loadRetailers() {
 
 function openRetailerModal() {
 
-  document
-    .getElementById(
+  const modal =
+    document.getElementById(
       "retailerModal"
-    )
-    .classList.add(
+    );
+
+
+  if (modal) {
+
+    modal.classList.add(
       "active"
     );
+
+  }
 
 }
 
 
 function closeRetailerModal() {
 
-  document
-    .getElementById(
+  const modal =
+    document.getElementById(
       "retailerModal"
-    )
-    .classList.remove(
-      "active"
     );
 
 
-  document
-    .getElementById(
+  if (modal) {
+
+    modal.classList.remove(
+      "active"
+    );
+
+  }
+
+
+  const form =
+    document.getElementById(
       "retailerForm"
-    )
-    .reset();
+    );
 
 
-  document.getElementById(
-    "retailerFormMessage"
-  ).textContent = "";
+  if (form) {
+
+    form.reset();
+
+  }
+
+
+  const message =
+    document.getElementById(
+      "retailerFormMessage"
+    );
+
+
+  if (message) {
+
+    message.textContent =
+      "";
+
+  }
 
 }
 
@@ -1294,38 +1686,34 @@ async function createNewRetailer(
 
 
   const name =
-    document
-      .getElementById(
-        "retailerNameInput"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "retailerNameInput"
+    )?.value
+      .trim() ||
+    "";
 
 
   const mobile =
-    document
-      .getElementById(
-        "retailerMobileInput"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "retailerMobileInput"
+    )?.value
+      .trim() ||
+    "";
 
 
   const username =
-    document
-      .getElementById(
-        "retailerUsernameInput"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "retailerUsernameInput"
+    )?.value
+      .trim() ||
+    "";
 
 
   const password =
-    document
-      .getElementById(
-        "retailerPasswordInput"
-      )
-      .value;
+    document.getElementById(
+      "retailerPasswordInput"
+    )?.value ||
+    "";
 
 
   const button =
@@ -1340,10 +1728,14 @@ async function createNewRetailer(
     );
 
 
-  button.disabled = true;
+  if (button) {
 
-  button.textContent =
-    "Creating...";
+    button.disabled = true;
+
+    button.textContent =
+      "Creating...";
+
+  }
 
 
   try {
@@ -1369,18 +1761,29 @@ async function createNewRetailer(
       );
 
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success === false
+    ) {
 
       throw new Error(
-        result.message
+        result?.message ||
+        "Retailer creation failed."
       );
 
     }
 
 
-    message.textContent =
-      "Retailer created. ID: " +
-      result.retailerId;
+    if (message) {
+
+      message.textContent =
+        "Retailer created. ID: " +
+        (
+          result.retailerId ||
+          "-"
+        );
+
+    }
 
 
     showToast(
@@ -1392,7 +1795,7 @@ async function createNewRetailer(
 
 
     setTimeout(
-      function() {
+      function () {
 
         closeRetailerModal();
 
@@ -1404,8 +1807,19 @@ async function createNewRetailer(
 
   catch (error) {
 
-    message.textContent =
-      error.message;
+    console.error(
+      "Create Retailer Error:",
+      error
+    );
+
+
+    if (message) {
+
+      message.textContent =
+        error.message;
+
+    }
+
 
     showToast(
       error.message,
@@ -1416,10 +1830,15 @@ async function createNewRetailer(
 
   finally {
 
-    button.disabled = false;
+    if (button) {
 
-    button.textContent =
-      "Create Retailer";
+      button.disabled =
+        false;
+
+      button.textContent =
+        "Create Retailer";
+
+    }
 
   }
 
@@ -1436,7 +1855,9 @@ async function toggleRetailerStatus(
 ) {
 
   const newStatus =
-    currentStatus === "Active"
+    normalizeStatus(
+      currentStatus
+    ) === "active"
       ? "Inactive"
       : "Active";
 
@@ -1458,10 +1879,14 @@ async function toggleRetailerStatus(
       );
 
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success === false
+    ) {
 
       throw new Error(
-        result.message
+        result?.message ||
+        "Retailer status update failed."
       );
 
     }
@@ -1477,6 +1902,12 @@ async function toggleRetailerStatus(
   }
 
   catch (error) {
+
+    console.error(
+      "Retailer Status Error:",
+      error
+    );
+
 
     showToast(
       error.message,
@@ -1500,6 +1931,22 @@ async function loadServices() {
     );
 
 
+  if (!grid) {
+    return;
+  }
+
+
+  grid.innerHTML = `
+
+    <div class="loading-box">
+
+      Loading services...
+
+    </div>
+
+  `;
+
+
   try {
 
     const result =
@@ -1508,17 +1955,25 @@ async function loadServices() {
       );
 
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success === false
+    ) {
 
       throw new Error(
-        result.message
+        result?.message ||
+        "Services loading failed."
       );
 
     }
 
 
     const services =
-      result.services || [];
+      Array.isArray(
+        result.services
+      )
+        ? result.services
+        : [];
 
 
     if (!services.length) {
@@ -1527,7 +1982,7 @@ async function loadServices() {
 
         <div class="loading-box">
 
-          No active services found.
+          No services found.
 
         </div>
 
@@ -1541,7 +1996,7 @@ async function loadServices() {
     grid.innerHTML =
       services
         .map(
-          function(service) {
+          function (service) {
 
             return `
 
@@ -1549,7 +2004,9 @@ async function loadServices() {
 
                 <h3>
                   ${escapeHtml(
-                    service.service
+                    service.service ||
+                    service.name ||
+                    "-"
                   )}
                 </h3>
 
@@ -1560,7 +2017,8 @@ async function loadServices() {
                 </div>
 
                 ${statusBadge(
-                  service.status
+                  service.status ||
+                  "Active"
                 )}
 
               </div>
@@ -1574,6 +2032,12 @@ async function loadServices() {
   }
 
   catch (error) {
+
+    console.error(
+      "Services Error:",
+      error
+    );
+
 
     grid.innerHTML = `
 
@@ -1605,7 +2069,9 @@ function logoutAdmin() {
 
 
   if (!confirmed) {
+
     return;
+
   }
 
 
@@ -1613,9 +2079,11 @@ function logoutAdmin() {
     "rajkumarRole"
   );
 
+
   localStorage.removeItem(
     "rajkumarAdminId"
   );
+
 
   localStorage.removeItem(
     "rajkumarAdminName"
@@ -1629,7 +2097,7 @@ function logoutAdmin() {
 
 
 /* =====================================================
-   HELPERS
+   HELPER - SET TEXT
 ===================================================== */
 
 function setText(
@@ -1638,7 +2106,9 @@ function setText(
 ) {
 
   const element =
-    document.getElementById(id);
+    document.getElementById(
+      id
+    );
 
 
   if (element) {
@@ -1651,14 +2121,36 @@ function setText(
 }
 
 
+/* =====================================================
+   HELPER - STATUS NORMALIZE
+===================================================== */
+
+function normalizeStatus(
+  status
+) {
+
+  return String(
+    status || ""
+  )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+/* =====================================================
+   HELPER - STATUS BADGE
+===================================================== */
+
 function statusBadge(
   status
 ) {
 
   const value =
     String(
-      status || "Pending"
-    );
+      status ||
+      "Pending"
+    ).trim();
 
 
   const className =
@@ -1674,7 +2166,9 @@ function statusBadge(
 
     <span class="status ${className}">
 
-      ${escapeHtml(value)}
+      ${escapeHtml(
+        value
+      )}
 
     </span>
 
@@ -1683,10 +2177,14 @@ function statusBadge(
 }
 
 
+/* =====================================================
+   HELPER - DETAIL
+===================================================== */
+
 function detail(
   label,
   value,
-  isLink
+  isLink = false
 ) {
 
   if (
@@ -1699,15 +2197,19 @@ function detail(
       <div class="detail-item">
 
         <span>
-          ${escapeHtml(label)}
+          ${escapeHtml(
+            label
+          )}
         </span>
 
         <strong>
 
           <a
-            href="${escapeAttribute(value)}"
+            href="${escapeAttribute(
+              value
+            )}"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             Open Document
           </a>
@@ -1726,12 +2228,15 @@ function detail(
     <div class="detail-item">
 
       <span>
-        ${escapeHtml(label)}
+        ${escapeHtml(
+          label
+        )}
       </span>
 
       <strong>
         ${escapeHtml(
-          value || "-"
+          value ||
+          "-"
         )}
       </strong>
 
@@ -1741,6 +2246,10 @@ function detail(
 
 }
 
+
+/* =====================================================
+   HELPER - ESCAPE HTML
+===================================================== */
 
 function escapeHtml(
   value
@@ -1752,29 +2261,38 @@ function escapeHtml(
       ? ""
       : value
   )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
+
+/* =====================================================
+   HELPER - ESCAPE ATTRIBUTE
+===================================================== */
 
 function escapeAttribute(
   value
@@ -1787,6 +2305,10 @@ function escapeAttribute(
 }
 
 
+/* =====================================================
+   TOAST
+===================================================== */
+
 function showToast(
   message,
   error = false
@@ -1798,6 +2320,13 @@ function showToast(
     );
 
 
+  if (!toast) {
+
+    return;
+
+  }
+
+
   toast.textContent =
     message;
 
@@ -1806,8 +2335,17 @@ function showToast(
     "toast show";
 
 
+  if (error) {
+
+    toast.classList.add(
+      "error"
+    );
+
+  }
+
+
   setTimeout(
-    function() {
+    function () {
 
       toast.className =
         "toast";
@@ -1820,14 +2358,15 @@ function showToast(
 
 
 /* =====================================================
-   CLOSE MODAL ON BACKGROUND
+   CLOSE MODALS ON BACKGROUND CLICK
 ===================================================== */
 
 document.addEventListener(
   "click",
-  function(event) {
+  function (event) {
 
     if (
+      event.target &&
       event.target.id ===
       "retailerModal"
     ) {
@@ -1838,6 +2377,7 @@ document.addEventListener(
 
 
     if (
+      event.target &&
       event.target.id ===
       "applicationModal"
     ) {
@@ -1845,6 +2385,31 @@ document.addEventListener(
       closeApplicationModal();
 
     }
+
+  }
+);
+
+
+/* =====================================================
+   ESC KEY CLOSE MODALS
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (
+      event.key !== "Escape"
+    ) {
+
+      return;
+
+    }
+
+
+    closeRetailerModal();
+
+    closeApplicationModal();
 
   }
 );
