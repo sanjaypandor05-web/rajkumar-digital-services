@@ -1,10 +1,6 @@
 /* =====================================================
    RAJKUMAR ADMIN DASHBOARD JS
-   FINAL CORRECTED + ATTRACTIVE VERSION
-
-   IMPORTANT:
-   Services are LOCAL/static.
-   No "loadServices" backend action is called.
+   FINAL UPDATED VERSION
 ===================================================== */
 
 
@@ -28,70 +24,6 @@ let allApplications = [];
 
 let currentApplication = null;
 
-let currentSection = "dashboard";
-
-let toastTimer = null;
-
-
-/* =====================================================
-   STATIC SERVICES
-   NO BACKEND CALL
-===================================================== */
-
-const SERVICES = [
-
-  {
-    name: "Ration Card Services",
-    icon: "🍚"
-  },
-
-  {
-    name: "PAN Card Services",
-    icon: "🪪"
-  },
-
-  {
-    name: "Recharge Services",
-    icon: "📱"
-  },
-
-  {
-    name: "iKhedut Portal અરજી",
-    icon: "🌾"
-  },
-
-  {
-    name: "PM Kisan Samman Nidhi",
-    icon: "👨‍🌾"
-  },
-
-  {
-    name: "Aadhaar → Mobile Link Check",
-    icon: "📲"
-  },
-
-  {
-    name: "Aadhaar → PAN Link Check",
-    icon: "🔗"
-  },
-
-  {
-    name: "RC PDF Download",
-    icon: "📄"
-  },
-
-  {
-    name: "DL PDF Download",
-    icon: "🚗"
-  },
-
-  {
-    name: "LMS Certificate Apply",
-    icon: "🎓"
-  }
-
-];
-
 
 /* =====================================================
    PAGE LOAD
@@ -102,10 +34,6 @@ document.addEventListener(
   function () {
 
     checkAdminLogin();
-
-    renderServices();
-
-    setupMobileInput();
 
   }
 );
@@ -122,17 +50,9 @@ function checkAdminLogin() {
       "rajkumarRole"
     );
 
-
-  const normalizedRole =
-    String(
-      role || ""
-    )
-      .trim()
-      .toLowerCase();
-
-
   if (
-    normalizedRole !== "admin"
+    role !== "admin" &&
+    role !== "Admin"
   ) {
 
     window.location.href =
@@ -147,28 +67,30 @@ function checkAdminLogin() {
     localStorage.getItem(
       "rajkumarAdminName"
     ) ||
-    localStorage.getItem(
-      "adminName"
-    ) ||
     "Administrator";
 
 
-  setText(
-    "adminName",
-    adminName
-  );
+  const nameElement =
+    document.getElementById(
+      "adminName"
+    );
+
+  const welcomeElement =
+    document.getElementById(
+      "welcomeName"
+    );
 
 
-  setText(
-    "welcomeName",
-    adminName
-  );
+  if (nameElement) {
+    nameElement.textContent =
+      adminName;
+  }
 
 
-  setText(
-    "sidebarAdminName",
-    adminName
-  );
+  if (welcomeElement) {
+    welcomeElement.textContent =
+      adminName;
+  }
 
 
   loadDashboard();
@@ -185,9 +107,7 @@ async function apiCall(
   data = {}
 ) {
 
-  if (
-    !APPLICATION_SCRIPT_URL
-  ) {
+  if (!APPLICATION_SCRIPT_URL) {
 
     throw new Error(
       "Backend URL is not configured."
@@ -272,10 +192,6 @@ function showSection(
   button
 ) {
 
-  currentSection =
-    section;
-
-
   document
     .querySelectorAll(
       ".page-section"
@@ -308,8 +224,7 @@ function showSection(
 
   const sectionElement =
     document.getElementById(
-      section +
-      "Section"
+      section + "Section"
     );
 
 
@@ -348,16 +263,23 @@ function showSection(
   };
 
 
-  setText(
-    "pageTitle",
-    titles[section] ||
-    "Admin Dashboard"
-  );
+  const pageTitle =
+    document.getElementById(
+      "pageTitle"
+    );
+
+
+  if (pageTitle) {
+
+    pageTitle.textContent =
+      titles[section] ||
+      "Admin Dashboard";
+
+  }
 
 
   if (
-    section ===
-    "dashboard"
+    section === "dashboard"
   ) {
 
     loadDashboard();
@@ -366,8 +288,7 @@ function showSection(
 
 
   if (
-    section ===
-    "applications"
+    section === "applications"
   ) {
 
     loadApplications();
@@ -376,8 +297,7 @@ function showSection(
 
 
   if (
-    section ===
-    "retailers"
+    section === "retailers"
   ) {
 
     loadRetailers();
@@ -385,27 +305,32 @@ function showSection(
   }
 
 
-  /*
-   * IMPORTANT:
-   * Services are local.
-   * Do NOT call any backend action.
-   */
-
   if (
-    section ===
-    "services"
+    section === "services"
   ) {
 
-    renderServices();
+    loadServices();
 
   }
 
 
   if (
-    window.innerWidth <= 900
+    window.innerWidth <= 1000
   ) {
 
-    toggleSidebar(false);
+    const sidebar =
+      document.getElementById(
+        "sidebar"
+      );
+
+
+    if (sidebar) {
+
+      sidebar.classList.remove(
+        "open"
+      );
+
+    }
 
   }
 
@@ -426,8 +351,7 @@ function showSectionByName(
     );
 
 
-  let selectedButton =
-    null;
+  let selectedButton = null;
 
 
   buttons.forEach(
@@ -441,9 +365,7 @@ function showSectionByName(
 
       if (
         onclick.includes(
-          "'" +
-          section +
-          "'"
+          "'" + section + "'"
         )
       ) {
 
@@ -465,75 +387,14 @@ function showSectionByName(
 
 
 /* =====================================================
-   REFRESH CURRENT SECTION
-===================================================== */
-
-function refreshCurrentSection() {
-
-  if (
-    currentSection ===
-    "dashboard"
-  ) {
-
-    loadDashboard();
-
-    return;
-
-  }
-
-
-  if (
-    currentSection ===
-    "applications"
-  ) {
-
-    loadApplications();
-
-    return;
-
-  }
-
-
-  if (
-    currentSection ===
-    "retailers"
-  ) {
-
-    loadRetailers();
-
-    return;
-
-  }
-
-
-  if (
-    currentSection ===
-    "services"
-  ) {
-
-    renderServices();
-
-  }
-
-}
-
-
-/* =====================================================
    SIDEBAR
 ===================================================== */
 
-function toggleSidebar(
-  force
-) {
+function toggleSidebar() {
 
   const sidebar =
     document.getElementById(
       "sidebar"
-    );
-
-  const overlay =
-    document.getElementById(
-      "sidebarOverlay"
     );
 
 
@@ -542,62 +403,9 @@ function toggleSidebar(
   }
 
 
-  if (
-    typeof force ===
-    "boolean"
-  ) {
-
-    if (force) {
-
-      sidebar.classList.add(
-        "open"
-      );
-
-      if (overlay) {
-
-        overlay.classList.add(
-          "active"
-        );
-
-      }
-
-    }
-
-    else {
-
-      sidebar.classList.remove(
-        "open"
-      );
-
-      if (overlay) {
-
-        overlay.classList.remove(
-          "active"
-        );
-
-      }
-
-    }
-
-    return;
-
-  }
-
-
-  const isOpen =
-    sidebar.classList.toggle(
-      "open"
-    );
-
-
-  if (overlay) {
-
-    overlay.classList.toggle(
-      "active",
-      isOpen
-    );
-
-  }
+  sidebar.classList.toggle(
+    "open"
+  );
 
 }
 
@@ -631,44 +439,37 @@ async function loadDashboard() {
 
     setText(
       "totalApplications",
-      result.total ||
-      result.totalApplications ||
-      0
+      result.total || 0
     );
 
 
     setText(
       "paymentPending",
-      result.paymentPending ||
-      0
+      result.paymentPending || 0
     );
 
 
     setText(
       "paymentVerified",
-      result.paymentVerified ||
-      0
+      result.paymentVerified || 0
     );
 
 
     setText(
       "processing",
-      result.processing ||
-      0
+      result.processing || 0
     );
 
 
     setText(
       "completed",
-      result.completed ||
-      0
+      result.completed || 0
     );
 
 
     setText(
       "rejected",
-      result.rejected ||
-      0
+      result.rejected || 0
     );
 
   }
@@ -716,13 +517,7 @@ async function loadApplications() {
       <td colspan="10"
           class="empty-row">
 
-        <div class="table-loading">
-
-          <span class="spinner"></span>
-
-          Loading applications...
-
-        </div>
+        Loading applications...
 
       </td>
 
@@ -761,7 +556,7 @@ async function loadApplications() {
 
 
     renderApplications(
-      getFilteredApplications()
+      allApplications
     );
 
   }
@@ -782,8 +577,7 @@ async function loadApplications() {
             class="empty-row">
 
           ${escapeHtml(
-            error.message ||
-            "Applications loading failed."
+            error.message
           )}
 
         </td>
@@ -844,102 +638,86 @@ function renderApplications(
   table.innerHTML =
     applications
       .map(
-        function (app) {
-
-          const originalIndex =
-            allApplications.indexOf(
-              app
-            );
-
+        function (app, index) {
 
           return `
 
             <tr>
 
               <td>
-
                 <strong>
                   ${escapeHtml(
-                    getApplicationId(app)
+                    app.applicationId ||
+                    app.id ||
+                    "-"
                   )}
                 </strong>
-
               </td>
 
 
               <td>
-
                 ${escapeHtml(
-                  getCustomerName(app)
+                  app.customerName ||
+                  app.finalName ||
+                  app.name ||
+                  app.englishName ||
+                  "-"
                 )}
-
               </td>
 
 
               <td>
-
                 ${escapeHtml(
                   app.mobile ||
                   "-"
                 )}
-
               </td>
 
 
               <td>
-
                 ${escapeHtml(
                   app.retailerName ||
-                  app.retailer ||
+                  app.retailerId ||
                   "-"
                 )}
-
               </td>
 
 
               <td>
-
                 ${escapeHtml(
                   app.service ||
                   "-"
                 )}
-
               </td>
 
 
               <td>
-
                 ₹${formatAmount(
                   app.amount
                 )}
-
               </td>
 
 
               <td>
-
                 ${statusBadge(
                   app.paymentStatus
                 )}
-
               </td>
 
 
               <td>
-
                 ${statusBadge(
                   app.applicationStatus
                 )}
-
               </td>
 
 
               <td>
-
                 ${escapeHtml(
-                  getApplicationDate(app)
+                  app.applicationDate ||
+                  app.date ||
+                  "-"
                 )}
-
               </td>
 
 
@@ -948,7 +726,7 @@ function renderApplications(
                 <button
                   type="button"
                   class="table-action"
-                  onclick="openApplicationByIndex(${originalIndex})">
+                  onclick="openApplication(${index})">
 
                   View
 
@@ -1012,19 +790,19 @@ function getFilteredApplications() {
   return allApplications.filter(
     function (app) {
 
-      const searchable = [
+      const searchable =
+        [
 
-        app.applicationId,
-        app.appId,
-        app.customerName,
-        app.finalName,
-        app.name,
-        app.mobile,
-        app.retailerName,
-        app.retailer,
-        app.service
+          app.applicationId,
+          app.customerName,
+          app.finalName,
+          app.name,
+          app.mobile,
+          app.retailerName,
+          app.retailerId,
+          app.service
 
-      ]
+        ]
         .join(" ")
         .toLowerCase();
 
@@ -1069,15 +847,19 @@ function getFilteredApplications() {
 
 
 /* =====================================================
-   OPEN APPLICATION BY INDEX
+   OPEN APPLICATION
 ===================================================== */
 
-function openApplicationByIndex(
+function openApplication(
   index
 ) {
 
+  const visibleApps =
+    getFilteredApplications();
+
+
   currentApplication =
-    allApplications[index];
+    visibleApps[index];
 
 
   if (!currentApplication) {
@@ -1092,61 +874,8 @@ function openApplicationByIndex(
   }
 
 
-  openCurrentApplication();
-
-}
-
-
-/* =====================================================
-   BACKWARD COMPATIBILITY
-===================================================== */
-
-function openApplication(
-  index
-) {
-
-  const visibleApps =
-    getFilteredApplications();
-
-
-  const app =
-    visibleApps[index];
-
-
-  if (!app) {
-
-    showToast(
-      "Application not found.",
-      true
-    );
-
-    return;
-
-  }
-
-
-  currentApplication =
-    app;
-
-
-  openCurrentApplication();
-
-}
-
-
-/* =====================================================
-   OPEN CURRENT APPLICATION
-===================================================== */
-
-function openCurrentApplication() {
-
   const app =
     currentApplication;
-
-
-  if (!app) {
-    return;
-  }
 
 
   const details =
@@ -1161,12 +890,20 @@ function openCurrentApplication() {
 
       ${detail(
         "Application ID",
-        getApplicationId(app)
+        app.applicationId
       )}
 
       ${detail(
         "Customer Name",
-        getCustomerName(app)
+        app.customerName ||
+        app.finalName ||
+        app.name ||
+        app.englishName
+      )}
+
+      ${detail(
+        "Gujarati Name",
+        app.gujaratiName
       )}
 
       ${detail(
@@ -1177,7 +914,7 @@ function openCurrentApplication() {
       ${detail(
         "Retailer",
         app.retailerName ||
-        app.retailer
+        app.retailerId
       )}
 
       ${detail(
@@ -1214,14 +951,10 @@ function openCurrentApplication() {
       )}
 
       ${detail(
-        "Transaction ID",
+        "Transaction / UTR",
         app.transactionId ||
-        app.transactionID
-      )}
-
-      ${detail(
-        "Application Date",
-        getApplicationDate(app)
+        app.utrNumber ||
+        app.utr
       )}
 
       ${detail(
@@ -1239,10 +972,10 @@ function openCurrentApplication() {
       )}
 
       ${detail(
-        "Ration / Service Document",
-        app.serviceDocument ||
+        "Ration Card Document",
+        app.rationDocument ||
         app.rationFile ||
-        app.serviceFile,
+        app.serviceDocument,
         true
       )}
 
@@ -1272,15 +1005,8 @@ function openCurrentApplication() {
   if (paymentSelect) {
 
     paymentSelect.value =
-      normalizeSelectValue(
-        app.paymentStatus,
-        [
-          "Pending",
-          "Verified",
-          "Failed"
-        ],
-        "Pending"
-      );
+      app.paymentStatus ||
+      "Pending";
 
   }
 
@@ -1288,16 +1014,8 @@ function openCurrentApplication() {
   if (applicationSelect) {
 
     applicationSelect.value =
-      normalizeSelectValue(
-        app.applicationStatus,
-        [
-          "Pending",
-          "Processing",
-          "Completed",
-          "Rejected"
-        ],
-        "Pending"
-      );
+      app.applicationStatus ||
+      "Pending";
 
   }
 
@@ -1364,27 +1082,8 @@ async function saveApplicationChanges() {
   const remarks =
     document.getElementById(
       "modalRemarks"
-    )?.value
-      .trim() ||
+    )?.value ||
     "";
-
-
-  const applicationId =
-    getApplicationId(
-      currentApplication
-    );
-
-
-  if (!applicationId) {
-
-    showToast(
-      "Application ID is missing.",
-      true
-    );
-
-    return;
-
-  }
 
 
   try {
@@ -1395,7 +1094,7 @@ async function saveApplicationChanges() {
         {
 
           applicationId:
-            applicationId,
+            currentApplication.applicationId,
 
           paymentStatus:
             paymentStatus,
@@ -1426,7 +1125,7 @@ async function saveApplicationChanges() {
         {
 
           applicationId:
-            applicationId,
+            currentApplication.applicationId,
 
           applicationStatus:
             applicationStatus,
@@ -1475,7 +1174,7 @@ async function saveApplicationChanges() {
 
     showToast(
       error.message ||
-      "Application update failed.",
+      "Update failed.",
       true
     );
 
@@ -1495,17 +1194,9 @@ async function deleteCurrentApplication() {
   }
 
 
-  const applicationId =
-    getApplicationId(
-      currentApplication
-    );
-
-
   const confirmed =
     confirm(
-      "Are you sure you want to delete application " +
-      applicationId +
-      "?"
+      "Are you sure you want to delete this application?"
     );
 
 
@@ -1522,7 +1213,7 @@ async function deleteCurrentApplication() {
         {
 
           applicationId:
-            applicationId
+            currentApplication.applicationId
 
         }
       );
@@ -1575,7 +1266,7 @@ async function deleteCurrentApplication() {
 
 
 /* =====================================================
-   CLOSE APPLICATION MODAL
+   CLOSE APPLICATION
 ===================================================== */
 
 function closeApplicationModal() {
@@ -1625,13 +1316,7 @@ async function loadRetailers() {
       <td colspan="8"
           class="empty-row">
 
-        <div class="table-loading">
-
-          <span class="spinner"></span>
-
-          Loading retailers...
-
-        </div>
+        Loading retailers...
 
       </td>
 
@@ -1714,89 +1399,60 @@ async function loadRetailers() {
                 : "Active";
 
 
-            const actionText =
-              isActive
-                ? "Deactivate"
-                : "Activate";
-
-
             return `
 
               <tr>
 
                 <td>
-
                   <strong>
                     ${escapeHtml(
                       retailer.retailerId ||
-                      retailer.id ||
                       "-"
                     )}
                   </strong>
-
                 </td>
 
-
                 <td>
-
                   ${escapeHtml(
                     retailer.name ||
-                    retailer.retailerName ||
                     "-"
                   )}
-
                 </td>
 
-
                 <td>
-
                   ${escapeHtml(
                     retailer.mobile ||
                     "-"
                   )}
-
                 </td>
 
-
                 <td>
-
                   ${escapeHtml(
                     retailer.username ||
                     "-"
                   )}
-
                 </td>
 
-
                 <td>
-
                   ${statusBadge(
                     status
                   )}
-
                 </td>
 
-
                 <td>
-
                   ${Number(
                     retailer.totalApplications ||
-                    retailer.applicationCount ||
+                    retailer.workCount ||
                     0
                   )}
-
                 </td>
 
-
                 <td>
-
                   ${escapeHtml(
                     retailer.lastLogin ||
                     "-"
                   )}
-
                 </td>
-
 
                 <td>
 
@@ -1805,16 +1461,16 @@ async function loadRetailers() {
                     class="table-action"
                     onclick="toggleRetailerStatus(
                       '${escapeAttribute(
-                        retailer.retailerId ||
-                        retailer.id ||
-                        ""
+                        retailer.retailerId
                       )}',
                       '${escapeAttribute(
                         status
                       )}'
                     )">
 
-                    ${actionText}
+                    ${newStatus === "Active"
+                      ? "Activate"
+                      : "Deactivate"}
 
                   </button>
 
@@ -1846,8 +1502,7 @@ async function loadRetailers() {
             class="empty-row">
 
           ${escapeHtml(
-            error.message ||
-            "Retailers loading failed."
+            error.message
           )}
 
         </td>
@@ -1908,37 +1563,7 @@ function closeRetailerModal() {
 
 
   if (form) {
-
     form.reset();
-
-  }
-
-
-  const password =
-    document.getElementById(
-      "retailerPasswordInput"
-    );
-
-
-  if (password) {
-
-    password.type =
-      "password";
-
-  }
-
-
-  const toggle =
-    document.getElementById(
-      "passwordToggle"
-    );
-
-
-  if (toggle) {
-
-    toggle.textContent =
-      "👁️";
-
   }
 
 
@@ -1949,72 +1574,7 @@ function closeRetailerModal() {
 
 
   if (message) {
-
-    message.textContent =
-      "";
-
-    message.className =
-      "form-message";
-
-  }
-
-}
-
-
-/* =====================================================
-   PASSWORD VISIBILITY
-===================================================== */
-
-function togglePasswordVisibility() {
-
-  const input =
-    document.getElementById(
-      "retailerPasswordInput"
-    );
-
-
-  const button =
-    document.getElementById(
-      "passwordToggle"
-    );
-
-
-  if (!input) {
-    return;
-  }
-
-
-  if (
-    input.type ===
-    "password"
-  ) {
-
-    input.type =
-      "text";
-
-
-    if (button) {
-
-      button.textContent =
-        "🙈";
-
-    }
-
-  }
-
-  else {
-
-    input.type =
-      "password";
-
-
-    if (button) {
-
-      button.textContent =
-        "👁️";
-
-    }
-
+    message.textContent = "";
   }
 
 }
@@ -2074,63 +1634,9 @@ async function createNewRetailer(
     );
 
 
-  if (!name) {
-
-    showFormMessage(
-      "Please enter retailer name.",
-      true
-    );
-
-    return;
-
-  }
-
-
-  if (
-    mobile &&
-    !/^[0-9]{10}$/.test(
-      mobile
-    )
-  ) {
-
-    showFormMessage(
-      "Please enter a valid 10 digit mobile number.",
-      true
-    );
-
-    return;
-
-  }
-
-
-  if (!username) {
-
-    showFormMessage(
-      "Please enter username.",
-      true
-    );
-
-    return;
-
-  }
-
-
-  if (!password) {
-
-    showFormMessage(
-      "Please enter password.",
-      true
-    );
-
-    return;
-
-  }
-
-
   if (button) {
 
-    button.disabled =
-      true;
+    button.disabled = true;
 
     button.textContent =
       "Creating...";
@@ -2174,13 +1680,16 @@ async function createNewRetailer(
     }
 
 
-    showFormMessage(
-      "Retailer created successfully. ID: " +
-      (
-        result.retailerId ||
-        "-"
-      )
-    );
+    if (message) {
+
+      message.textContent =
+        "Retailer created successfully. ID: " +
+        (
+          result.retailerId ||
+          "-"
+        );
+
+    }
 
 
     showToast(
@@ -2210,11 +1719,11 @@ async function createNewRetailer(
     );
 
 
-    showFormMessage(
-      error.message ||
-      "Retailer creation failed.",
-      true
-    );
+    if (message) {
+
+      message.textContent =
+        error.message;
+    }
 
 
     showToast(
@@ -2233,43 +1742,11 @@ async function createNewRetailer(
         false;
 
       button.textContent =
-        "➕ Create Retailer";
+        "Create Retailer";
 
     }
 
   }
-
-}
-
-
-/* =====================================================
-   SHOW FORM MESSAGE
-===================================================== */
-
-function showFormMessage(
-  message,
-  error = false
-) {
-
-  const element =
-    document.getElementById(
-      "retailerFormMessage"
-    );
-
-
-  if (!element) {
-    return;
-  }
-
-
-  element.textContent =
-    message;
-
-
-  element.className =
-    error
-      ? "form-message error"
-      : "form-message";
 
 }
 
@@ -2283,18 +1760,6 @@ async function toggleRetailerStatus(
   currentStatus
 ) {
 
-  if (!retailerId) {
-
-    showToast(
-      "Retailer ID is missing.",
-      true
-    );
-
-    return;
-
-  }
-
-
   const newStatus =
     normalizeStatus(
       currentStatus
@@ -2302,19 +1767,6 @@ async function toggleRetailerStatus(
     "active"
       ? "Inactive"
       : "Active";
-
-
-  const confirmed =
-    confirm(
-      "Change retailer status to " +
-      newStatus +
-      "?"
-    );
-
-
-  if (!confirmed) {
-    return;
-  }
 
 
   try {
@@ -2377,80 +1829,114 @@ async function toggleRetailerStatus(
 
 /* =====================================================
    SERVICES
-   LOCAL ONLY
+   IMPORTANT:
+   Services are static.
+   NO API CALL.
 ===================================================== */
 
-function renderServices() {
+function loadServices() {
 
-  const grid =
-    document.getElementById(
-      "servicesGrid"
-    );
+  const services = [
+
+    {
+      name:
+        "Ration Card Correction",
+
+      withCard:
+        250,
+
+      withoutCard:
+        700
+    },
+
+    {
+      name:
+        "Ration Card Name Add",
+
+      withCard:
+        100,
+
+      withoutCard:
+        500
+    },
+
+    {
+      name:
+        "Ration Card Name Remove",
+
+      withCard:
+        100,
+
+      withoutCard:
+        500
+    },
+
+    {
+      name:
+        "Pita Name → Pati Name",
+
+      withCard:
+        500,
+
+      withoutCard:
+        1000
+    },
+
+    {
+      name:
+        "iKhedut Portal અરજી",
+
+      price:
+        20
+    },
+
+    {
+      name:
+        "PM Kisan Samman Nidhi KYC Check",
+
+      price:
+        5
+    },
+
+    {
+      name:
+        "Aadhaar → Mobile Link Check",
+
+      price:
+        5
+    },
+
+    {
+      name:
+        "Aadhaar → PAN Link Check",
+
+      price:
+        10
+    },
+
+    {
+      name:
+        "RC PDF Download",
+
+      price:
+        350
+    },
+
+    {
+      name:
+        "DL PDF Download",
+
+      price:
+        350
+    }
+
+  ];
 
 
-  if (!grid) {
-    return;
-  }
-
-
-  const count =
-    document.getElementById(
-      "serviceCount"
-    );
-
-
-  if (count) {
-
-    count.textContent =
-      SERVICES.length +
-      " Services";
-
-  }
-
-
-  grid.innerHTML =
-    SERVICES
-      .map(
-        function (service, index) {
-
-          return `
-
-            <div class="service-card">
-
-              <div class="service-number">
-                SERVICE ${String(
-                  index + 1
-                ).padStart(2, "0")}
-              </div>
-
-              <div style="
-                font-size:30px;
-                margin-bottom:10px;
-              ">
-                ${service.icon}
-              </div>
-
-              <h3>
-                ${escapeHtml(
-                  service.name
-                )}
-              </h3>
-
-              <div class="service-price">
-                Available on Rajkumar Website
-              </div>
-
-              <span class="status active">
-                Active
-              </span>
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
+  console.log(
+    "Rajkumar Services loaded:",
+    services.length
+  );
 
 }
 
@@ -2476,147 +1962,23 @@ function logoutAdmin() {
     "rajkumarRole"
   );
 
-
   localStorage.removeItem(
     "rajkumarAdminId"
   );
-
 
   localStorage.removeItem(
     "rajkumarAdminName"
   );
 
 
-  localStorage.removeItem(
-    "adminName"
-  );
-
-
-  sessionStorage.clear();
-
-
-  window.location.replace(
-    "login.html"
-  );
+  window.location.href =
+    "login.html";
 
 }
 
 
 /* =====================================================
-   APPLICATION HELPERS
-===================================================== */
-
-function getApplicationId(
-  app
-) {
-
-  return (
-    app?.applicationId ||
-    app?.applicationID ||
-    app?.appId ||
-    app?.id ||
-    ""
-  );
-
-}
-
-
-function getCustomerName(
-  app
-) {
-
-  return (
-    app?.customerName ||
-    app?.finalName ||
-    app?.englishName ||
-    app?.name ||
-    "-"
-  );
-
-}
-
-
-function getApplicationDate(
-  app
-) {
-
-  return (
-    app?.applicationDate ||
-    app?.date ||
-    app?.createdAt ||
-    "-"
-  );
-
-}
-
-
-function formatAmount(
-  amount
-) {
-
-  const number =
-    Number(
-      amount || 0
-    );
-
-
-  if (
-    Number.isNaN(
-      number
-    )
-  ) {
-
-    return "0";
-
-  }
-
-
-  return number.toLocaleString(
-    "en-IN"
-  );
-
-}
-
-
-/* =====================================================
-   NORMALIZE SELECT
-===================================================== */
-
-function normalizeSelectValue(
-  value,
-  allowed,
-  fallback
-) {
-
-  const normalized =
-    normalizeStatus(
-      value
-    );
-
-
-  const match =
-    allowed.find(
-      function (item) {
-
-        return (
-          normalizeStatus(
-            item
-          ) ===
-          normalized
-        );
-
-      }
-    );
-
-
-  return match ||
-    fallback;
-
-}
-
-
-/* =====================================================
-   HELPER - SET TEXT
+   HELPER
 ===================================================== */
 
 function setText(
@@ -2641,7 +2003,35 @@ function setText(
 
 
 /* =====================================================
-   HELPER - STATUS NORMALIZE
+   FORMAT AMOUNT
+===================================================== */
+
+function formatAmount(
+  value
+) {
+
+  const number =
+    Number(value);
+
+
+  if (
+    Number.isNaN(number)
+  ) {
+
+    return "0";
+
+  }
+
+
+  return number.toLocaleString(
+    "en-IN"
+  );
+
+}
+
+
+/* =====================================================
+   NORMALIZE STATUS
 ===================================================== */
 
 function normalizeStatus(
@@ -2658,7 +2048,7 @@ function normalizeStatus(
 
 
 /* =====================================================
-   HELPER - STATUS BADGE
+   STATUS BADGE
 ===================================================== */
 
 function statusBadge(
@@ -2669,39 +2059,16 @@ function statusBadge(
     String(
       status ||
       "Pending"
-    )
-      .trim();
+    ).trim();
 
 
-  let className =
+  const className =
     value
       .toLowerCase()
       .replace(
         /\s+/g,
         "-"
       );
-
-
-  if (
-    className ===
-    "success"
-  ) {
-
-    className =
-      "completed";
-
-  }
-
-
-  if (
-    className ===
-    "complete"
-  ) {
-
-    className =
-      "completed";
-
-  }
 
 
   return `
@@ -2720,7 +2087,7 @@ function statusBadge(
 
 
 /* =====================================================
-   HELPER - DETAIL
+   DETAIL
 ===================================================== */
 
 function detail(
@@ -2734,48 +2101,34 @@ function detail(
     value
   ) {
 
-    const safeUrl =
-      String(
-        value
-      ).trim();
+    return `
 
+      <div class="detail-item">
 
-    if (
-      /^https?:\/\//i.test(
-        safeUrl
-      )
-    ) {
+        <span>
+          ${escapeHtml(
+            label
+          )}
+        </span>
 
-      return `
+        <strong>
 
-        <div class="detail-item">
+          <a
+            href="${escapeAttribute(
+              value
+            )}"
+            target="_blank"
+            rel="noopener noreferrer">
 
-          <span>
-            ${escapeHtml(
-              label
-            )}
-          </span>
+            Open Document
 
-          <strong>
+          </a>
 
-            <a
-              href="${escapeAttribute(
-                safeUrl
-              )}"
-              target="_blank"
-              rel="noopener noreferrer">
+        </strong>
 
-              Open Document ↗
+      </div>
 
-            </a>
-
-          </strong>
-
-        </div>
-
-      `;
-
-    }
+    `;
 
   }
 
@@ -2805,7 +2158,7 @@ function detail(
 
 
 /* =====================================================
-   HELPER - ESCAPE HTML
+   ESCAPE HTML
 ===================================================== */
 
 function escapeHtml(
@@ -2848,7 +2201,7 @@ function escapeHtml(
 
 
 /* =====================================================
-   HELPER - ESCAPE ATTRIBUTE
+   ESCAPE ATTRIBUTE
 ===================================================== */
 
 function escapeAttribute(
@@ -2882,15 +2235,6 @@ function showToast(
   }
 
 
-  if (toastTimer) {
-
-    clearTimeout(
-      toastTimer
-    );
-
-  }
-
-
   toast.textContent =
     message;
 
@@ -2908,7 +2252,12 @@ function showToast(
   }
 
 
-  toastTimer =
+  clearTimeout(
+    window.__rajToastTimer
+  );
+
+
+  window.__rajToastTimer =
     setTimeout(
       function () {
 
@@ -2916,52 +2265,14 @@ function showToast(
           "toast";
 
       },
-      3500
+      3000
     );
 
 }
 
 
 /* =====================================================
-   MOBILE INPUT
-===================================================== */
-
-function setupMobileInput() {
-
-  const mobile =
-    document.getElementById(
-      "retailerMobileInput"
-    );
-
-
-  if (!mobile) {
-    return;
-  }
-
-
-  mobile.addEventListener(
-    "input",
-    function () {
-
-      this.value =
-        this.value
-          .replace(
-            /\D/g,
-            ""
-          )
-          .slice(
-            0,
-            10
-          );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   CLOSE MODALS ON BACKGROUND CLICK
+   CLOSE MODALS
 ===================================================== */
 
 document.addEventListener(
@@ -3002,20 +2313,15 @@ document.addEventListener(
   function (event) {
 
     if (
-      event.key !==
-      "Escape"
+      event.key !== "Escape"
     ) {
-
       return;
-
     }
 
 
     closeRetailerModal();
 
     closeApplicationModal();
-
-    toggleSidebar(false);
 
   }
 );
