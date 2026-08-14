@@ -1923,79 +1923,39 @@ async function toggleRetailerStatus(
    SERVICES
 ===================================================== */
 
-async function loadServices() {
+function loadServices() {
 
   const grid = document.getElementById("servicesGrid");
 
-  if (!grid) return;
+  if (!grid) {
+    return;
+  }
 
   const services = [
-
-    {
-      service: "Ration Card Services",
-      price: 0
-    },
-
-    {
-      service: "PAN Card Services",
-      price: 0
-    },
-
-    {
-      service: "Recharge Services",
-      price: 0
-    },
-
-    {
-      service: "iKhedut Portal અરજી",
-      price: 0
-    },
-
-    {
-      service: "PM Kisan Samman Nidhi",
-      price: 0
-    },
-
-    {
-      service: "Aadhaar → Mobile Link Check",
-      price: 0
-    },
-
-    {
-      service: "Aadhaar → PAN Link Check",
-      price: 0
-    },
-
-    {
-      service: "RC PDF Download",
-      price: 0
-    },
-
-    {
-      service: "DL PDF Download",
-      price: 0
-    },
-
-    {
-      service: "LMS Certificate Apply",
-      price: 0
-    }
-
+    "Ration Card Services",
+    "PAN Card Services",
+    "Recharge Services",
+    "iKhedut Portal અરજી",
+    "PM Kisan Samman Nidhi",
+    "Aadhaar → Mobile Link Check",
+    "Aadhaar → PAN Link Check",
+    "RC PDF Download",
+    "DL PDF Download",
+    "LMS Certificate Apply"
   ];
 
 
   grid.innerHTML = services.map(function(service) {
 
     return `
-
       <div class="service-card">
 
         <h3>
-          ${escapeHtml(service.service)}
+          ${escapeHtml(service)}
         </h3>
 
         <div class="service-price">
-          Service Available
+          Available
         </div>
 
         <span class="status active">
@@ -2003,13 +1963,11 @@ async function loadServices() {
         </span>
 
       </div>
-
     `;
 
   }).join("");
 
 }
-
 /* =====================================================
    LOGOUT
 ===================================================== */
