@@ -8,7 +8,7 @@
 ===================================================== */
 
 const LOGIN_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzsdUwiDg17gl8r1EUOypp1-lXXJkqZwpnD_B8q3NzZ/dev";
+  "const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";
 
 
 /* =====================================================
