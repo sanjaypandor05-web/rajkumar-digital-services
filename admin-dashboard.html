@@ -7,25 +7,13 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <meta name="theme-color" content="#0756c9">
-
   <title>Rajkumar Admin Dashboard</title>
 
   <link rel="stylesheet"
-        href="admin-dashboard.css?v=20260814">
-
+        href="admin-dashboard.css">
 </head>
 
 <body>
-
-<!-- =====================================================
-     SIDEBAR OVERLAY - MOBILE
-===================================================== -->
-<div id="sidebarOverlay"
-     class="sidebar-overlay"
-     onclick="toggleSidebar(false)">
-</div>
-
 
 <!-- =====================================================
      SIDEBAR
@@ -35,11 +23,9 @@
 
   <div class="sidebar-logo">
 
-    <div class="logo-icon">
-      👑
-    </div>
+    <div class="logo-icon">👑</div>
 
-    <div class="logo-text">
+    <div>
       <h2>Rajkumar</h2>
       <span>Admin Panel</span>
     </div>
@@ -49,47 +35,28 @@
 
   <nav class="sidebar-nav">
 
-    <div class="nav-label">
-      MAIN MENU
-    </div>
-
     <button class="nav-item active"
-            type="button"
             onclick="showSection('dashboard', this)">
-
-      <span class="nav-icon">📊</span>
+      <span>📊</span>
       <span>Dashboard</span>
-
     </button>
 
-
     <button class="nav-item"
-            type="button"
             onclick="showSection('applications', this)">
-
-      <span class="nav-icon">📋</span>
+      <span>📋</span>
       <span>Applications</span>
-
     </button>
 
-
     <button class="nav-item"
-            type="button"
             onclick="showSection('retailers', this)">
-
-      <span class="nav-icon">👥</span>
+      <span>👥</span>
       <span>Retailers</span>
-
     </button>
 
-
     <button class="nav-item"
-            type="button"
             onclick="showSection('services', this)">
-
-      <span class="nav-icon">🛠️</span>
+      <span>🛠️</span>
       <span>Services</span>
-
     </button>
 
   </nav>
@@ -97,27 +64,7 @@
 
   <div class="sidebar-bottom">
 
-    <div class="sidebar-user">
-
-      <div class="sidebar-user-avatar">
-        👑
-      </div>
-
-      <div>
-        <strong id="sidebarAdminName">
-          Administrator
-        </strong>
-
-        <small>
-          Administrator
-        </small>
-      </div>
-
-    </div>
-
-
     <button class="logout-btn"
-            type="button"
             onclick="logoutAdmin()">
 
       <span>🚪</span>
@@ -136,69 +83,43 @@
 
 <main class="main-content">
 
-
-  <!-- ===================================================
-       HEADER
-  =================================================== -->
+  <!-- HEADER -->
 
   <header class="top-header">
 
-    <div class="header-left">
+    <button class="menu-btn"
+            onclick="toggleSidebar()">
+      ☰
+    </button>
 
-      <button class="menu-btn"
-              type="button"
-              onclick="toggleSidebar()"
-              aria-label="Open menu">
+    <div class="header-title">
 
-        ☰
+      <h1 id="pageTitle">
+        Admin Dashboard
+      </h1>
 
-      </button>
-
-
-      <div class="header-title">
-
-        <h1 id="pageTitle">
-          Admin Dashboard
-        </h1>
-
-        <p>
-          Rajkumar Website Management
-        </p>
-
-      </div>
+      <p>
+        Rajkumar Website Management
+      </p>
 
     </div>
 
 
-    <div class="header-right">
+    <div class="admin-profile">
 
-      <button class="header-refresh"
-              type="button"
-              onclick="refreshCurrentSection()"
-              title="Refresh">
+      <div class="admin-avatar">
+        👑
+      </div>
 
-        🔄
+      <div>
 
-      </button>
+        <strong id="adminName">
+          Administrator
+        </strong>
 
-
-      <div class="admin-profile">
-
-        <div class="admin-avatar">
-          👑
-        </div>
-
-        <div class="admin-profile-info">
-
-          <strong id="adminName">
-            Administrator
-          </strong>
-
-          <small>
-            Admin
-          </small>
-
-        </div>
+        <small>
+          Administrator
+        </small>
 
       </div>
 
@@ -207,9 +128,9 @@
   </header>
 
 
-  <!-- ===================================================
+  <!-- =====================================================
        DASHBOARD
-  =================================================== -->
+  ===================================================== -->
 
   <section id="dashboardSection"
            class="page-section active">
@@ -218,31 +139,26 @@
 
       <div class="welcome-content">
 
-        <div class="welcome-badge">
-          ✨ ADMIN PANEL
-        </div>
+        <span class="welcome-label">
+          WELCOME BACK
+        </span>
 
         <h2>
-          Welcome back,
+          Hello,
           <span id="welcomeName">
             Administrator
           </span>
         </h2>
 
         <p>
-          Manage applications, payments, retailers
-          and services from one place.
+          Manage applications, retailers,
+          payments and services from one place.
         </p>
 
       </div>
 
-
-      <div class="welcome-illustration">
-
-        <div class="welcome-circle">
-          👑
-        </div>
-
+      <div class="welcome-icon">
+        👑
       </div>
 
     </div>
@@ -252,176 +168,104 @@
 
     <div class="stats-grid">
 
+      <div class="stat-card blue">
 
-      <div class="stat-card stat-blue">
-
-        <div class="stat-top">
-
-          <div class="stat-icon">
-            📋
-          </div>
-
-          <span class="stat-arrow">
-            ↗
-          </span>
-
+        <div class="stat-icon">
+          📋
         </div>
 
-        <div class="stat-label">
-          Total Applications
+        <div>
+          <span>Total Applications</span>
+          <strong id="totalApplications">0</strong>
         </div>
-
-        <strong id="totalApplications">
-          0
-        </strong>
 
       </div>
 
 
-      <div class="stat-card stat-yellow">
+      <div class="stat-card yellow">
 
-        <div class="stat-top">
-
-          <div class="stat-icon">
-            🟡
-          </div>
-
-          <span class="stat-arrow">
-            !
-          </span>
-
+        <div class="stat-icon">
+          🟡
         </div>
 
-        <div class="stat-label">
-          Payment Pending
+        <div>
+          <span>Payment Pending</span>
+          <strong id="paymentPending">0</strong>
         </div>
-
-        <strong id="paymentPending">
-          0
-        </strong>
 
       </div>
 
 
-      <div class="stat-card stat-green">
+      <div class="stat-card green">
 
-        <div class="stat-top">
-
-          <div class="stat-icon">
-            🟢
-          </div>
-
-          <span class="stat-arrow">
-            ✓
-          </span>
-
+        <div class="stat-icon">
+          🟢
         </div>
 
-        <div class="stat-label">
-          Payment Verified
+        <div>
+          <span>Payment Verified</span>
+          <strong id="paymentVerified">0</strong>
         </div>
-
-        <strong id="paymentVerified">
-          0
-        </strong>
 
       </div>
 
 
-      <div class="stat-card stat-purple">
+      <div class="stat-card purple">
 
-        <div class="stat-top">
-
-          <div class="stat-icon">
-            ⚙️
-          </div>
-
-          <span class="stat-arrow">
-            →
-          </span>
-
+        <div class="stat-icon">
+          ⚙️
         </div>
 
-        <div class="stat-label">
-          Processing
+        <div>
+          <span>Processing</span>
+          <strong id="processing">0</strong>
         </div>
-
-        <strong id="processing">
-          0
-        </strong>
 
       </div>
 
 
-      <div class="stat-card stat-success">
+      <div class="stat-card success">
 
-        <div class="stat-top">
-
-          <div class="stat-icon">
-            ✅
-          </div>
-
-          <span class="stat-arrow">
-            ✓
-          </span>
-
+        <div class="stat-icon">
+          ✅
         </div>
 
-        <div class="stat-label">
-          Completed
+        <div>
+          <span>Completed</span>
+          <strong id="completed">0</strong>
         </div>
-
-        <strong id="completed">
-          0
-        </strong>
 
       </div>
 
 
-      <div class="stat-card stat-danger">
+      <div class="stat-card red">
 
-        <div class="stat-top">
-
-          <div class="stat-icon">
-            ❌
-          </div>
-
-          <span class="stat-arrow">
-            !
-          </span>
-
+        <div class="stat-icon">
+          ❌
         </div>
 
-        <div class="stat-label">
-          Rejected
+        <div>
+          <span>Rejected</span>
+          <strong id="rejected">0</strong>
         </div>
-
-        <strong id="rejected">
-          0
-        </strong>
 
       </div>
 
     </div>
 
 
-    <!-- QUICK ACTIONS -->
+    <!-- QUICK ACTION -->
 
     <div class="section-card">
 
       <div class="section-header">
 
         <div>
-
-          <div class="section-title-row">
-            <span class="section-title-icon">⚡</span>
-            <h2>Quick Actions</h2>
-          </div>
+          <h2>Quick Actions</h2>
 
           <p>
-            Quickly access important admin sections.
+            Quickly open important sections.
           </p>
-
         </div>
 
       </div>
@@ -430,61 +274,55 @@
       <div class="quick-grid">
 
         <button class="quick-btn"
-                type="button"
                 onclick="showSectionByName('applications')">
 
-          <span class="quick-icon blue">
+          <div class="quick-icon">
             📋
-          </span>
+          </div>
 
-          <span class="quick-text">
-            <strong>Applications</strong>
-            <small>Manage customer applications</small>
-          </span>
+          <strong>
+            Applications
+          </strong>
 
-          <span class="quick-arrow">
-            →
-          </span>
+          <small>
+            Manage applications
+          </small>
 
         </button>
 
 
         <button class="quick-btn"
-                type="button"
                 onclick="showSectionByName('retailers')">
 
-          <span class="quick-icon green">
+          <div class="quick-icon">
             👥
-          </span>
+          </div>
 
-          <span class="quick-text">
-            <strong>Retailers</strong>
-            <small>Manage retailer accounts</small>
-          </span>
+          <strong>
+            Retailers
+          </strong>
 
-          <span class="quick-arrow">
-            →
-          </span>
+          <small>
+            Manage retailer accounts
+          </small>
 
         </button>
 
 
         <button class="quick-btn"
-                type="button"
                 onclick="showSectionByName('services')">
 
-          <span class="quick-icon purple">
+          <div class="quick-icon">
             🛠️
-          </span>
+          </div>
 
-          <span class="quick-text">
-            <strong>Services</strong>
-            <small>View available services</small>
-          </span>
+          <strong>
+            Services
+          </strong>
 
-          <span class="quick-arrow">
-            →
-          </span>
+          <small>
+            View all service charges
+          </small>
 
         </button>
 
@@ -495,9 +333,9 @@
   </section>
 
 
-  <!-- ===================================================
+  <!-- =====================================================
        APPLICATIONS
-  =================================================== -->
+  ===================================================== -->
 
   <section id="applicationsSection"
            class="page-section">
@@ -508,29 +346,19 @@
 
         <div>
 
-          <div class="section-title-row">
-
-            <span class="section-title-icon">
-              📋
-            </span>
-
-            <h2>Applications</h2>
-
-          </div>
+          <h2>
+            Applications
+          </h2>
 
           <p>
-            View and manage all customer applications.
+            View and manage customer applications.
           </p>
 
         </div>
 
-
         <button class="refresh-btn"
-                type="button"
                 onclick="loadApplications()">
-
           🔄 Refresh
-
         </button>
 
       </div>
@@ -538,17 +366,10 @@
 
       <div class="filters">
 
-        <div class="filter-box">
-
-          <span>🔍</span>
-
-          <input type="text"
-                 id="applicationSearch"
-                 placeholder="Search ID, name, mobile..."
-                 autocomplete="off"
-                 oninput="filterApplications()">
-
-        </div>
+        <input type="text"
+               id="applicationSearch"
+               placeholder="🔍 Search ID / Name / Mobile / Service"
+               oninput="filterApplications()">
 
 
         <select id="paymentFilter"
@@ -608,7 +429,6 @@
           <thead>
 
             <tr>
-
               <th>Application ID</th>
               <th>Customer</th>
               <th>Mobile</th>
@@ -619,26 +439,17 @@
               <th>Status</th>
               <th>Date</th>
               <th>Action</th>
-
             </tr>
 
           </thead>
 
-
           <tbody id="applicationsTable">
 
             <tr>
-
               <td colspan="10"
                   class="empty-row">
-
-                <div class="table-loading">
-                  <span class="spinner"></span>
-                  Loading applications...
-                </div>
-
+                Loading applications...
               </td>
-
             </tr>
 
           </tbody>
@@ -652,9 +463,9 @@
   </section>
 
 
-  <!-- ===================================================
+  <!-- =====================================================
        RETAILERS
-  =================================================== -->
+  ===================================================== -->
 
   <section id="retailersSection"
            class="page-section">
@@ -665,15 +476,9 @@
 
         <div>
 
-          <div class="section-title-row">
-
-            <span class="section-title-icon">
-              👥
-            </span>
-
-            <h2>Retailers</h2>
-
-          </div>
+          <h2>
+            Retailers
+          </h2>
 
           <p>
             Create and manage retailer accounts.
@@ -681,13 +486,9 @@
 
         </div>
 
-
         <button class="primary-btn"
-                type="button"
                 onclick="openRetailerModal()">
-
           ➕ Add Retailer
-
         </button>
 
       </div>
@@ -700,7 +501,6 @@
           <thead>
 
             <tr>
-
               <th>Retailer ID</th>
               <th>Name</th>
               <th>Mobile</th>
@@ -709,7 +509,6 @@
               <th>Applications</th>
               <th>Last Login</th>
               <th>Action</th>
-
             </tr>
 
           </thead>
@@ -718,17 +517,10 @@
           <tbody id="retailersTable">
 
             <tr>
-
               <td colspan="8"
                   class="empty-row">
-
-                <div class="table-loading">
-                  <span class="spinner"></span>
-                  Loading retailers...
-                </div>
-
+                Loading retailers...
               </td>
-
             </tr>
 
           </tbody>
@@ -742,12 +534,39 @@
   </section>
 
 
-  <!-- ===================================================
+  <!-- =====================================================
        SERVICES
-  =================================================== -->
+  ===================================================== -->
 
   <section id="servicesSection"
            class="page-section">
+
+    <div class="service-hero">
+
+      <div>
+
+        <span>
+          RAJKUMAR SERVICES
+        </span>
+
+        <h2>
+          All Services & Charges
+        </h2>
+
+        <p>
+          Current service list and customer charges.
+        </p>
+
+      </div>
+
+      <div class="service-hero-icon">
+        🛠️
+      </div>
+
+    </div>
+
+
+    <!-- RATION CARD -->
 
     <div class="section-card">
 
@@ -755,36 +574,496 @@
 
         <div>
 
-          <div class="section-title-row">
-
-            <span class="section-title-icon">
-              🛠️
-            </span>
-
-            <h2>Services</h2>
-
-          </div>
+          <h2>
+            🪪 Ration Card Services
+          </h2>
 
           <p>
-            Services currently available on Rajkumar Website.
+            Charges depend on whether the customer has
+            a ration card.
           </p>
 
         </div>
 
-        <div class="service-count"
-             id="serviceCount">
+        <span class="service-count">
+          4 Services
+        </span>
 
-          10 Services
+      </div>
+
+
+      <div class="ration-grid">
+
+
+        <!-- CORRECTION -->
+
+        <div class="service-card ration">
+
+          <div class="service-card-top">
+
+            <div class="service-icon">
+              ✏️
+            </div>
+
+            <span class="service-tag">
+              RATION CARD
+            </span>
+
+          </div>
+
+          <h3>
+            Ration Card Correction
+          </h3>
+
+          <div class="price-row">
+
+            <div>
+              <small>With Ration Card</small>
+              <strong>₹250</strong>
+            </div>
+
+            <div>
+              <small>Without Ration Card</small>
+              <strong>₹700</strong>
+            </div>
+
+          </div>
+
+          <span class="active-badge">
+            ● Active
+          </span>
+
+        </div>
+
+
+        <!-- NAME ADD -->
+
+        <div class="service-card ration">
+
+          <div class="service-card-top">
+
+            <div class="service-icon">
+              ➕
+            </div>
+
+            <span class="service-tag">
+              RATION CARD
+            </span>
+
+          </div>
+
+          <h3>
+            Ration Card Name Add
+          </h3>
+
+          <div class="price-row">
+
+            <div>
+              <small>With Ration Card</small>
+              <strong>₹100</strong>
+            </div>
+
+            <div>
+              <small>Without Ration Card</small>
+              <strong>₹500</strong>
+            </div>
+
+          </div>
+
+          <span class="active-badge">
+            ● Active
+          </span>
+
+        </div>
+
+
+        <!-- NAME REMOVE -->
+
+        <div class="service-card ration">
+
+          <div class="service-card-top">
+
+            <div class="service-icon">
+              ➖
+            </div>
+
+            <span class="service-tag">
+              RATION CARD
+            </span>
+
+          </div>
+
+          <h3>
+            Ration Card Name Remove
+          </h3>
+
+          <div class="price-row">
+
+            <div>
+              <small>With Ration Card</small>
+              <strong>₹100</strong>
+            </div>
+
+            <div>
+              <small>Without Ration Card</small>
+              <strong>₹500</strong>
+            </div>
+
+          </div>
+
+          <span class="active-badge">
+            ● Active
+          </span>
+
+        </div>
+
+
+        <!-- PITA PATI -->
+
+        <div class="service-card ration">
+
+          <div class="service-card-top">
+
+            <div class="service-icon">
+              👨‍👩‍👧
+            </div>
+
+            <span class="service-tag">
+              RATION CARD
+            </span>
+
+          </div>
+
+          <h3>
+            Pita Name → Pati Name
+          </h3>
+
+          <div class="price-row">
+
+            <div>
+              <small>With Ration Card</small>
+              <strong>₹500</strong>
+            </div>
+
+            <div>
+              <small>Without Ration Card</small>
+              <strong>₹1,000</strong>
+            </div>
+
+          </div>
+
+          <span class="active-badge">
+            ● Active
+          </span>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- OTHER SERVICES -->
+
+    <div class="section-card">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            🌐 Online Services
+          </h2>
+
+          <p>
+            Online portal and document services.
+          </p>
 
         </div>
 
       </div>
 
 
-      <div id="servicesGrid"
-           class="services-grid">
+      <div class="online-services-grid">
 
-        <!-- Services loaded locally by JS -->
+
+        <!-- IKHEDUT -->
+
+        <div class="service-card online">
+
+          <div class="online-icon">
+            🌾
+          </div>
+
+          <div class="online-content">
+
+            <span class="online-category">
+              GOVERNMENT PORTAL
+            </span>
+
+            <h3>
+              iKhedut Portal અરજી
+            </h3>
+
+            <p>
+              iKhedut portal application assistance.
+            </p>
+
+            <div class="online-bottom">
+
+              <strong>
+                ₹20
+              </strong>
+
+              <span class="active-badge">
+                ● Active
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- PM KISAN -->
+
+        <div class="service-card online">
+
+          <div class="online-icon">
+            🌱
+          </div>
+
+          <div class="online-content">
+
+            <span class="online-category">
+              FARMER SERVICE
+            </span>
+
+            <h3>
+              PM Kisan Samman Nidhi KYC Check
+            </h3>
+
+            <p>
+              PM Kisan beneficiary/KYC status checking.
+            </p>
+
+            <div class="online-bottom">
+
+              <strong>
+                ₹5
+              </strong>
+
+              <span class="active-badge">
+                ● Active
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- AADHAAR MOBILE -->
+
+        <div class="service-card online">
+
+          <div class="online-icon">
+            📱
+          </div>
+
+          <div class="online-content">
+
+            <span class="online-category">
+              AADHAAR SERVICE
+            </span>
+
+            <h3>
+              Aadhaar → Mobile Link Check
+            </h3>
+
+            <p>
+              Check Aadhaar registered mobile information.
+            </p>
+
+            <div class="online-bottom">
+
+              <strong>
+                ₹5
+              </strong>
+
+              <span class="active-badge">
+                ● Active
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- AADHAAR PAN -->
+
+        <div class="service-card online">
+
+          <div class="online-icon">
+            🔗
+          </div>
+
+          <div class="online-content">
+
+            <span class="online-category">
+              INCOME TAX SERVICE
+            </span>
+
+            <h3>
+              Aadhaar → PAN Link Check
+            </h3>
+
+            <p>
+              Check Aadhaar PAN linking status.
+            </p>
+
+            <div class="online-bottom">
+
+              <strong>
+                ₹10
+              </strong>
+
+              <span class="active-badge">
+                ● Active
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- RC PDF -->
+
+        <div class="service-card online">
+
+          <div class="online-icon">
+            🚗
+          </div>
+
+          <div class="online-content">
+
+            <span class="online-category">
+              DOCUMENT DOWNLOAD
+            </span>
+
+            <h3>
+              RC PDF Download
+            </h3>
+
+            <p>
+              Customer enters RC number and submits.
+            </p>
+
+            <div class="online-bottom">
+
+              <strong>
+                ₹350
+              </strong>
+
+              <span class="active-badge">
+                ● Active
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- DL PDF -->
+
+        <div class="service-card online">
+
+          <div class="online-icon">
+            🪪
+          </div>
+
+          <div class="online-content">
+
+            <span class="online-category">
+              DOCUMENT DOWNLOAD
+            </span>
+
+            <h3>
+              DL PDF Download
+            </h3>
+
+            <p>
+              Customer enters DL number and submits.
+            </p>
+
+            <div class="online-bottom">
+
+              <strong>
+                ₹350
+              </strong>
+
+              <span class="active-badge">
+                ● Active
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- RATION FORM REQUIREMENTS -->
+
+    <div class="section-card">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            📄 Ration Card Application Requirements
+          </h2>
+
+          <p>
+            Required information for customer application.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="requirements-grid">
+
+        <div>👤 English Name as per Aadhaar</div>
+        <div>📝 Gujarati Name</div>
+        <div>📱 Mobile Number</div>
+        <div>⚧️ Gender</div>
+        <div>🎂 Birth Date</div>
+        <div>📅 Birth Year</div>
+        <div>🛠️ Service Selection</div>
+        <div>💰 Automatic Charge</div>
+        <div>📲 UPI Payment</div>
+        <div>📸 Payment Screenshot</div>
+        <div>🔢 UTR Number</div>
+        <div>📄 Aadhaar PDF</div>
+        <div>🪪 Ration Card PDF</div>
+        <div>📤 Submit Application</div>
 
       </div>
 
@@ -808,31 +1087,19 @@
 
       <div>
 
-        <div class="modal-icon">
-          👥
-        </div>
+        <h2>
+          Add Retailer
+        </h2>
 
-        <div>
-
-          <h2>
-            Add Retailer
-          </h2>
-
-          <p>
-            Create a new retailer login account.
-          </p>
-
-        </div>
+        <p>
+          Create a new retailer login.
+        </p>
 
       </div>
 
-
       <button class="close-btn"
-              type="button"
               onclick="closeRetailerModal()">
-
         ×
-
       </button>
 
     </div>
@@ -841,62 +1108,45 @@
     <form id="retailerForm"
           onsubmit="createNewRetailer(event)">
 
-      <label for="retailerNameInput">
+      <label>
         Retailer Name
       </label>
 
       <input type="text"
              id="retailerNameInput"
-             placeholder="Enter retailer name"
              autocomplete="off"
              required>
 
 
-      <label for="retailerMobileInput">
+      <label>
         Mobile Number
       </label>
 
       <input type="tel"
              id="retailerMobileInput"
-             placeholder="10 digit mobile number"
              maxlength="10"
              inputmode="numeric"
              autocomplete="off">
 
 
-      <label for="retailerUsernameInput">
+      <label>
         Username
       </label>
 
       <input type="text"
              id="retailerUsernameInput"
-             placeholder="Enter username"
              autocomplete="off"
              required>
 
 
-      <label for="retailerPasswordInput">
+      <label>
         Password
       </label>
 
-      <div class="password-field">
-
-        <input type="password"
-               id="retailerPasswordInput"
-               placeholder="Enter password"
-               autocomplete="new-password"
-               required>
-
-        <button type="button"
-                onclick="togglePasswordVisibility()"
-                class="password-toggle"
-                id="passwordToggle">
-
-          👁️
-
-        </button>
-
-      </div>
+      <input type="password"
+             id="retailerPasswordInput"
+             autocomplete="new-password"
+             required>
 
 
       <div id="retailerFormMessage"
@@ -908,7 +1158,7 @@
               class="primary-btn full-btn"
               id="createRetailerBtn">
 
-        ➕ Create Retailer
+        Create Retailer
 
       </button>
 
@@ -932,31 +1182,19 @@
 
       <div>
 
-        <div class="modal-icon">
-          📋
-        </div>
+        <h2>
+          Application Details
+        </h2>
 
-        <div>
-
-          <h2>
-            Application Details
-          </h2>
-
-          <p>
-            View and update application information.
-          </p>
-
-        </div>
+        <p>
+          View and update application information.
+        </p>
 
       </div>
 
-
       <button class="close-btn"
-              type="button"
               onclick="closeApplicationModal()">
-
         ×
-
       </button>
 
     </div>
@@ -971,7 +1209,7 @@
 
       <div>
 
-        <label for="modalPaymentStatus">
+        <label>
           Payment Status
         </label>
 
@@ -996,7 +1234,7 @@
 
       <div>
 
-        <label for="modalApplicationStatus">
+        <label>
           Application Status
         </label>
 
@@ -1025,32 +1263,26 @@
     </div>
 
 
-    <label for="modalRemarks">
+    <label>
       Admin Remarks
     </label>
 
     <textarea id="modalRemarks"
               rows="3"
-              placeholder="Enter admin remarks..."></textarea>
+              placeholder="Enter admin remarks...">
+    </textarea>
 
 
     <div class="modal-actions">
 
       <button class="primary-btn"
-              type="button"
               onclick="saveApplicationChanges()">
-
         💾 Save Changes
-
       </button>
 
-
       <button class="danger-btn"
-              type="button"
               onclick="deleteCurrentApplication()">
-
         🗑️ Delete
-
       </button>
 
     </div>
@@ -1069,8 +1301,7 @@
 </div>
 
 
-<script src="admin-dashboard.js?v=20260814"></script>
+<script src="admin-dashboard.js"></script>
 
 </body>
-
 </html>
