@@ -1,11 +1,11 @@
 /* =====================================================
    RAJKUMAR ADMIN DASHBOARD JS
-   FINAL UPDATED VERSION
+   FINAL CORRECTED + SERVICES VERSION
 ===================================================== */
 
 
 /* =====================================================
-   GOOGLE APPS SCRIPT URL
+   GOOGLE APPS SCRIPT
 ===================================================== */
 
 const SCRIPT_URL =
@@ -26,6 +26,115 @@ let currentApplication = null;
 
 
 /* =====================================================
+   SERVICES
+===================================================== */
+
+const SERVICES = [
+
+  {
+    id: "ration-correction",
+    icon: "🪪",
+    title: "Ration Card Correction",
+    price: "₹250 / ₹700",
+    note: "With Ration Card ₹250 • Without Ration Card ₹700",
+    type: "internal",
+    url: "apply.html?service=ration-correction"
+  },
+
+  {
+    id: "ration-name-add",
+    icon: "➕",
+    title: "Ration Card Name Add",
+    price: "₹100 / ₹500",
+    note: "With Ration Card ₹100 • Without Ration Card ₹500",
+    type: "internal",
+    url: "apply.html?service=ration-name-add"
+  },
+
+  {
+    id: "ration-name-remove",
+    icon: "➖",
+    title: "Ration Card Name Remove",
+    price: "₹100 / ₹500",
+    note: "With Ration Card ₹100 • Without Ration Card ₹500",
+    type: "internal",
+    url: "apply.html?service=ration-name-remove"
+  },
+
+  {
+    id: "pita-patina",
+    icon: "👨‍👩‍👧",
+    title: "Pita Name → Patina Name",
+    price: "₹500 / ₹1000",
+    note: "With Ration Card ₹500 • Without Ration Card ₹1000",
+    type: "internal",
+    url: "apply.html?service=pita-patina"
+  },
+
+  {
+    id: "ikhedut",
+    icon: "🌾",
+    title: "iKhedut Portal અરજી",
+    price: "₹20",
+    note: "UPI payment પછી official iKhedut website",
+    type: "external",
+    url: "https://ikhedut.gujarat.gov.in/site/login"
+  },
+
+  {
+    id: "pm-kisan",
+    icon: "🌱",
+    title: "PM Kisan Samman Nidhi KYC Check",
+    price: "₹5",
+    note: "UPI payment પછી PM Kisan status page",
+    type: "external",
+    url: "https://pmkisan.gov.in/BeneficiaryStatus_New.aspx"
+  },
+
+  {
+    id: "aadhaar-mobile",
+    icon: "📱",
+    title: "Aadhaar → Mobile Link Check",
+    price: "₹5",
+    note: "UPI payment પછી Aadhaar verification page",
+    type: "external",
+    url: "https://myaadhaarbeta.uidai.gov.in/verify-email-mobile/en"
+  },
+
+  {
+    id: "aadhaar-pan",
+    icon: "🔗",
+    title: "Aadhaar → PAN Link Check",
+    price: "₹10",
+    note: "UPI payment પછી Income Tax link status page",
+    type: "external",
+    url: "https://eportal.incometax.gov.in/iec/foservices/#/pre-login/bl-link-aadhaar"
+  },
+
+  {
+    id: "rc-pdf",
+    icon: "📄",
+    title: "RC PDF Download",
+    price: "₹350",
+    note: "Only RC Number required",
+    type: "internal",
+    url: "apply.html?service=rc-pdf"
+  },
+
+  {
+    id: "dl-pdf",
+    icon: "🚗",
+    title: "DL PDF Download",
+    price: "₹350",
+    note: "Only DL Number required",
+    type: "internal",
+    url: "apply.html?service=dl-pdf"
+  }
+
+];
+
+
+/* =====================================================
    PAGE LOAD
 ===================================================== */
 
@@ -34,6 +143,8 @@ document.addEventListener(
   function () {
 
     checkAdminLogin();
+
+    renderServices();
 
   }
 );
@@ -49,6 +160,7 @@ function checkAdminLogin() {
     localStorage.getItem(
       "rajkumarRole"
     );
+
 
   if (
     role !== "admin" &&
@@ -70,27 +182,16 @@ function checkAdminLogin() {
     "Administrator";
 
 
-  const nameElement =
-    document.getElementById(
-      "adminName"
-    );
-
-  const welcomeElement =
-    document.getElementById(
-      "welcomeName"
-    );
+  setText(
+    "adminName",
+    adminName
+  );
 
 
-  if (nameElement) {
-    nameElement.textContent =
-      adminName;
-  }
-
-
-  if (welcomeElement) {
-    welcomeElement.textContent =
-      adminName;
-  }
+  setText(
+    "welcomeName",
+    adminName
+  );
 
 
   loadDashboard();
@@ -128,13 +229,14 @@ async function apiCall(
             "text/plain;charset=utf-8"
         },
 
-        body: JSON.stringify({
+        body:
+          JSON.stringify({
 
-          action: action,
+            action: action,
 
-          ...data
+            ...data
 
-        })
+          })
 
       }
     );
@@ -224,7 +326,8 @@ function showSection(
 
   const sectionElement =
     document.getElementById(
-      section + "Section"
+      section +
+      "Section"
     );
 
 
@@ -263,23 +366,23 @@ function showSection(
   };
 
 
-  const pageTitle =
-    document.getElementById(
-      "pageTitle"
-    );
+  setText(
+    "pageTitle",
+    titles[section] ||
+    "Admin Dashboard"
+  );
 
 
-  if (pageTitle) {
-
-    pageTitle.textContent =
-      titles[section] ||
-      "Admin Dashboard";
-
-  }
-
+  /*
+   * IMPORTANT:
+   * Services does NOT call backend.
+   * This fixes the old "Invalid login action"
+   * problem.
+   */
 
   if (
-    section === "dashboard"
+    section ===
+    "dashboard"
   ) {
 
     loadDashboard();
@@ -288,7 +391,8 @@ function showSection(
 
 
   if (
-    section === "applications"
+    section ===
+    "applications"
   ) {
 
     loadApplications();
@@ -297,7 +401,8 @@ function showSection(
 
 
   if (
-    section === "retailers"
+    section ===
+    "retailers"
   ) {
 
     loadRetailers();
@@ -306,16 +411,17 @@ function showSection(
 
 
   if (
-    section === "services"
+    section ===
+    "services"
   ) {
 
-    loadServices();
+    renderServices();
 
   }
 
 
   if (
-    window.innerWidth <= 1000
+    window.innerWidth <= 900
   ) {
 
     const sidebar =
@@ -351,7 +457,8 @@ function showSectionByName(
     );
 
 
-  let selectedButton = null;
+  let selectedButton =
+    null;
 
 
   buttons.forEach(
@@ -360,12 +467,15 @@ function showSectionByName(
       const onclick =
         button.getAttribute(
           "onclick"
-        ) || "";
+        ) ||
+        "";
 
 
       if (
         onclick.includes(
-          "'" + section + "'"
+          "'" +
+          section +
+          "'"
         )
       ) {
 
@@ -399,7 +509,9 @@ function toggleSidebar() {
 
 
   if (!sidebar) {
+
     return;
+
   }
 
 
@@ -506,7 +618,9 @@ async function loadApplications() {
 
 
   if (!table) {
+
     return;
+
   }
 
 
@@ -514,8 +628,9 @@ async function loadApplications() {
 
     <tr>
 
-      <td colspan="10"
-          class="empty-row">
+      <td
+        colspan="10"
+        class="empty-row">
 
         Loading applications...
 
@@ -573,8 +688,9 @@ async function loadApplications() {
 
       <tr>
 
-        <td colspan="10"
-            class="empty-row">
+        <td
+          colspan="10"
+          class="empty-row">
 
           ${escapeHtml(
             error.message
@@ -606,7 +722,9 @@ function renderApplications(
 
 
   if (!table) {
+
     return;
+
   }
 
 
@@ -619,8 +737,9 @@ function renderApplications(
 
       <tr>
 
-        <td colspan="10"
-            class="empty-row">
+        <td
+          colspan="10"
+          class="empty-row">
 
           No applications found.
 
@@ -645,79 +764,97 @@ function renderApplications(
             <tr>
 
               <td>
+
                 <strong>
+
                   ${escapeHtml(
                     app.applicationId ||
-                    app.id ||
                     "-"
                   )}
+
                 </strong>
+
               </td>
 
 
               <td>
+
                 ${escapeHtml(
                   app.customerName ||
                   app.finalName ||
                   app.name ||
-                  app.englishName ||
                   "-"
                 )}
+
               </td>
 
 
               <td>
+
                 ${escapeHtml(
                   app.mobile ||
                   "-"
                 )}
+
               </td>
 
 
               <td>
+
                 ${escapeHtml(
                   app.retailerName ||
-                  app.retailerId ||
                   "-"
                 )}
+
               </td>
 
 
               <td>
+
                 ${escapeHtml(
                   app.service ||
                   "-"
                 )}
+
               </td>
 
 
               <td>
-                ₹${formatAmount(
-                  app.amount
+
+                ₹${Number(
+                  app.amount ||
+                  0
                 )}
+
               </td>
 
 
               <td>
+
                 ${statusBadge(
                   app.paymentStatus
                 )}
+
               </td>
 
 
               <td>
+
                 ${statusBadge(
                   app.applicationStatus
                 )}
+
               </td>
 
 
               <td>
+
                 ${escapeHtml(
                   app.applicationDate ||
                   app.date ||
                   "-"
                 )}
+
               </td>
 
 
@@ -746,20 +883,100 @@ function renderApplications(
 
 
 /* =====================================================
-   FILTER APPLICATIONS
+   FILTER
 ===================================================== */
 
 function filterApplications() {
 
+  const search =
+    document.getElementById(
+      "applicationSearch"
+    )?.value
+      .toLowerCase()
+      .trim() ||
+    "";
+
+
+  const payment =
+    document.getElementById(
+      "paymentFilter"
+    )?.value ||
+    "";
+
+
+  const status =
+    document.getElementById(
+      "statusFilter"
+    )?.value ||
+    "";
+
+
+  const filtered =
+    allApplications.filter(
+      function (app) {
+
+        const searchable = [
+
+          app.applicationId,
+          app.customerName,
+          app.finalName,
+          app.mobile,
+          app.retailerName,
+          app.service
+
+        ]
+          .join(" ")
+          .toLowerCase();
+
+
+        return (
+
+          (
+            !search ||
+            searchable.includes(
+              search
+            )
+          )
+
+          &&
+
+          (
+            !payment ||
+            normalizeStatus(
+              app.paymentStatus
+            ) ===
+            normalizeStatus(
+              payment
+            )
+          )
+
+          &&
+
+          (
+            !status ||
+            normalizeStatus(
+              app.applicationStatus
+            ) ===
+            normalizeStatus(
+              status
+            )
+          )
+
+        );
+
+      }
+    );
+
+
   renderApplications(
-    getFilteredApplications()
+    filtered
   );
 
 }
 
 
 /* =====================================================
-   GET FILTERED APPLICATIONS
+   FILTERED APPLICATIONS
 ===================================================== */
 
 function getFilteredApplications() {
@@ -790,54 +1007,53 @@ function getFilteredApplications() {
   return allApplications.filter(
     function (app) {
 
-      const searchable =
-        [
+      const searchable = [
 
-          app.applicationId,
-          app.customerName,
-          app.finalName,
-          app.name,
-          app.mobile,
-          app.retailerName,
-          app.retailerId,
-          app.service
+        app.applicationId,
+        app.customerName,
+        app.finalName,
+        app.mobile,
+        app.retailerName,
+        app.service
 
-        ]
+      ]
         .join(" ")
         .toLowerCase();
 
 
-      const searchMatch =
-        !search ||
-        searchable.includes(
-          search
-        );
-
-
-      const paymentMatch =
-        !payment ||
-        normalizeStatus(
-          app.paymentStatus
-        ) ===
-        normalizeStatus(
-          payment
-        );
-
-
-      const statusMatch =
-        !status ||
-        normalizeStatus(
-          app.applicationStatus
-        ) ===
-        normalizeStatus(
-          status
-        );
-
-
       return (
-        searchMatch &&
-        paymentMatch &&
-        statusMatch
+
+        (
+          !search ||
+          searchable.includes(
+            search
+          )
+        )
+
+        &&
+
+        (
+          !payment ||
+          normalizeStatus(
+            app.paymentStatus
+          ) ===
+          normalizeStatus(
+            payment
+          )
+        )
+
+        &&
+
+        (
+          !status ||
+          normalizeStatus(
+            app.applicationStatus
+          ) ===
+          normalizeStatus(
+            status
+          )
+        )
+
       );
 
     }
@@ -897,13 +1113,7 @@ function openApplication(
         "Customer Name",
         app.customerName ||
         app.finalName ||
-        app.name ||
-        app.englishName
-      )}
-
-      ${detail(
-        "Gujarati Name",
-        app.gujaratiName
+        app.name
       )}
 
       ${detail(
@@ -913,8 +1123,7 @@ function openApplication(
 
       ${detail(
         "Retailer",
-        app.retailerName ||
-        app.retailerId
+        app.retailerName
       )}
 
       ${detail(
@@ -933,11 +1142,6 @@ function openApplication(
       )}
 
       ${detail(
-        "Ration Card Number",
-        app.rationCardNumber
-      )}
-
-      ${detail(
         "Service",
         app.service
       )}
@@ -945,36 +1149,31 @@ function openApplication(
       ${detail(
         "Amount",
         "₹" +
-        formatAmount(
-          app.amount
+        Number(
+          app.amount ||
+          0
         )
       )}
 
       ${detail(
-        "Transaction / UTR",
-        app.transactionId ||
-        app.utrNumber ||
-        app.utr
+        "Transaction ID",
+        app.transactionId
       )}
 
       ${detail(
         "Payment Screenshot",
-        app.paymentScreenshot ||
-        app.paymentScreenshotUrl,
+        app.paymentScreenshot,
         true
       )}
 
       ${detail(
         "Aadhaar Document",
-        app.aadhaarDocument ||
-        app.aadhaarFile,
+        app.aadhaarDocument,
         true
       )}
 
       ${detail(
-        "Ration Card Document",
-        app.rationDocument ||
-        app.rationFile ||
+        "Service Document",
         app.serviceDocument,
         true
       )}
@@ -1024,25 +1223,18 @@ function openApplication(
 
     remarks.value =
       app.adminRemarks ||
-      app.remarks ||
       "";
 
   }
 
 
-  const modal =
-    document.getElementById(
+  document
+    .getElementById(
       "applicationModal"
-    );
-
-
-  if (modal) {
-
-    modal.classList.add(
+    )
+    ?.classList.add(
       "active"
     );
-
-  }
 
 }
 
@@ -1173,8 +1365,7 @@ async function saveApplicationChanges() {
 
 
     showToast(
-      error.message ||
-      "Update failed.",
+      error.message,
       true
     );
 
@@ -1190,18 +1381,20 @@ async function saveApplicationChanges() {
 async function deleteCurrentApplication() {
 
   if (!currentApplication) {
+
     return;
+
   }
 
 
-  const confirmed =
-    confirm(
+  if (
+    !confirm(
       "Are you sure you want to delete this application?"
-    );
+    )
+  ) {
 
-
-  if (!confirmed) {
     return;
+
   }
 
 
@@ -1248,15 +1441,8 @@ async function deleteCurrentApplication() {
 
   catch (error) {
 
-    console.error(
-      "Delete Error:",
-      error
-    );
-
-
     showToast(
-      error.message ||
-      "Delete failed.",
+      error.message,
       true
     );
 
@@ -1266,24 +1452,18 @@ async function deleteCurrentApplication() {
 
 
 /* =====================================================
-   CLOSE APPLICATION
+   CLOSE APPLICATION MODAL
 ===================================================== */
 
 function closeApplicationModal() {
 
-  const modal =
-    document.getElementById(
+  document
+    .getElementById(
       "applicationModal"
-    );
-
-
-  if (modal) {
-
-    modal.classList.remove(
+    )
+    ?.classList.remove(
       "active"
     );
-
-  }
 
 
   currentApplication =
@@ -1305,7 +1485,9 @@ async function loadRetailers() {
 
 
   if (!table) {
+
     return;
+
   }
 
 
@@ -1313,8 +1495,9 @@ async function loadRetailers() {
 
     <tr>
 
-      <td colspan="8"
-          class="empty-row">
+      <td
+        colspan="8"
+        class="empty-row">
 
         Loading retailers...
 
@@ -1360,8 +1543,9 @@ async function loadRetailers() {
 
         <tr>
 
-          <td colspan="8"
-              class="empty-row">
+          <td
+            colspan="8"
+            class="empty-row">
 
             No retailers found.
 
@@ -1386,17 +1570,11 @@ async function loadRetailers() {
               "Inactive";
 
 
-            const isActive =
+            const active =
               normalizeStatus(
                 status
               ) ===
               "active";
-
-
-            const newStatus =
-              isActive
-                ? "Inactive"
-                : "Active";
 
 
             return `
@@ -1404,55 +1582,77 @@ async function loadRetailers() {
               <tr>
 
                 <td>
+
                   <strong>
+
                     ${escapeHtml(
                       retailer.retailerId ||
                       "-"
                     )}
+
                   </strong>
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.name ||
                     "-"
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.mobile ||
                     "-"
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.username ||
                     "-"
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${statusBadge(
                     status
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${Number(
                     retailer.totalApplications ||
-                    retailer.workCount ||
                     0
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.lastLogin ||
                     "-"
                   )}
+
                 </td>
+
 
                 <td>
 
@@ -1468,9 +1668,9 @@ async function loadRetailers() {
                       )}'
                     )">
 
-                    ${newStatus === "Active"
-                      ? "Activate"
-                      : "Deactivate"}
+                    ${active
+                      ? "Deactivate"
+                      : "Activate"}
 
                   </button>
 
@@ -1488,18 +1688,13 @@ async function loadRetailers() {
 
   catch (error) {
 
-    console.error(
-      "Retailer Error:",
-      error
-    );
-
-
     table.innerHTML = `
 
       <tr>
 
-        <td colspan="8"
-            class="empty-row">
+        <td
+          colspan="8"
+          class="empty-row">
 
           ${escapeHtml(
             error.message
@@ -1522,60 +1717,39 @@ async function loadRetailers() {
 
 function openRetailerModal() {
 
-  const modal =
-    document.getElementById(
+  document
+    .getElementById(
       "retailerModal"
-    );
-
-
-  if (modal) {
-
-    modal.classList.add(
+    )
+    ?.classList.add(
       "active"
     );
-
-  }
 
 }
 
 
 function closeRetailerModal() {
 
-  const modal =
-    document.getElementById(
+  document
+    .getElementById(
       "retailerModal"
-    );
-
-
-  if (modal) {
-
-    modal.classList.remove(
+    )
+    ?.classList.remove(
       "active"
     );
 
-  }
 
-
-  const form =
-    document.getElementById(
+  document
+    .getElementById(
       "retailerForm"
-    );
+    )
+    ?.reset();
 
 
-  if (form) {
-    form.reset();
-  }
-
-
-  const message =
-    document.getElementById(
-      "retailerFormMessage"
-    );
-
-
-  if (message) {
-    message.textContent = "";
-  }
+  setText(
+    "retailerFormMessage",
+    ""
+  );
 
 }
 
@@ -1628,15 +1802,10 @@ async function createNewRetailer(
     );
 
 
-  const message =
-    document.getElementById(
-      "retailerFormMessage"
-    );
-
-
   if (button) {
 
-    button.disabled = true;
+    button.disabled =
+      true;
 
     button.textContent =
       "Creating...";
@@ -1651,17 +1820,10 @@ async function createNewRetailer(
         "createRetailer",
         {
 
-          name:
-            name,
-
-          mobile:
-            mobile,
-
-          username:
-            username,
-
-          password:
-            password
+          name,
+          mobile,
+          username,
+          password
 
         }
       );
@@ -1680,16 +1842,14 @@ async function createNewRetailer(
     }
 
 
-    if (message) {
-
-      message.textContent =
-        "Retailer created successfully. ID: " +
-        (
-          result.retailerId ||
-          "-"
-        );
-
-    }
+    setText(
+      "retailerFormMessage",
+      "Retailer created. ID: " +
+      (
+        result.retailerId ||
+        "-"
+      )
+    );
 
 
     showToast(
@@ -1701,34 +1861,22 @@ async function createNewRetailer(
 
 
     setTimeout(
-      function () {
-
-        closeRetailerModal();
-
-      },
-      1200
+      closeRetailerModal,
+      1000
     );
 
   }
 
   catch (error) {
 
-    console.error(
-      "Create Retailer Error:",
-      error
+    setText(
+      "retailerFormMessage",
+      error.message
     );
 
 
-    if (message) {
-
-      message.textContent =
-        error.message;
-    }
-
-
     showToast(
-      error.message ||
-      "Retailer creation failed.",
+      error.message,
       true
     );
 
@@ -1776,9 +1924,7 @@ async function toggleRetailerStatus(
         "updateRetailerStatus",
         {
 
-          retailerId:
-            retailerId,
-
+          retailerId,
           status:
             newStatus
 
@@ -1810,15 +1956,8 @@ async function toggleRetailerStatus(
 
   catch (error) {
 
-    console.error(
-      "Retailer Status Error:",
-      error
-    );
-
-
     showToast(
-      error.message ||
-      "Retailer status update failed.",
+      error.message,
       true
     );
 
@@ -1828,115 +1967,154 @@ async function toggleRetailerStatus(
 
 
 /* =====================================================
-   SERVICES
-   IMPORTANT:
-   Services are static.
-   NO API CALL.
+   SERVICES RENDER
+   IMPORTANT FIX
 ===================================================== */
 
-function loadServices() {
+function renderServices() {
 
-  const services = [
-
-    {
-      name:
-        "Ration Card Correction",
-
-      withCard:
-        250,
-
-      withoutCard:
-        700
-    },
-
-    {
-      name:
-        "Ration Card Name Add",
-
-      withCard:
-        100,
-
-      withoutCard:
-        500
-    },
-
-    {
-      name:
-        "Ration Card Name Remove",
-
-      withCard:
-        100,
-
-      withoutCard:
-        500
-    },
-
-    {
-      name:
-        "Pita Name → Pati Name",
-
-      withCard:
-        500,
-
-      withoutCard:
-        1000
-    },
-
-    {
-      name:
-        "iKhedut Portal અરજી",
-
-      price:
-        20
-    },
-
-    {
-      name:
-        "PM Kisan Samman Nidhi KYC Check",
-
-      price:
-        5
-    },
-
-    {
-      name:
-        "Aadhaar → Mobile Link Check",
-
-      price:
-        5
-    },
-
-    {
-      name:
-        "Aadhaar → PAN Link Check",
-
-      price:
-        10
-    },
-
-    {
-      name:
-        "RC PDF Download",
-
-      price:
-        350
-    },
-
-    {
-      name:
-        "DL PDF Download",
-
-      price:
-        350
-    }
-
-  ];
+  const grid =
+    document.getElementById(
+      "servicesGrid"
+    );
 
 
-  console.log(
-    "Rajkumar Services loaded:",
-    services.length
-  );
+  if (!grid) {
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    SERVICES
+      .map(
+        function (service) {
+
+          const isExternal =
+            service.type ===
+            "external";
+
+
+          return `
+
+            <div
+              class="service-card
+                ${isExternal
+                  ? ""
+                  : "internal"}"
+              onclick="openService('${service.id}')">
+
+              <div class="service-icon">
+
+                ${service.icon}
+
+              </div>
+
+
+              <h3>
+
+                ${escapeHtml(
+                  service.title
+                )}
+
+              </h3>
+
+
+              <div class="service-price">
+
+                ${escapeHtml(
+                  service.price
+                )}
+
+              </div>
+
+
+              <div class="service-note">
+
+                ${escapeHtml(
+                  service.note
+                )}
+
+              </div>
+
+
+              <span class="service-open">
+
+                ${isExternal
+                  ? "Open Website →"
+                  : "Open Service →"}
+
+              </span>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =====================================================
+   OPEN SERVICE
+===================================================== */
+
+function openService(
+  serviceId
+) {
+
+  const service =
+    SERVICES.find(
+      function (item) {
+
+        return item.id ===
+          serviceId;
+
+      }
+    );
+
+
+  if (!service) {
+
+    showToast(
+      "Service not found.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * External services
+   */
+
+  if (
+    service.type ===
+    "external"
+  ) {
+
+    window.open(
+      service.url,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Internal services
+   */
+
+  window.location.href =
+    service.url;
 
 }
 
@@ -1947,14 +2125,14 @@ function loadServices() {
 
 function logoutAdmin() {
 
-  const confirmed =
-    confirm(
+  if (
+    !confirm(
       "Are you sure you want to logout?"
-    );
+    )
+  ) {
 
-
-  if (!confirmed) {
     return;
+
   }
 
 
@@ -1978,7 +2156,7 @@ function logoutAdmin() {
 
 
 /* =====================================================
-   HELPER
+   HELPER - SET TEXT
 ===================================================== */
 
 function setText(
@@ -2003,35 +2181,7 @@ function setText(
 
 
 /* =====================================================
-   FORMAT AMOUNT
-===================================================== */
-
-function formatAmount(
-  value
-) {
-
-  const number =
-    Number(value);
-
-
-  if (
-    Number.isNaN(number)
-  ) {
-
-    return "0";
-
-  }
-
-
-  return number.toLocaleString(
-    "en-IN"
-  );
-
-}
-
-
-/* =====================================================
-   NORMALIZE STATUS
+   HELPER - NORMALIZE
 ===================================================== */
 
 function normalizeStatus(
@@ -2073,7 +2223,8 @@ function statusBadge(
 
   return `
 
-    <span class="status ${className}">
+    <span
+      class="status ${className}">
 
       ${escapeHtml(
         value
@@ -2106,10 +2257,13 @@ function detail(
       <div class="detail-item">
 
         <span>
+
           ${escapeHtml(
             label
           )}
+
         </span>
+
 
         <strong>
 
@@ -2138,16 +2292,21 @@ function detail(
     <div class="detail-item">
 
       <span>
+
         ${escapeHtml(
           label
         )}
+
       </span>
 
+
       <strong>
+
         ${escapeHtml(
           value ||
           "-"
         )}
+
       </strong>
 
     </div>
@@ -2231,7 +2390,9 @@ function showToast(
 
 
   if (!toast) {
+
     return;
+
   }
 
 
@@ -2272,7 +2433,7 @@ function showToast(
 
 
 /* =====================================================
-   CLOSE MODALS
+   BACKGROUND CLICK
 ===================================================== */
 
 document.addEventListener(
@@ -2280,8 +2441,7 @@ document.addEventListener(
   function (event) {
 
     if (
-      event.target &&
-      event.target.id ===
+      event.target?.id ===
       "retailerModal"
     ) {
 
@@ -2291,8 +2451,7 @@ document.addEventListener(
 
 
     if (
-      event.target &&
-      event.target.id ===
+      event.target?.id ===
       "applicationModal"
     ) {
 
@@ -2313,9 +2472,12 @@ document.addEventListener(
   function (event) {
 
     if (
-      event.key !== "Escape"
+      event.key !==
+      "Escape"
     ) {
+
       return;
+
     }
 
 
