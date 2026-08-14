@@ -2,18 +2,22 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-  <title>Rajkumar Admin Dashboard</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet"
-        href="admin-dashboard.css">
+<title>Rajkumar Admin Dashboard</title>
+
+<link rel="stylesheet"
+      href="admin-dashboard.css">
+
 </head>
 
+
 <body>
+
 
 <!-- =====================================================
      SIDEBAR
@@ -23,7 +27,9 @@
 
   <div class="sidebar-logo">
 
-    <div class="logo-icon">👑</div>
+    <div class="logo-icon">
+      👑
+    </div>
 
     <div>
       <h2>Rajkumar</h2>
@@ -35,26 +41,37 @@
 
   <nav class="sidebar-nav">
 
-    <button class="nav-item active"
-            onclick="showSection('dashboard', this)">
+    <button
+      type="button"
+      class="nav-item active"
+      onclick="showSection('dashboard', this)">
       <span>📊</span>
       <span>Dashboard</span>
     </button>
 
-    <button class="nav-item"
-            onclick="showSection('applications', this)">
+
+    <button
+      type="button"
+      class="nav-item"
+      onclick="showSection('applications', this)">
       <span>📋</span>
       <span>Applications</span>
     </button>
 
-    <button class="nav-item"
-            onclick="showSection('retailers', this)">
+
+    <button
+      type="button"
+      class="nav-item"
+      onclick="showSection('retailers', this)">
       <span>👥</span>
       <span>Retailers</span>
     </button>
 
-    <button class="nav-item"
-            onclick="showSection('services', this)">
+
+    <button
+      type="button"
+      class="nav-item"
+      onclick="showSection('services', this)">
       <span>🛠️</span>
       <span>Services</span>
     </button>
@@ -64,11 +81,13 @@
 
   <div class="sidebar-bottom">
 
-    <button class="logout-btn"
-            onclick="logoutAdmin()">
+    <button
+      type="button"
+      class="logout-btn"
+      onclick="logoutAdmin()">
 
-      <span>🚪</span>
-      Logout
+      🚪
+      <span>Logout</span>
 
     </button>
 
@@ -77,20 +96,27 @@
 </aside>
 
 
+
 <!-- =====================================================
-     MAIN CONTENT
+     MAIN
 ===================================================== -->
 
 <main class="main-content">
 
-  <!-- HEADER -->
+
+  <!-- TOP HEADER -->
 
   <header class="top-header">
 
-    <button class="menu-btn"
-            onclick="toggleSidebar()">
+    <button
+      type="button"
+      class="menu-btn"
+      onclick="toggleSidebar()">
+
       ☰
+
     </button>
+
 
     <div class="header-title">
 
@@ -118,7 +144,7 @@
         </strong>
 
         <small>
-          Administrator
+          Admin
         </small>
 
       </div>
@@ -128,23 +154,23 @@
   </header>
 
 
+
   <!-- =====================================================
        DASHBOARD
   ===================================================== -->
 
-  <section id="dashboardSection"
-           class="page-section active">
+  <section
+    id="dashboardSection"
+    class="page-section active">
+
 
     <div class="welcome-card">
 
-      <div class="welcome-content">
+      <div>
 
-        <span class="welcome-label">
-          WELCOME BACK
-        </span>
+        <span>WELCOME BACK</span>
 
         <h2>
-          Hello,
           <span id="welcomeName">
             Administrator
           </span>
@@ -164,89 +190,109 @@
     </div>
 
 
+
     <!-- STATS -->
 
     <div class="stats-grid">
 
-      <div class="stat-card blue">
 
-        <div class="stat-icon">
+      <div class="stat-card">
+
+        <div class="stat-icon blue">
           📋
         </div>
 
         <div>
           <span>Total Applications</span>
-          <strong id="totalApplications">0</strong>
+
+          <strong id="totalApplications">
+            0
+          </strong>
         </div>
 
       </div>
 
 
-      <div class="stat-card yellow">
+      <div class="stat-card">
 
-        <div class="stat-icon">
+        <div class="stat-icon yellow">
           🟡
         </div>
 
         <div>
           <span>Payment Pending</span>
-          <strong id="paymentPending">0</strong>
+
+          <strong id="paymentPending">
+            0
+          </strong>
         </div>
 
       </div>
 
 
-      <div class="stat-card green">
+      <div class="stat-card">
 
-        <div class="stat-icon">
+        <div class="stat-icon green">
           🟢
         </div>
 
         <div>
           <span>Payment Verified</span>
-          <strong id="paymentVerified">0</strong>
+
+          <strong id="paymentVerified">
+            0
+          </strong>
         </div>
 
       </div>
 
 
-      <div class="stat-card purple">
+      <div class="stat-card">
 
-        <div class="stat-icon">
+        <div class="stat-icon purple">
           ⚙️
         </div>
 
         <div>
           <span>Processing</span>
-          <strong id="processing">0</strong>
+
+          <strong id="processing">
+            0
+          </strong>
         </div>
 
       </div>
 
 
-      <div class="stat-card success">
+      <div class="stat-card">
 
-        <div class="stat-icon">
+        <div class="stat-icon success">
           ✅
         </div>
 
         <div>
           <span>Completed</span>
-          <strong id="completed">0</strong>
+
+          <strong id="completed">
+            0
+          </strong>
         </div>
 
       </div>
 
 
-      <div class="stat-card red">
+      <div class="stat-card">
 
-        <div class="stat-icon">
+        <div class="stat-icon red">
           ❌
         </div>
 
         <div>
           <span>Rejected</span>
-          <strong id="rejected">0</strong>
+
+          <strong id="rejected">
+            0
+          </strong>
         </div>
 
       </div>
@@ -254,7 +300,8 @@
     </div>
 
 
-    <!-- QUICK ACTION -->
+
+    <!-- QUICK ACTIONS -->
 
     <div class="section-card">
 
@@ -264,7 +311,7 @@
           <h2>Quick Actions</h2>
 
           <p>
-            Quickly open important sections.
+            Quickly access your website management tools.
           </p>
         </div>
 
@@ -273,56 +320,36 @@
 
       <div class="quick-grid">
 
-        <button class="quick-btn"
-                onclick="showSectionByName('applications')">
 
-          <div class="quick-icon">
-            📋
-          </div>
+        <button
+          type="button"
+          onclick="showSectionByName('applications')"
+          class="quick-btn">
 
-          <strong>
-            Applications
-          </strong>
-
-          <small>
-            Manage applications
-          </small>
+          <div>📋</div>
+          <span>Applications</span>
 
         </button>
 
 
-        <button class="quick-btn"
-                onclick="showSectionByName('retailers')">
+        <button
+          type="button"
+          onclick="showSectionByName('retailers')"
+          class="quick-btn">
 
-          <div class="quick-icon">
-            👥
-          </div>
-
-          <strong>
-            Retailers
-          </strong>
-
-          <small>
-            Manage retailer accounts
-          </small>
+          <div>👥</div>
+          <span>Retailers</span>
 
         </button>
 
 
-        <button class="quick-btn"
-                onclick="showSectionByName('services')">
+        <button
+          type="button"
+          onclick="showSectionByName('services')"
+          class="quick-btn">
 
-          <div class="quick-icon">
-            🛠️
-          </div>
-
-          <strong>
-            Services
-          </strong>
-
-          <small>
-            View all service charges
-          </small>
+          <div>🛠️</div>
+          <span>Services</span>
 
         </button>
 
@@ -333,12 +360,15 @@
   </section>
 
 
+
   <!-- =====================================================
        APPLICATIONS
   ===================================================== -->
 
-  <section id="applicationsSection"
-           class="page-section">
+  <section
+    id="applicationsSection"
+    class="page-section">
+
 
     <div class="section-card">
 
@@ -346,34 +376,40 @@
 
         <div>
 
-          <h2>
-            Applications
-          </h2>
+          <h2>Applications</h2>
 
           <p>
-            View and manage customer applications.
+            View and manage all customer applications.
           </p>
 
         </div>
 
-        <button class="refresh-btn"
-                onclick="loadApplications()">
+
+        <button
+          type="button"
+          class="refresh-btn"
+          onclick="loadApplications()">
+
           🔄 Refresh
+
         </button>
 
       </div>
 
 
+
       <div class="filters">
 
-        <input type="text"
-               id="applicationSearch"
-               placeholder="🔍 Search ID / Name / Mobile / Service"
-               oninput="filterApplications()">
+        <input
+          type="text"
+          id="applicationSearch"
+          placeholder="🔍 Search ID / Name / Mobile"
+          oninput="filterApplications()">
 
 
-        <select id="paymentFilter"
-                onchange="filterApplications()">
+        <select
+          id="paymentFilter"
+          onchange="filterApplications()">
 
           <option value="">
             All Payment
@@ -394,8 +430,9 @@
         </select>
 
 
-        <select id="statusFilter"
-                onchange="filterApplications()">
+        <select
+          id="statusFilter"
+          onchange="filterApplications()">
 
           <option value="">
             All Status
@@ -422,6 +459,7 @@
       </div>
 
 
+
       <div class="table-wrapper">
 
         <table>
@@ -429,6 +467,7 @@
           <thead>
 
             <tr>
+
               <th>Application ID</th>
               <th>Customer</th>
               <th>Mobile</th>
@@ -439,17 +478,24 @@
               <th>Status</th>
               <th>Date</th>
               <th>Action</th>
+
             </tr>
 
           </thead>
 
+
           <tbody id="applicationsTable">
 
             <tr>
-              <td colspan="10"
-                  class="empty-row">
+
+              <td
+                colspan="10"
+                class="empty-row">
+
                 Loading applications...
+
               </td>
+
             </tr>
 
           </tbody>
@@ -463,22 +509,24 @@
   </section>
 
 
+
   <!-- =====================================================
        RETAILERS
   ===================================================== -->
 
-  <section id="retailersSection"
-           class="page-section">
+  <section
+    id="retailersSection"
+    class="page-section">
+
 
     <div class="section-card">
+
 
       <div class="section-header">
 
         <div>
 
-          <h2>
-            Retailers
-          </h2>
+          <h2>Retailers</h2>
 
           <p>
             Create and manage retailer accounts.
@@ -486,12 +534,18 @@
 
         </div>
 
-        <button class="primary-btn"
-                onclick="openRetailerModal()">
+
+        <button
+          type="button"
+          class="primary-btn"
+          onclick="openRetailerModal()">
+
           ➕ Add Retailer
+
         </button>
 
       </div>
+
 
 
       <div class="table-wrapper">
@@ -501,14 +555,16 @@
           <thead>
 
             <tr>
+
               <th>Retailer ID</th>
               <th>Name</th>
               <th>Mobile</th>
               <th>Username</th>
               <th>Status</th>
-              <th>Applications</th>
+              <th>Total Applications</th>
               <th>Last Login</th>
               <th>Action</th>
+
             </tr>
 
           </thead>
@@ -517,10 +573,15 @@
           <tbody id="retailersTable">
 
             <tr>
-              <td colspan="8"
-                  class="empty-row">
+
+              <td
+                colspan="8"
+                class="empty-row">
+
                 Loading retailers...
+
               </td>
+
             </tr>
 
           </tbody>
@@ -534,250 +595,26 @@
   </section>
 
 
+
   <!-- =====================================================
        SERVICES
   ===================================================== -->
 
-  <section id="servicesSection"
-           class="page-section">
-
-    <div class="service-hero">
-
-      <div>
-
-        <span>
-          RAJKUMAR SERVICES
-        </span>
-
-        <h2>
-          All Services & Charges
-        </h2>
-
-        <p>
-          Current service list and customer charges.
-        </p>
-
-      </div>
-
-      <div class="service-hero-icon">
-        🛠️
-      </div>
-
-    </div>
+  <section
+    id="servicesSection"
+    class="page-section">
 
 
-    <!-- RATION CARD -->
-
-    <div class="section-card">
+    <div class="section-card services-section">
 
       <div class="section-header">
 
         <div>
 
-          <h2>
-            🪪 Ration Card Services
-          </h2>
+          <h2>🛠️ Rajkumar Services</h2>
 
           <p>
-            Charges depend on whether the customer has
-            a ration card.
-          </p>
-
-        </div>
-
-        <span class="service-count">
-          4 Services
-        </span>
-
-      </div>
-
-
-      <div class="ration-grid">
-
-
-        <!-- CORRECTION -->
-
-        <div class="service-card ration">
-
-          <div class="service-card-top">
-
-            <div class="service-icon">
-              ✏️
-            </div>
-
-            <span class="service-tag">
-              RATION CARD
-            </span>
-
-          </div>
-
-          <h3>
-            Ration Card Correction
-          </h3>
-
-          <div class="price-row">
-
-            <div>
-              <small>With Ration Card</small>
-              <strong>₹250</strong>
-            </div>
-
-            <div>
-              <small>Without Ration Card</small>
-              <strong>₹700</strong>
-            </div>
-
-          </div>
-
-          <span class="active-badge">
-            ● Active
-          </span>
-
-        </div>
-
-
-        <!-- NAME ADD -->
-
-        <div class="service-card ration">
-
-          <div class="service-card-top">
-
-            <div class="service-icon">
-              ➕
-            </div>
-
-            <span class="service-tag">
-              RATION CARD
-            </span>
-
-          </div>
-
-          <h3>
-            Ration Card Name Add
-          </h3>
-
-          <div class="price-row">
-
-            <div>
-              <small>With Ration Card</small>
-              <strong>₹100</strong>
-            </div>
-
-            <div>
-              <small>Without Ration Card</small>
-              <strong>₹500</strong>
-            </div>
-
-          </div>
-
-          <span class="active-badge">
-            ● Active
-          </span>
-
-        </div>
-
-
-        <!-- NAME REMOVE -->
-
-        <div class="service-card ration">
-
-          <div class="service-card-top">
-
-            <div class="service-icon">
-              ➖
-            </div>
-
-            <span class="service-tag">
-              RATION CARD
-            </span>
-
-          </div>
-
-          <h3>
-            Ration Card Name Remove
-          </h3>
-
-          <div class="price-row">
-
-            <div>
-              <small>With Ration Card</small>
-              <strong>₹100</strong>
-            </div>
-
-            <div>
-              <small>Without Ration Card</small>
-              <strong>₹500</strong>
-            </div>
-
-          </div>
-
-          <span class="active-badge">
-            ● Active
-          </span>
-
-        </div>
-
-
-        <!-- PITA PATI -->
-
-        <div class="service-card ration">
-
-          <div class="service-card-top">
-
-            <div class="service-icon">
-              👨‍👩‍👧
-            </div>
-
-            <span class="service-tag">
-              RATION CARD
-            </span>
-
-          </div>
-
-          <h3>
-            Pita Name → Pati Name
-          </h3>
-
-          <div class="price-row">
-
-            <div>
-              <small>With Ration Card</small>
-              <strong>₹500</strong>
-            </div>
-
-            <div>
-              <small>Without Ration Card</small>
-              <strong>₹1,000</strong>
-            </div>
-
-          </div>
-
-          <span class="active-badge">
-            ● Active
-          </span>
-
-        </div>
-
-
-      </div>
-
-    </div>
-
-
-    <!-- OTHER SERVICES -->
-
-    <div class="section-card">
-
-      <div class="section-header">
-
-        <div>
-
-          <h2>
-            🌐 Online Services
-          </h2>
-
-          <p>
-            Online portal and document services.
+            Available services and current charges.
           </p>
 
         </div>
@@ -785,285 +622,9 @@
       </div>
 
 
-      <div class="online-services-grid">
-
-
-        <!-- IKHEDUT -->
-
-        <div class="service-card online">
-
-          <div class="online-icon">
-            🌾
-          </div>
-
-          <div class="online-content">
-
-            <span class="online-category">
-              GOVERNMENT PORTAL
-            </span>
-
-            <h3>
-              iKhedut Portal અરજી
-            </h3>
-
-            <p>
-              iKhedut portal application assistance.
-            </p>
-
-            <div class="online-bottom">
-
-              <strong>
-                ₹20
-              </strong>
-
-              <span class="active-badge">
-                ● Active
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- PM KISAN -->
-
-        <div class="service-card online">
-
-          <div class="online-icon">
-            🌱
-          </div>
-
-          <div class="online-content">
-
-            <span class="online-category">
-              FARMER SERVICE
-            </span>
-
-            <h3>
-              PM Kisan Samman Nidhi KYC Check
-            </h3>
-
-            <p>
-              PM Kisan beneficiary/KYC status checking.
-            </p>
-
-            <div class="online-bottom">
-
-              <strong>
-                ₹5
-              </strong>
-
-              <span class="active-badge">
-                ● Active
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- AADHAAR MOBILE -->
-
-        <div class="service-card online">
-
-          <div class="online-icon">
-            📱
-          </div>
-
-          <div class="online-content">
-
-            <span class="online-category">
-              AADHAAR SERVICE
-            </span>
-
-            <h3>
-              Aadhaar → Mobile Link Check
-            </h3>
-
-            <p>
-              Check Aadhaar registered mobile information.
-            </p>
-
-            <div class="online-bottom">
-
-              <strong>
-                ₹5
-              </strong>
-
-              <span class="active-badge">
-                ● Active
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- AADHAAR PAN -->
-
-        <div class="service-card online">
-
-          <div class="online-icon">
-            🔗
-          </div>
-
-          <div class="online-content">
-
-            <span class="online-category">
-              INCOME TAX SERVICE
-            </span>
-
-            <h3>
-              Aadhaar → PAN Link Check
-            </h3>
-
-            <p>
-              Check Aadhaar PAN linking status.
-            </p>
-
-            <div class="online-bottom">
-
-              <strong>
-                ₹10
-              </strong>
-
-              <span class="active-badge">
-                ● Active
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- RC PDF -->
-
-        <div class="service-card online">
-
-          <div class="online-icon">
-            🚗
-          </div>
-
-          <div class="online-content">
-
-            <span class="online-category">
-              DOCUMENT DOWNLOAD
-            </span>
-
-            <h3>
-              RC PDF Download
-            </h3>
-
-            <p>
-              Customer enters RC number and submits.
-            </p>
-
-            <div class="online-bottom">
-
-              <strong>
-                ₹350
-              </strong>
-
-              <span class="active-badge">
-                ● Active
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- DL PDF -->
-
-        <div class="service-card online">
-
-          <div class="online-icon">
-            🪪
-          </div>
-
-          <div class="online-content">
-
-            <span class="online-category">
-              DOCUMENT DOWNLOAD
-            </span>
-
-            <h3>
-              DL PDF Download
-            </h3>
-
-            <p>
-              Customer enters DL number and submits.
-            </p>
-
-            <div class="online-bottom">
-
-              <strong>
-                ₹350
-              </strong>
-
-              <span class="active-badge">
-                ● Active
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-      </div>
-
-    </div>
-
-
-    <!-- RATION FORM REQUIREMENTS -->
-
-    <div class="section-card">
-
-      <div class="section-header">
-
-        <div>
-
-          <h2>
-            📄 Ration Card Application Requirements
-          </h2>
-
-          <p>
-            Required information for customer application.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="requirements-grid">
-
-        <div>👤 English Name as per Aadhaar</div>
-        <div>📝 Gujarati Name</div>
-        <div>📱 Mobile Number</div>
-        <div>⚧️ Gender</div>
-        <div>🎂 Birth Date</div>
-        <div>📅 Birth Year</div>
-        <div>🛠️ Service Selection</div>
-        <div>💰 Automatic Charge</div>
-        <div>📲 UPI Payment</div>
-        <div>📸 Payment Screenshot</div>
-        <div>🔢 UTR Number</div>
-        <div>📄 Aadhaar PDF</div>
-        <div>🪪 Ration Card PDF</div>
-        <div>📤 Submit Application</div>
+      <div
+        id="servicesGrid"
+        class="services-grid">
 
       </div>
 
@@ -1071,15 +632,18 @@
 
   </section>
 
+
 </main>
+
 
 
 <!-- =====================================================
      RETAILER MODAL
 ===================================================== -->
 
-<div class="modal"
-     id="retailerModal">
+<div
+  class="modal"
+  id="retailerModal">
 
   <div class="modal-box">
 
@@ -1097,66 +661,67 @@
 
       </div>
 
-      <button class="close-btn"
-              onclick="closeRetailerModal()">
+
+      <button
+        type="button"
+        class="close-btn"
+        onclick="closeRetailerModal()">
+
         ×
+
       </button>
 
     </div>
 
 
-    <form id="retailerForm"
-          onsubmit="createNewRetailer(event)">
-
-      <label>
-        Retailer Name
-      </label>
-
-      <input type="text"
-             id="retailerNameInput"
-             autocomplete="off"
-             required>
+    <form
+      id="retailerForm"
+      onsubmit="createNewRetailer(event)">
 
 
-      <label>
-        Mobile Number
-      </label>
+      <label>Retailer Name</label>
 
-      <input type="tel"
-             id="retailerMobileInput"
-             maxlength="10"
-             inputmode="numeric"
-             autocomplete="off">
+      <input
+        type="text"
+        id="retailerNameInput"
+        required>
 
 
-      <label>
-        Username
-      </label>
+      <label>Mobile Number</label>
 
-      <input type="text"
-             id="retailerUsernameInput"
-             autocomplete="off"
-             required>
+      <input
+        type="tel"
+        id="retailerMobileInput"
+        maxlength="10">
 
 
-      <label>
-        Password
-      </label>
+      <label>Username</label>
 
-      <input type="password"
-             id="retailerPasswordInput"
-             autocomplete="new-password"
-             required>
+      <input
+        type="text"
+        id="retailerUsernameInput"
+        required>
 
 
-      <div id="retailerFormMessage"
-           class="form-message">
+      <label>Password</label>
+
+      <input
+        type="password"
+        id="retailerPasswordInput"
+        required
+        autocomplete="new-password">
+
+
+      <div
+        id="retailerFormMessage"
+        class="form-message">
       </div>
 
 
-      <button type="submit"
-              class="primary-btn full-btn"
-              id="createRetailerBtn">
+      <button
+        type="submit"
+        class="primary-btn full-btn"
+        id="createRetailerBtn">
 
         Create Retailer
 
@@ -1169,12 +734,14 @@
 </div>
 
 
+
 <!-- =====================================================
      APPLICATION MODAL
 ===================================================== -->
 
-<div class="modal"
-     id="applicationModal">
+<div
+  class="modal"
+  id="applicationModal">
 
   <div class="modal-box large-modal">
 
@@ -1186,26 +753,29 @@
           Application Details
         </h2>
 
-        <p>
-          View and update application information.
-        </p>
-
       </div>
 
-      <button class="close-btn"
-              onclick="closeApplicationModal()">
+
+      <button
+        type="button"
+        class="close-btn"
+        onclick="closeApplicationModal()">
+
         ×
+
       </button>
 
     </div>
 
 
-    <div id="applicationDetails"
-         class="application-details">
+    <div
+      id="applicationDetails"
+      class="application-details">
     </div>
 
 
     <div class="status-actions">
+
 
       <div>
 
@@ -1267,22 +837,32 @@
       Admin Remarks
     </label>
 
-    <textarea id="modalRemarks"
-              rows="3"
-              placeholder="Enter admin remarks...">
+    <textarea
+      id="modalRemarks"
+      rows="3"
+      placeholder="Enter remarks...">
     </textarea>
 
 
     <div class="modal-actions">
 
-      <button class="primary-btn"
-              onclick="saveApplicationChanges()">
+      <button
+        type="button"
+        class="primary-btn"
+        onclick="saveApplicationChanges()">
+
         💾 Save Changes
+
       </button>
 
-      <button class="danger-btn"
-              onclick="deleteCurrentApplication()">
+
+      <button
+        type="button"
+        class="danger-btn"
+        onclick="deleteCurrentApplication()">
+
         🗑️ Delete
+
       </button>
 
     </div>
@@ -1292,16 +872,20 @@
 </div>
 
 
+
 <!-- =====================================================
      TOAST
 ===================================================== -->
 
-<div id="toast"
-     class="toast">
+<div
+  id="toast"
+  class="toast">
 </div>
+
 
 
 <script src="admin-dashboard.js"></script>
 
 </body>
+
 </html>
