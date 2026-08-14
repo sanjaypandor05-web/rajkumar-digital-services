@@ -1,16 +1,63 @@
 /* =====================================================
-   RAJKUMAR WEBSITE
-   LOGIN SYSTEM
-   NEW LOGIN BACKEND
-===================================================== */
-
-
-/* =====================================================
-   GOOGLE APPS SCRIPT LOGIN URL
+   RAJKUMAR LOGIN SYSTEM
 ===================================================== */
 
 const SCRIPT_URL =
-  "const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";";
+"https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";
+
+
+const loginFormBox =
+    document.getElementById("loginFormBox");
+
+const loginType =
+    document.getElementById("loginType");
+
+const loginFormTitle =
+    document.getElementById("loginFormTitle");
+
+const loginFormSubtitle =
+    document.getElementById("loginFormSubtitle");
+
+const selectedLoginIcon =
+    document.getElementById("selectedLoginIcon");
+
+const username =
+    document.getElementById("username");
+
+const password =
+    document.getElementById("password");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+const submitLoginBtn =
+    document.getElementById("submitLoginBtn");
+
+
+/* =====================================================
+   RETAILER BUTTON
+===================================================== */
+
+document
+    .getElementById("retailerLoginBtn")
+    .addEventListener("click", function () {
+
+        openLogin("retailer");
+
+    });
+
+
+/* =====================================================
+   ADMIN BUTTON
+===================================================== */
+
+document
+    .getElementById("adminLoginBtn")
+    .addEventListener("click", function () {
+
+        openLogin("admin");
+
+    });
 
 
 /* =====================================================
@@ -19,81 +66,54 @@ const SCRIPT_URL =
 
 function openLogin(type) {
 
-  const box =
-    document.getElementById("loginFormBox");
+    loginType.value = type;
 
-  const loginType =
-    document.getElementById("loginType");
+    clearMessage();
 
-  const title =
-    document.getElementById("loginFormTitle");
+    password.value = "";
 
-  const subtitle =
-    document.getElementById("loginFormSubtitle");
-
-  const icon =
-    document.getElementById("selectedLoginIcon");
-
-  const username =
-    document.getElementById("username");
+    username.value = "";
 
 
-  if (!box || !loginType || !title || !subtitle || !icon || !username) {
-    console.error("Login HTML elements not found.");
-    return;
-  }
+    if (type === "admin") {
+
+        selectedLoginIcon.textContent = "👑";
+
+        loginFormTitle.textContent =
+            "ADMIN LOGIN";
+
+        loginFormSubtitle.textContent =
+            "Enter Admin Username and Password";
+
+        username.placeholder =
+            "Enter Admin Username";
+
+    }
 
 
-  loginType.value = type;
+    if (type === "retailer") {
+
+        selectedLoginIcon.textContent = "👤";
+
+        loginFormTitle.textContent =
+            "RETAILER LOGIN";
+
+        loginFormSubtitle.textContent =
+            "Enter Retailer ID / Username and Password";
+
+        username.placeholder =
+            "Enter Retailer ID / Username";
+
+    }
 
 
-  /* ================= RETAILER ================= */
+    loginFormBox.classList.add("active");
 
-  if (type === "retailer") {
+    setTimeout(function () {
 
-    icon.textContent = "👤";
+        username.focus();
 
-    title.textContent =
-      "RETAILER LOGIN";
-
-    subtitle.textContent =
-      "Enter Retailer ID / Username and Password";
-
-    username.placeholder =
-      "Enter Retailer ID / Username";
-
-  }
-
-
-  /* ================= ADMIN ================= */
-
-  if (type === "admin") {
-
-    icon.textContent = "👑";
-
-    title.textContent =
-      "ADMIN LOGIN";
-
-    subtitle.textContent =
-      "Enter Admin Username and Password";
-
-    username.placeholder =
-      "Enter Admin Username";
-
-  }
-
-
-  box.classList.add("active");
-
-
-  setTimeout(function() {
-
-    username.focus();
-
-  }, 200);
-
-
-  clearMessage();
+    }, 200);
 
 }
 
@@ -102,457 +122,312 @@ function openLogin(type) {
    CLOSE LOGIN
 ===================================================== */
 
-function closeLogin() {
+document
+    .getElementById("closeLoginBtn")
+    .addEventListener("click", function () {
 
-  const box =
-    document.getElementById("loginFormBox");
+        loginFormBox.classList.remove("active");
 
-  if (box) {
+        document
+            .getElementById("loginForm")
+            .reset();
 
-    box.classList.remove("active");
+        loginType.value = "";
 
-  }
+        clearMessage();
 
-
-  const form =
-    document.getElementById("loginForm");
-
-  if (form) {
-
-    form.reset();
-
-  }
-
-
-  clearMessage();
-
-}
+    });
 
 
 /* =====================================================
    PASSWORD SHOW / HIDE
 ===================================================== */
 
-function togglePassword() {
+document
+    .getElementById("showPasswordBtn")
+    .addEventListener("click", function () {
 
-  const password =
-    document.getElementById("password");
+        if (password.type === "password") {
 
-  const button =
-    document.querySelector(".show-password");
+            password.type = "text";
 
+            this.textContent = "🙈";
 
-  if (!password || !button) {
-    return;
-  }
+        } else {
 
+            password.type = "password";
 
-  if (password.type === "password") {
+            this.textContent = "👁";
 
-    password.type = "text";
+        }
 
-    button.textContent = "🙈";
-
-  }
-
-  else {
-
-    password.type = "password";
-
-    button.textContent = "👁";
-
-  }
-
-}
+    });
 
 
 /* =====================================================
-   HANDLE LOGIN
+   LOGIN
 ===================================================== */
+
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", handleLogin);
+
 
 async function handleLogin(event) {
 
-  event.preventDefault();
+    event.preventDefault();
 
 
-  const type =
-    document.getElementById("loginType").value;
+    const type =
+        loginType.value;
+
+    const user =
+        username.value.trim();
+
+    const pass =
+        password.value;
 
 
-  const username =
-    document
-      .getElementById("username")
-      .value
-      .trim();
+    if (!type) {
+
+        showMessage(
+            "Please select Admin or Retailer Login.",
+            "error"
+        );
+
+        return;
+    }
 
 
-  const password =
-    document.getElementById("password").value;
+    if (!user) {
+
+        showMessage(
+            "Please enter username.",
+            "error"
+        );
+
+        return;
+    }
 
 
-  const button =
-    document.getElementById("submitLoginBtn");
+    if (!pass) {
+
+        showMessage(
+            "Please enter password.",
+            "error"
+        );
+
+        return;
+    }
 
 
-  /* ===================================================
-     VALIDATION
-  =================================================== */
+    submitLoginBtn.disabled = true;
 
-  if (!type) {
+    submitLoginBtn.textContent = "LOGIN...";
+
 
     showMessage(
-      "Please select login type.",
-      "error"
+        "Checking login...",
+        "loading"
     );
 
-    return;
 
-  }
+    try {
 
-
-  if (!username) {
-
-    showMessage(
-      "Please enter username.",
-      "error"
-    );
-
-    return;
-
-  }
+        const action =
+            type === "admin"
+                ? "adminLogin"
+                : "retailerLogin";
 
 
-  if (!password) {
+        const response =
+            await fetch(
+                SCRIPT_URL,
+                {
 
-    showMessage(
-      "Please enter password.",
-      "error"
-    );
+                    method: "POST",
 
-    return;
+                    headers: {
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
 
-  }
+                    body: JSON.stringify({
 
+                        action: action,
 
-  /* ===================================================
-     LOADING
-  =================================================== */
+                        username: user,
 
-  button.disabled = true;
+                        password: pass
 
-  button.textContent = "LOGIN...";
+                    })
 
-
-  showMessage(
-    "Checking login...",
-    "loading"
-  );
-
-
-  try {
+                }
+            );
 
 
-    /* =================================================
-       SELECT ACTION
-    ================================================= */
-
-    const action =
-      type === "retailer"
-        ? "retailerLogin"
-        : "adminLogin";
+        const result =
+            await response.json();
 
 
-    /* =================================================
-       SEND REQUEST
-    ================================================= */
+        console.log(
+            "LOGIN RESULT:",
+            result
+        );
 
-    const response =
-      await fetch(
-        SCRIPT_URL,
-        {
 
-          method: "POST",
+        if (result.success) {
 
-          headers: {
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
+            showMessage(
+                "Login successful. Please wait...",
+                "success"
+            );
 
-          body: JSON.stringify({
 
-            action: action,
+            /* ================= ADMIN ================= */
 
-            username: username,
+            if (type === "admin") {
 
-            password: password
+                localStorage.setItem(
+                    "rajkumarRole",
+                    "admin"
+                );
 
-          })
+                localStorage.setItem(
+                    "rajkumarAdminId",
+                    result.adminId || ""
+                );
+
+                localStorage.setItem(
+                    "rajkumarAdminName",
+                    result.adminName || "Administrator"
+                );
+
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "admin-dashboard.html";
+
+                }, 500);
+
+
+                return;
+            }
+
+
+            /* ================= RETAILER ================= */
+
+            if (type === "retailer") {
+
+                localStorage.setItem(
+                    "rajkumarRole",
+                    "retailer"
+                );
+
+                localStorage.setItem(
+                    "rajkumarRetailerId",
+                    result.retailerId || ""
+                );
+
+                localStorage.setItem(
+                    "rajkumarRetailerName",
+                    result.retailerName || ""
+                );
+
+                localStorage.setItem(
+                    "rajkumarRetailerMobile",
+                    result.mobile || ""
+                );
+
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "retailer-dashboard.html";
+
+                }, 500);
+
+
+                return;
+            }
 
         }
-      );
 
 
-    /* =================================================
-       RESPONSE CHECK
-    ================================================= */
-
-    if (!response.ok) {
-
-      throw new Error(
-        "HTTP Error: " +
-        response.status
-      );
+        showMessage(
+            result.message ||
+            "Invalid username or password.",
+            "error"
+        );
 
     }
 
+    catch (error) {
 
-    const result =
-      await response.json();
-
-
-    console.log(
-      "LOGIN RESPONSE:",
-      result
-    );
-
-
-    /* =================================================
-       SUCCESS
-    ================================================= */
-
-    if (result.success === true) {
-
-      showMessage(
-        "Login successful. Redirecting...",
-        "success"
-      );
-
-
-      /* ===============================================
-         RETAILER
-      =============================================== */
-
-      if (type === "retailer") {
-
-        localStorage.setItem(
-          "rajkumarRole",
-          "retailer"
+        console.error(
+            "LOGIN ERROR:",
+            error
         );
 
-
-        localStorage.setItem(
-          "rajkumarRetailerId",
-          result.retailerId || ""
+        showMessage(
+            "Server connection failed. Please check Apps Script URL.",
+            "error"
         );
-
-
-        localStorage.setItem(
-          "rajkumarRetailerName",
-          result.retailerName || ""
-        );
-
-
-        localStorage.setItem(
-          "rajkumarRetailerMobile",
-          result.mobile || ""
-        );
-
-
-        localStorage.setItem(
-          "rajkumarRetailerUsername",
-          result.username || username
-        );
-
-
-        setTimeout(function() {
-
-          window.location.href =
-            "retailer-dashboard.html";
-
-        }, 700);
-
-
-        return;
-
-      }
-
-
-      /* ===============================================
-         ADMIN
-      =============================================== */
-
-      if (type === "admin") {
-
-        localStorage.setItem(
-          "rajkumarRole",
-          "admin"
-        );
-
-
-        localStorage.setItem(
-          "rajkumarAdminId",
-          result.adminId || ""
-        );
-
-
-        localStorage.setItem(
-          "rajkumarAdminName",
-          result.adminName || "Administrator"
-        );
-
-
-        setTimeout(function() {
-
-          window.location.href =
-            "admin-dashboard.html";
-
-        }, 700);
-
-
-        return;
-
-      }
 
     }
 
+    finally {
 
-    /* =================================================
-       LOGIN FAILED
-    ================================================= */
+        submitLoginBtn.disabled = false;
 
-    showMessage(
+        submitLoginBtn.textContent = "LOGIN";
 
-      result.message ||
-      "Invalid login details.",
-
-      "error"
-
-    );
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "LOGIN ERROR:",
-      error
-    );
-
-
-    showMessage(
-
-      "Server connection failed. Please check Login Backend URL.",
-
-      "error"
-
-    );
-
-  }
-
-
-  finally {
-
-    button.disabled = false;
-
-    button.textContent = "LOGIN";
-
-  }
+    }
 
 }
 
 
 /* =====================================================
-   SHOW MESSAGE
+   MESSAGE
 ===================================================== */
 
-function showMessage(
-  message,
-  type
-) {
+function showMessage(message, type) {
 
-  const box =
-    document.getElementById("loginMessage");
+    loginMessage.textContent =
+        message;
 
-
-  if (!box) {
-    return;
-  }
-
-
-  box.textContent =
-    message;
-
-
-  box.className =
-    "login-message " +
-    type;
+    loginMessage.className =
+        "login-message " + type;
 
 }
 
-
-/* =====================================================
-   CLEAR MESSAGE
-===================================================== */
 
 function clearMessage() {
 
-  const box =
-    document.getElementById("loginMessage");
+    loginMessage.textContent = "";
 
-
-  if (!box) {
-    return;
-  }
-
-
-  box.textContent = "";
-
-  box.className =
-    "login-message";
+    loginMessage.className =
+        "login-message";
 
 }
 
 
 /* =====================================================
-   CLOSE WITH ESC
+   ESC KEY
 ===================================================== */
 
 document.addEventListener(
-  "keydown",
-  function(event) {
+    "keydown",
+    function (event) {
 
-    if (
-      event.key === "Escape"
-    ) {
+        if (event.key === "Escape") {
 
-      closeLogin();
+            loginFormBox.classList.remove(
+                "active"
+            );
 
-    }
-
-  }
-);
-
-
-/* =====================================================
-   PREVENT OLD LOGIN SESSION
-===================================================== */
-
-window.addEventListener(
-  "pageshow",
-  function() {
-
-    const type =
-      document.getElementById(
-        "loginType"
-      );
-
-
-    if (type) {
-
-      type.value = "";
+        }
 
     }
-
-  }
 );
