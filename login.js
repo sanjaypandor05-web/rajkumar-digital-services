@@ -10,9 +10,7 @@
 ===================================================== */
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";
-
-
+"https://script.google.com/macros/s/AKfycbxM9kQEwYrfWk-mXrcyFH1GDrmwc3COEGf3PAhQ69pFWk7ARevVJbfx-_c2-aNDoJIewA/exec";
 /* =====================================================
    ELEMENTS
 ===================================================== */
