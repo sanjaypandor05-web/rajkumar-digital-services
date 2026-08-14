@@ -1,152 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+<title>Rajkumar Login</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Login | Rajkumar Website</title>
-
-    <link rel="stylesheet" href="login.css">
-
+<link rel="stylesheet" href="login.css">
 </head>
-
 
 <body>
 
-
-<!-- ================= HEADER ================= -->
-
-<header class="login-header">
-
-    <a href="index.html" class="back-home">
-        ← HOME
-    </a>
-
-    <div class="login-logo">
-        🌐 RAJKUMAR WEBSITE
-    </div>
-
-</header>
-
-
-<!-- ================= LOGIN PAGE ================= -->
-
-<main class="login-page">
-
+<div class="login-page">
 
     <div class="login-container">
 
-
-        <div class="login-title">
-
-            <p>SECURE ACCESS</p>
-
-            <h1>🔐 LOGIN</h1>
-
-            <span>
-                Select your login type
-            </span>
-
+        <div class="login-header">
+            <div class="login-logo">🌐</div>
+            <h1>RAJKUMAR</h1>
+            <p>Website Login</p>
         </div>
 
 
-        <!-- ================= LOGIN OPTIONS ================= -->
+        <!-- LOGIN TYPE -->
 
-        <div class="login-options">
+        <div class="login-type-box">
 
+            <button
+                type="button"
+                class="login-type-btn retailer-btn"
+                id="retailerLoginBtn">
 
-            <!-- ================= RETAILER ================= -->
+                👤
+                <span>Retailer Login</span>
 
-            <div class="login-card retailer-card">
-
-                <div class="login-card-icon">
-                    👤
-                </div>
-
-                <h2>RETAILER LOGIN</h2>
-
-                <p>
-                    Retailer માટે application submit
-                    અને tracking માટે login કરો.
-                </p>
-
-                <button
-                    type="button"
-                    class="login-option-btn retailer-btn"
-                    onclick="openLogin('retailer')"
-                >
-                    👤 RETAILER LOGIN
-                </button>
-
-            </div>
-
-
-            <!-- ================= ADMIN ================= -->
-
-            <div class="login-card admin-card">
-
-                <div class="login-card-icon">
-                    👑
-                </div>
-
-                <h2>ADMIN LOGIN</h2>
-
-                <p>
-                    Admin માટે applications,
-                    payment અને status manage કરવા login કરો.
-                </p>
-
-                <button
-                    type="button"
-                    class="login-option-btn admin-btn"
-                    onclick="openLogin('admin')"
-                >
-                    👑 ADMIN LOGIN
-                </button>
-
-            </div>
-
-
-        </div>
-
-
-        <!-- ================= LOGIN FORM ================= -->
-
-        <div id="loginFormBox" class="login-form-box">
+            </button>
 
 
             <button
                 type="button"
-                class="close-login"
-                onclick="closeLogin()"
-            >
-                ×
+                class="login-type-btn admin-btn"
+                id="adminLoginBtn">
+
+                👑
+                <span>Admin Login</span>
+
             </button>
 
+        </div>
 
-            <div id="selectedLoginIcon"
-                 class="selected-login-icon">
-                👤
+
+        <!-- LOGIN FORM -->
+
+        <div
+            id="loginFormBox"
+            class="login-form-box"
+        >
+
+            <div class="selected-icon" id="selectedLoginIcon">
+                🔐
             </div>
 
-
             <h2 id="loginFormTitle">
-                RETAILER LOGIN
+                LOGIN
             </h2>
 
-
             <p id="loginFormSubtitle">
-                Enter your login details
+                Select login type
             </p>
 
 
-            <form id="loginForm"
-                  onsubmit="handleLogin(event)">
-
+            <form
+                id="loginForm"
+                autocomplete="off"
+            >
 
                 <input
                     type="hidden"
@@ -157,7 +84,7 @@
 
                 <!-- USERNAME -->
 
-                <div class="form-group">
+                <div class="input-group">
 
                     <label for="username">
                         Username / Retailer ID
@@ -167,8 +94,8 @@
                         type="text"
                         id="username"
                         name="username"
-                        placeholder="Enter Username / Retailer ID"
-                        autocomplete="username"
+                        placeholder="Enter Username"
+                        autocomplete="off"
                         required
                     >
 
@@ -177,7 +104,7 @@
 
                 <!-- PASSWORD -->
 
-                <div class="form-group">
+                <div class="input-group">
 
                     <label for="password">
                         Password
@@ -190,14 +117,14 @@
                             id="password"
                             name="password"
                             placeholder="Enter Password"
-                            autocomplete="current-password"
+                            autocomplete="new-password"
                             required
                         >
 
                         <button
                             type="button"
                             class="show-password"
-                            onclick="togglePassword()"
+                            id="showPasswordBtn"
                         >
                             👁
                         </button>
@@ -207,7 +134,15 @@
                 </div>
 
 
-                <!-- LOGIN BUTTON -->
+                <!-- MESSAGE -->
+
+                <div
+                    id="loginMessage"
+                    class="login-message"
+                ></div>
+
+
+                <!-- SUBMIT -->
 
                 <button
                     type="submit"
@@ -218,53 +153,33 @@
                 </button>
 
 
-                <div id="loginMessage"
-                     class="login-message">
-                </div>
+                <!-- CLOSE -->
 
+                <button
+                    type="button"
+                    id="closeLoginBtn"
+                    class="close-login-btn"
+                >
+                    ← Back
+                </button>
 
             </form>
 
-
         </div>
 
 
-        <!-- ================= SECURITY NOTE ================= -->
-
-        <div class="security-note">
-
-            🔒
-            <span>
-                Secure Login • Authorized Users Only
-            </span>
-
+        <div class="back-home">
+            <a href="index.html">
+                ← Back to Home
+            </a>
         </div>
-
 
     </div>
 
-</main>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer class="login-footer">
-
-    <h3>RAJKUMAR WEBSITE</h3>
-
-    <p>
-        Online Services • Government Services • Digital Services
-    </p>
-
-    <p>
-        © 2026 Rajkumar Website. All Rights Reserved.
-    </p>
-
-</footer>
+</div>
 
 
 <script src="login.js"></script>
 
 </body>
-
 </html>
