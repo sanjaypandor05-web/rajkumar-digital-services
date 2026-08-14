@@ -1,17 +1,70 @@
 /* =====================================================
-   RAJKUMAR WEBSITE
-   RETAILER DASHBOARD - BACKEND CONNECTED
+   RAJKUMAR RETAILER DASHBOARD
+   API CONFIGURATION
 ===================================================== */
 
-
-/* =====================================================
-   GOOGLE APPS SCRIPT API
-===================================================== */
-
-const SCRIPT_URL =
+const API_URL =
 "https://script.google.com/macros/s/AKfycbw1mKC92_EjWJS_x2o8LMqiL9sssMbFh089IhMujZLd6_9VuujoVckjoMS8fbajVn-uQQ/exec";
 
 
+/* =====================================================
+   API HELPER
+===================================================== */
+
+async function apiRequest(data) {
+
+    try {
+
+        const response = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "text/plain;charset=utf-8"
+            },
+
+            body: JSON.stringify(data)
+
+        });
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP Error " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "API RESPONSE:",
+            result
+        );
+
+
+        return result;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "API ERROR:",
+            error
+        );
+
+        throw error;
+
+    }
+
+}
 /* =====================================================
    SERVICE PRICES
 ===================================================== */
