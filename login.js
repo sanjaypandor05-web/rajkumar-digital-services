@@ -8,7 +8,7 @@
    GOOGLE APPS SCRIPT URL
 ===================================================== */
 
-const SPREADSHEET_ID = "1tnwWh_FFUiaF9__2FDbu_87NG0LjaQ26BOJx4sjOvc1";
+const SPREADSHEET_ID = "1tnwWh_FFUiaF9__2FDbu_87NG0LjaQ26BOJx4sjOvcU";
 
 function getSpreadsheet() {
   return SpreadsheetApp.openById(SPREADSHEET_ID);
