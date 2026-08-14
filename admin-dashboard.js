@@ -1925,136 +1925,90 @@ async function toggleRetailerStatus(
 
 async function loadServices() {
 
-  const grid =
-    document.getElementById(
-      "servicesGrid"
-    );
+  const grid = document.getElementById("servicesGrid");
 
+  if (!grid) return;
 
-  if (!grid) {
-    return;
-  }
+  const services = [
 
+    {
+      service: "Ration Card Services",
+      price: 0
+    },
 
-  grid.innerHTML = `
+    {
+      service: "PAN Card Services",
+      price: 0
+    },
 
-    <div class="loading-box">
+    {
+      service: "Recharge Services",
+      price: 0
+    },
 
-      Loading services...
+    {
+      service: "iKhedut Portal અરજી",
+      price: 0
+    },
 
-    </div>
+    {
+      service: "PM Kisan Samman Nidhi",
+      price: 0
+    },
 
-  `;
+    {
+      service: "Aadhaar → Mobile Link Check",
+      price: 0
+    },
 
+    {
+      service: "Aadhaar → PAN Link Check",
+      price: 0
+    },
 
-  try {
+    {
+      service: "RC PDF Download",
+      price: 0
+    },
 
-    const result =
-      await apiCall(
-        "getServices"
-      );
+    {
+      service: "DL PDF Download",
+      price: 0
+    },
 
-
-    if (
-      !result ||
-      result.success === false
-    ) {
-
-      throw new Error(
-        result?.message ||
-        "Services loading failed."
-      );
-
+    {
+      service: "LMS Certificate Apply",
+      price: 0
     }
 
-
-    const services =
-      Array.isArray(
-        result.services
-      )
-        ? result.services
-        : [];
+  ];
 
 
-    if (!services.length) {
+  grid.innerHTML = services.map(function(service) {
 
-      grid.innerHTML = `
+    return `
 
-        <div class="loading-box">
+      <div class="service-card">
 
-          No services found.
+        <h3>
+          ${escapeHtml(service.service)}
+        </h3>
 
+        <div class="service-price">
+          Service Available
         </div>
 
-      `;
-
-      return;
-
-    }
-
-
-    grid.innerHTML =
-      services
-        .map(
-          function (service) {
-
-            return `
-
-              <div class="service-card">
-
-                <h3>
-                  ${escapeHtml(
-                    service.service ||
-                    service.name ||
-                    "-"
-                  )}
-                </h3>
-
-                <div class="service-price">
-                  ₹${Number(
-                    service.price || 0
-                  )}
-                </div>
-
-                ${statusBadge(
-                  service.status ||
-                  "Active"
-                )}
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Services Error:",
-      error
-    );
-
-
-    grid.innerHTML = `
-
-      <div class="loading-box">
-
-        ${escapeHtml(
-          error.message
-        )}
+        <span class="status active">
+          Active
+        </span>
 
       </div>
 
     `;
 
-  }
+  }).join("");
 
 }
-
 
 /* =====================================================
    LOGOUT
