@@ -1,6 +1,10 @@
 /* =====================================================
    RAJKUMAR ADMIN DASHBOARD JS
-   FINAL CORRECTED VERSION
+   FINAL CORRECTED + ATTRACTIVE VERSION
+
+   IMPORTANT:
+   Services are LOCAL/static.
+   No "loadServices" backend action is called.
 ===================================================== */
 
 
@@ -24,6 +28,70 @@ let allApplications = [];
 
 let currentApplication = null;
 
+let currentSection = "dashboard";
+
+let toastTimer = null;
+
+
+/* =====================================================
+   STATIC SERVICES
+   NO BACKEND CALL
+===================================================== */
+
+const SERVICES = [
+
+  {
+    name: "Ration Card Services",
+    icon: "🍚"
+  },
+
+  {
+    name: "PAN Card Services",
+    icon: "🪪"
+  },
+
+  {
+    name: "Recharge Services",
+    icon: "📱"
+  },
+
+  {
+    name: "iKhedut Portal અરજી",
+    icon: "🌾"
+  },
+
+  {
+    name: "PM Kisan Samman Nidhi",
+    icon: "👨‍🌾"
+  },
+
+  {
+    name: "Aadhaar → Mobile Link Check",
+    icon: "📲"
+  },
+
+  {
+    name: "Aadhaar → PAN Link Check",
+    icon: "🔗"
+  },
+
+  {
+    name: "RC PDF Download",
+    icon: "📄"
+  },
+
+  {
+    name: "DL PDF Download",
+    icon: "🚗"
+  },
+
+  {
+    name: "LMS Certificate Apply",
+    icon: "🎓"
+  }
+
+];
+
 
 /* =====================================================
    PAGE LOAD
@@ -34,6 +102,10 @@ document.addEventListener(
   function () {
 
     checkAdminLogin();
+
+    renderServices();
+
+    setupMobileInput();
 
   }
 );
@@ -51,9 +123,16 @@ function checkAdminLogin() {
     );
 
 
+  const normalizedRole =
+    String(
+      role || ""
+    )
+      .trim()
+      .toLowerCase();
+
+
   if (
-    role !== "admin" &&
-    role !== "Admin"
+    normalizedRole !== "admin"
   ) {
 
     window.location.href =
@@ -68,35 +147,28 @@ function checkAdminLogin() {
     localStorage.getItem(
       "rajkumarAdminName"
     ) ||
+    localStorage.getItem(
+      "adminName"
+    ) ||
     "Administrator";
 
 
-  const nameElement =
-    document.getElementById(
-      "adminName"
-    );
+  setText(
+    "adminName",
+    adminName
+  );
 
 
-  const welcomeElement =
-    document.getElementById(
-      "welcomeName"
-    );
+  setText(
+    "welcomeName",
+    adminName
+  );
 
 
-  if (nameElement) {
-
-    nameElement.textContent =
-      adminName;
-
-  }
-
-
-  if (welcomeElement) {
-
-    welcomeElement.textContent =
-      adminName;
-
-  }
+  setText(
+    "sidebarAdminName",
+    adminName
+  );
 
 
   loadDashboard();
@@ -200,6 +272,10 @@ function showSection(
   button
 ) {
 
+  currentSection =
+    section;
+
+
   document
     .querySelectorAll(
       ".page-section"
@@ -232,7 +308,8 @@ function showSection(
 
   const sectionElement =
     document.getElementById(
-      section + "Section"
+      section +
+      "Section"
     );
 
 
@@ -271,19 +348,11 @@ function showSection(
   };
 
 
-  const pageTitle =
-    document.getElementById(
-      "pageTitle"
-    );
-
-
-  if (pageTitle) {
-
-    pageTitle.textContent =
-      titles[section] ||
-      "Admin Dashboard";
-
-  }
+  setText(
+    "pageTitle",
+    titles[section] ||
+    "Admin Dashboard"
+  );
 
 
   if (
@@ -316,12 +385,18 @@ function showSection(
   }
 
 
+  /*
+   * IMPORTANT:
+   * Services are local.
+   * Do NOT call any backend action.
+   */
+
   if (
     section ===
     "services"
   ) {
 
-    loadServices();
+    renderServices();
 
   }
 
@@ -330,19 +405,7 @@ function showSection(
     window.innerWidth <= 900
   ) {
 
-    const sidebar =
-      document.getElementById(
-        "sidebar"
-      );
-
-
-    if (sidebar) {
-
-      sidebar.classList.remove(
-        "open"
-      );
-
-    }
+    toggleSidebar(false);
 
   }
 
@@ -378,7 +441,9 @@ function showSectionByName(
 
       if (
         onclick.includes(
-          "'" + section + "'"
+          "'" +
+          section +
+          "'"
         )
       ) {
 
@@ -400,14 +465,75 @@ function showSectionByName(
 
 
 /* =====================================================
+   REFRESH CURRENT SECTION
+===================================================== */
+
+function refreshCurrentSection() {
+
+  if (
+    currentSection ===
+    "dashboard"
+  ) {
+
+    loadDashboard();
+
+    return;
+
+  }
+
+
+  if (
+    currentSection ===
+    "applications"
+  ) {
+
+    loadApplications();
+
+    return;
+
+  }
+
+
+  if (
+    currentSection ===
+    "retailers"
+  ) {
+
+    loadRetailers();
+
+    return;
+
+  }
+
+
+  if (
+    currentSection ===
+    "services"
+  ) {
+
+    renderServices();
+
+  }
+
+}
+
+
+/* =====================================================
    SIDEBAR
 ===================================================== */
 
-function toggleSidebar() {
+function toggleSidebar(
+  force
+) {
 
   const sidebar =
     document.getElementById(
       "sidebar"
+    );
+
+  const overlay =
+    document.getElementById(
+      "sidebarOverlay"
     );
 
 
@@ -416,9 +542,62 @@ function toggleSidebar() {
   }
 
 
-  sidebar.classList.toggle(
-    "open"
-  );
+  if (
+    typeof force ===
+    "boolean"
+  ) {
+
+    if (force) {
+
+      sidebar.classList.add(
+        "open"
+      );
+
+      if (overlay) {
+
+        overlay.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+
+    else {
+
+      sidebar.classList.remove(
+        "open"
+      );
+
+      if (overlay) {
+
+        overlay.classList.remove(
+          "active"
+        );
+
+      }
+
+    }
+
+    return;
+
+  }
+
+
+  const isOpen =
+    sidebar.classList.toggle(
+      "open"
+    );
+
+
+  if (overlay) {
+
+    overlay.classList.toggle(
+      "active",
+      isOpen
+    );
+
+  }
 
 }
 
@@ -452,37 +631,44 @@ async function loadDashboard() {
 
     setText(
       "totalApplications",
-      result.total || 0
+      result.total ||
+      result.totalApplications ||
+      0
     );
 
 
     setText(
       "paymentPending",
-      result.paymentPending || 0
+      result.paymentPending ||
+      0
     );
 
 
     setText(
       "paymentVerified",
-      result.paymentVerified || 0
+      result.paymentVerified ||
+      0
     );
 
 
     setText(
       "processing",
-      result.processing || 0
+      result.processing ||
+      0
     );
 
 
     setText(
       "completed",
-      result.completed || 0
+      result.completed ||
+      0
     );
 
 
     setText(
       "rejected",
-      result.rejected || 0
+      result.rejected ||
+      0
     );
 
   }
@@ -527,11 +713,17 @@ async function loadApplications() {
 
     <tr>
 
-      <td
-        colspan="10"
-        class="empty-row"
-      >
-        Loading applications...
+      <td colspan="10"
+          class="empty-row">
+
+        <div class="table-loading">
+
+          <span class="spinner"></span>
+
+          Loading applications...
+
+        </div>
+
       </td>
 
     </tr>
@@ -569,7 +761,7 @@ async function loadApplications() {
 
 
     renderApplications(
-      allApplications
+      getFilteredApplications()
     );
 
   }
@@ -586,13 +778,14 @@ async function loadApplications() {
 
       <tr>
 
-        <td
-          colspan="10"
-          class="empty-row"
-        >
+        <td colspan="10"
+            class="empty-row">
+
           ${escapeHtml(
-            error.message
+            error.message ||
+            "Applications loading failed."
           )}
+
         </td>
 
       </tr>
@@ -632,11 +825,11 @@ function renderApplications(
 
       <tr>
 
-        <td
-          colspan="10"
-          class="empty-row"
-        >
+        <td colspan="10"
+            class="empty-row">
+
           No applications found.
+
         </td>
 
       </tr>
@@ -651,85 +844,114 @@ function renderApplications(
   table.innerHTML =
     applications
       .map(
-        function (app, index) {
+        function (app) {
+
+          const originalIndex =
+            allApplications.indexOf(
+              app
+            );
+
 
           return `
 
             <tr>
 
               <td>
+
                 <strong>
                   ${escapeHtml(
-                    app.applicationId ||
-                    "-"
+                    getApplicationId(app)
                   )}
                 </strong>
+
               </td>
 
+
               <td>
+
                 ${escapeHtml(
-                  app.customerName ||
-                  app.finalName ||
-                  app.name ||
-                  "-"
+                  getCustomerName(app)
                 )}
+
               </td>
 
+
               <td>
+
                 ${escapeHtml(
                   app.mobile ||
                   "-"
                 )}
+
               </td>
 
+
               <td>
+
                 ${escapeHtml(
                   app.retailerName ||
+                  app.retailer ||
                   "-"
                 )}
+
               </td>
 
+
               <td>
+
                 ${escapeHtml(
                   app.service ||
                   "-"
                 )}
+
               </td>
 
+
               <td>
-                ₹${Number(
-                  app.amount || 0
+
+                ₹${formatAmount(
+                  app.amount
                 )}
+
               </td>
 
+
               <td>
+
                 ${statusBadge(
                   app.paymentStatus
                 )}
+
               </td>
 
+
               <td>
+
                 ${statusBadge(
                   app.applicationStatus
                 )}
+
               </td>
 
+
               <td>
+
                 ${escapeHtml(
-                  app.applicationDate ||
-                  app.date ||
-                  "-"
+                  getApplicationDate(app)
                 )}
+
               </td>
+
 
               <td>
 
                 <button
                   type="button"
                   class="table-action"
-                  onclick="openApplication(${index})"
-                >
+                  onclick="openApplicationByIndex(${originalIndex})">
+
                   View
+
                 </button>
 
               </td>
@@ -751,107 +973,8 @@ function renderApplications(
 
 function filterApplications() {
 
-  const searchElement =
-    document.getElementById(
-      "applicationSearch"
-    );
-
-
-  const paymentElement =
-    document.getElementById(
-      "paymentFilter"
-    );
-
-
-  const statusElement =
-    document.getElementById(
-      "statusFilter"
-    );
-
-
-  const search =
-    searchElement
-      ? searchElement.value
-          .toLowerCase()
-          .trim()
-      : "";
-
-
-  const payment =
-    paymentElement
-      ? paymentElement.value
-      : "";
-
-
-  const status =
-    statusElement
-      ? statusElement.value
-      : "";
-
-
-  const filtered =
-    allApplications.filter(
-      function (app) {
-
-        const searchable =
-          [
-
-            app.applicationId,
-
-            app.customerName,
-
-            app.finalName,
-
-            app.mobile,
-
-            app.retailerName,
-
-            app.service
-
-          ]
-          .join(" ")
-          .toLowerCase();
-
-
-        const searchMatch =
-          !search ||
-          searchable.includes(
-            search
-          );
-
-
-        const paymentMatch =
-          !payment ||
-          normalizeStatus(
-            app.paymentStatus
-          ) ===
-          normalizeStatus(
-            payment
-          );
-
-
-        const statusMatch =
-          !status ||
-          normalizeStatus(
-            app.applicationStatus
-          ) ===
-          normalizeStatus(
-            status
-          );
-
-
-        return (
-          searchMatch &&
-          paymentMatch &&
-          statusMatch
-        );
-
-      }
-    );
-
-
   renderApplications(
-    filtered
+    getFilteredApplications()
   );
 
 }
@@ -863,94 +986,80 @@ function filterApplications() {
 
 function getFilteredApplications() {
 
-  const searchElement =
+  const search =
     document.getElementById(
       "applicationSearch"
-    );
-
-
-  const paymentElement =
-    document.getElementById(
-      "paymentFilter"
-    );
-
-
-  const statusElement =
-    document.getElementById(
-      "statusFilter"
-    );
-
-
-  const search =
-    searchElement
-      ? searchElement.value
-          .toLowerCase()
-          .trim()
-      : "";
+    )?.value
+      .toLowerCase()
+      .trim() ||
+    "";
 
 
   const payment =
-    paymentElement
-      ? paymentElement.value
-      : "";
+    document.getElementById(
+      "paymentFilter"
+    )?.value ||
+    "";
 
 
   const status =
-    statusElement
-      ? statusElement.value
-      : "";
+    document.getElementById(
+      "statusFilter"
+    )?.value ||
+    "";
 
 
   return allApplications.filter(
     function (app) {
 
-      const searchable =
-        [
+      const searchable = [
 
-          app.applicationId,
+        app.applicationId,
+        app.appId,
+        app.customerName,
+        app.finalName,
+        app.name,
+        app.mobile,
+        app.retailerName,
+        app.retailer,
+        app.service
 
-          app.customerName,
-
-          app.finalName,
-
-          app.mobile,
-
-          app.retailerName,
-
-          app.service
-
-        ]
+      ]
         .join(" ")
         .toLowerCase();
 
 
+      const searchMatch =
+        !search ||
+        searchable.includes(
+          search
+        );
+
+
+      const paymentMatch =
+        !payment ||
+        normalizeStatus(
+          app.paymentStatus
+        ) ===
+        normalizeStatus(
+          payment
+        );
+
+
+      const statusMatch =
+        !status ||
+        normalizeStatus(
+          app.applicationStatus
+        ) ===
+        normalizeStatus(
+          status
+        );
+
+
       return (
-
-        (!search ||
-          searchable.includes(
-            search
-          ))
-
-        &&
-
-        (!payment ||
-          normalizeStatus(
-            app.paymentStatus
-          ) ===
-          normalizeStatus(
-            payment
-          ))
-
-        &&
-
-        (!status ||
-          normalizeStatus(
-            app.applicationStatus
-          ) ===
-          normalizeStatus(
-            status
-          ))
-
+        searchMatch &&
+        paymentMatch &&
+        statusMatch
       );
 
     }
@@ -960,19 +1069,15 @@ function getFilteredApplications() {
 
 
 /* =====================================================
-   OPEN APPLICATION
+   OPEN APPLICATION BY INDEX
 ===================================================== */
 
-function openApplication(
+function openApplicationByIndex(
   index
 ) {
 
-  const visibleApps =
-    getFilteredApplications();
-
-
   currentApplication =
-    visibleApps[index];
+    allApplications[index];
 
 
   if (!currentApplication) {
@@ -987,8 +1092,61 @@ function openApplication(
   }
 
 
+  openCurrentApplication();
+
+}
+
+
+/* =====================================================
+   BACKWARD COMPATIBILITY
+===================================================== */
+
+function openApplication(
+  index
+) {
+
+  const visibleApps =
+    getFilteredApplications();
+
+
+  const app =
+    visibleApps[index];
+
+
+  if (!app) {
+
+    showToast(
+      "Application not found.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  currentApplication =
+    app;
+
+
+  openCurrentApplication();
+
+}
+
+
+/* =====================================================
+   OPEN CURRENT APPLICATION
+===================================================== */
+
+function openCurrentApplication() {
+
   const app =
     currentApplication;
+
+
+  if (!app) {
+    return;
+  }
 
 
   const details =
@@ -1003,14 +1161,12 @@ function openApplication(
 
       ${detail(
         "Application ID",
-        app.applicationId
+        getApplicationId(app)
       )}
 
       ${detail(
         "Customer Name",
-        app.customerName ||
-        app.finalName ||
-        app.name
+        getCustomerName(app)
       )}
 
       ${detail(
@@ -1020,7 +1176,8 @@ function openApplication(
 
       ${detail(
         "Retailer",
-        app.retailerName
+        app.retailerName ||
+        app.retailer
       )}
 
       ${detail(
@@ -1039,6 +1196,11 @@ function openApplication(
       )}
 
       ${detail(
+        "Ration Card Number",
+        app.rationCardNumber
+      )}
+
+      ${detail(
         "Service",
         app.service
       )}
@@ -1046,31 +1208,41 @@ function openApplication(
       ${detail(
         "Amount",
         "₹" +
-        Number(
-          app.amount || 0
+        formatAmount(
+          app.amount
         )
       )}
 
       ${detail(
         "Transaction ID",
-        app.transactionId
+        app.transactionId ||
+        app.transactionID
+      )}
+
+      ${detail(
+        "Application Date",
+        getApplicationDate(app)
       )}
 
       ${detail(
         "Payment Screenshot",
-        app.paymentScreenshot,
+        app.paymentScreenshot ||
+        app.paymentScreenshotUrl,
         true
       )}
 
       ${detail(
         "Aadhaar Document",
-        app.aadhaarDocument,
+        app.aadhaarDocument ||
+        app.aadhaarFile,
         true
       )}
 
       ${detail(
-        "Service Document",
-        app.serviceDocument,
+        "Ration / Service Document",
+        app.serviceDocument ||
+        app.rationFile ||
+        app.serviceFile,
         true
       )}
 
@@ -1100,8 +1272,15 @@ function openApplication(
   if (paymentSelect) {
 
     paymentSelect.value =
-      app.paymentStatus ||
-      "Pending";
+      normalizeSelectValue(
+        app.paymentStatus,
+        [
+          "Pending",
+          "Verified",
+          "Failed"
+        ],
+        "Pending"
+      );
 
   }
 
@@ -1109,8 +1288,16 @@ function openApplication(
   if (applicationSelect) {
 
     applicationSelect.value =
-      app.applicationStatus ||
-      "Pending";
+      normalizeSelectValue(
+        app.applicationStatus,
+        [
+          "Pending",
+          "Processing",
+          "Completed",
+          "Rejected"
+        ],
+        "Pending"
+      );
 
   }
 
@@ -1119,6 +1306,7 @@ function openApplication(
 
     remarks.value =
       app.adminRemarks ||
+      app.remarks ||
       "";
 
   }
@@ -1176,8 +1364,27 @@ async function saveApplicationChanges() {
   const remarks =
     document.getElementById(
       "modalRemarks"
-    )?.value ||
+    )?.value
+      .trim() ||
     "";
+
+
+  const applicationId =
+    getApplicationId(
+      currentApplication
+    );
+
+
+  if (!applicationId) {
+
+    showToast(
+      "Application ID is missing.",
+      true
+    );
+
+    return;
+
+  }
 
 
   try {
@@ -1188,7 +1395,7 @@ async function saveApplicationChanges() {
         {
 
           applicationId:
-            currentApplication.applicationId,
+            applicationId,
 
           paymentStatus:
             paymentStatus,
@@ -1219,7 +1426,7 @@ async function saveApplicationChanges() {
         {
 
           applicationId:
-            currentApplication.applicationId,
+            applicationId,
 
           applicationStatus:
             applicationStatus,
@@ -1267,7 +1474,8 @@ async function saveApplicationChanges() {
 
 
     showToast(
-      error.message,
+      error.message ||
+      "Application update failed.",
       true
     );
 
@@ -1283,22 +1491,26 @@ async function saveApplicationChanges() {
 async function deleteCurrentApplication() {
 
   if (!currentApplication) {
-
     return;
-
   }
+
+
+  const applicationId =
+    getApplicationId(
+      currentApplication
+    );
 
 
   const confirmed =
     confirm(
-      "Are you sure you want to delete this application?"
+      "Are you sure you want to delete application " +
+      applicationId +
+      "?"
     );
 
 
   if (!confirmed) {
-
     return;
-
   }
 
 
@@ -1310,7 +1522,7 @@ async function deleteCurrentApplication() {
         {
 
           applicationId:
-            currentApplication.applicationId
+            applicationId
 
         }
       );
@@ -1352,7 +1564,8 @@ async function deleteCurrentApplication() {
 
 
     showToast(
-      error.message,
+      error.message ||
+      "Delete failed.",
       true
     );
 
@@ -1409,11 +1622,17 @@ async function loadRetailers() {
 
     <tr>
 
-      <td
-        colspan="8"
-        class="empty-row"
-      >
-        Loading retailers...
+      <td colspan="8"
+          class="empty-row">
+
+        <div class="table-loading">
+
+          <span class="spinner"></span>
+
+          Loading retailers...
+
+        </div>
+
       </td>
 
     </tr>
@@ -1456,11 +1675,11 @@ async function loadRetailers() {
 
         <tr>
 
-          <td
-            colspan="8"
-            class="empty-row"
-          >
+          <td colspan="8"
+              class="empty-row">
+
             No retailers found.
+
           </td>
 
         </tr>
@@ -1482,12 +1701,23 @@ async function loadRetailers() {
               "Inactive";
 
 
-            const newStatus =
+            const isActive =
               normalizeStatus(
                 status
-              ) === "active"
+              ) ===
+              "active";
+
+
+            const newStatus =
+              isActive
                 ? "Inactive"
                 : "Active";
+
+
+            const actionText =
+              isActive
+                ? "Deactivate"
+                : "Activate";
 
 
             return `
@@ -1495,54 +1725,78 @@ async function loadRetailers() {
               <tr>
 
                 <td>
+
                   <strong>
                     ${escapeHtml(
                       retailer.retailerId ||
+                      retailer.id ||
                       "-"
                     )}
                   </strong>
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.name ||
+                    retailer.retailerName ||
                     "-"
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.mobile ||
                     "-"
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.username ||
                     "-"
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${statusBadge(
                     status
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${Number(
                     retailer.totalApplications ||
+                    retailer.applicationCount ||
                     0
                   )}
+
                 </td>
 
+
                 <td>
+
                   ${escapeHtml(
                     retailer.lastLogin ||
                     "-"
                   )}
+
                 </td>
+
 
                 <td>
 
@@ -1551,16 +1805,17 @@ async function loadRetailers() {
                     class="table-action"
                     onclick="toggleRetailerStatus(
                       '${escapeAttribute(
-                        retailer.retailerId
+                        retailer.retailerId ||
+                        retailer.id ||
+                        ""
                       )}',
                       '${escapeAttribute(
                         status
                       )}'
-                    )"
-                  >
-                    ${newStatus === "Active"
-                      ? "Activate"
-                      : "Deactivate"}
+                    )">
+
+                    ${actionText}
+
                   </button>
 
                 </td>
@@ -1587,13 +1842,14 @@ async function loadRetailers() {
 
       <tr>
 
-        <td
-          colspan="8"
-          class="empty-row"
-        >
+        <td colspan="8"
+            class="empty-row">
+
           ${escapeHtml(
-            error.message
+            error.message ||
+            "Retailers loading failed."
           )}
+
         </td>
 
       </tr>
@@ -1658,6 +1914,34 @@ function closeRetailerModal() {
   }
 
 
+  const password =
+    document.getElementById(
+      "retailerPasswordInput"
+    );
+
+
+  if (password) {
+
+    password.type =
+      "password";
+
+  }
+
+
+  const toggle =
+    document.getElementById(
+      "passwordToggle"
+    );
+
+
+  if (toggle) {
+
+    toggle.textContent =
+      "👁️";
+
+  }
+
+
   const message =
     document.getElementById(
       "retailerFormMessage"
@@ -1668,6 +1952,68 @@ function closeRetailerModal() {
 
     message.textContent =
       "";
+
+    message.className =
+      "form-message";
+
+  }
+
+}
+
+
+/* =====================================================
+   PASSWORD VISIBILITY
+===================================================== */
+
+function togglePasswordVisibility() {
+
+  const input =
+    document.getElementById(
+      "retailerPasswordInput"
+    );
+
+
+  const button =
+    document.getElementById(
+      "passwordToggle"
+    );
+
+
+  if (!input) {
+    return;
+  }
+
+
+  if (
+    input.type ===
+    "password"
+  ) {
+
+    input.type =
+      "text";
+
+
+    if (button) {
+
+      button.textContent =
+        "🙈";
+
+    }
+
+  }
+
+  else {
+
+    input.type =
+      "password";
+
+
+    if (button) {
+
+      button.textContent =
+        "👁️";
+
+    }
 
   }
 
@@ -1728,9 +2074,63 @@ async function createNewRetailer(
     );
 
 
+  if (!name) {
+
+    showFormMessage(
+      "Please enter retailer name.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (
+    mobile &&
+    !/^[0-9]{10}$/.test(
+      mobile
+    )
+  ) {
+
+    showFormMessage(
+      "Please enter a valid 10 digit mobile number.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (!username) {
+
+    showFormMessage(
+      "Please enter username.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (!password) {
+
+    showFormMessage(
+      "Please enter password.",
+      true
+    );
+
+    return;
+
+  }
+
+
   if (button) {
 
-    button.disabled = true;
+    button.disabled =
+      true;
 
     button.textContent =
       "Creating...";
@@ -1774,16 +2174,13 @@ async function createNewRetailer(
     }
 
 
-    if (message) {
-
-      message.textContent =
-        "Retailer created. ID: " +
-        (
-          result.retailerId ||
-          "-"
-        );
-
-    }
+    showFormMessage(
+      "Retailer created successfully. ID: " +
+      (
+        result.retailerId ||
+        "-"
+      )
+    );
 
 
     showToast(
@@ -1813,16 +2210,16 @@ async function createNewRetailer(
     );
 
 
-    if (message) {
-
-      message.textContent =
-        error.message;
-
-    }
+    showFormMessage(
+      error.message ||
+      "Retailer creation failed.",
+      true
+    );
 
 
     showToast(
-      error.message,
+      error.message ||
+      "Retailer creation failed.",
       true
     );
 
@@ -1836,11 +2233,43 @@ async function createNewRetailer(
         false;
 
       button.textContent =
-        "Create Retailer";
+        "➕ Create Retailer";
 
     }
 
   }
+
+}
+
+
+/* =====================================================
+   SHOW FORM MESSAGE
+===================================================== */
+
+function showFormMessage(
+  message,
+  error = false
+) {
+
+  const element =
+    document.getElementById(
+      "retailerFormMessage"
+    );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  element.textContent =
+    message;
+
+
+  element.className =
+    error
+      ? "form-message error"
+      : "form-message";
 
 }
 
@@ -1854,12 +2283,38 @@ async function toggleRetailerStatus(
   currentStatus
 ) {
 
+  if (!retailerId) {
+
+    showToast(
+      "Retailer ID is missing.",
+      true
+    );
+
+    return;
+
+  }
+
+
   const newStatus =
     normalizeStatus(
       currentStatus
-    ) === "active"
+    ) ===
+    "active"
       ? "Inactive"
       : "Active";
+
+
+  const confirmed =
+    confirm(
+      "Change retailer status to " +
+      newStatus +
+      "?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
 
 
   try {
@@ -1910,7 +2365,8 @@ async function toggleRetailerStatus(
 
 
     showToast(
-      error.message,
+      error.message ||
+      "Retailer status update failed.",
       true
     );
 
@@ -1921,53 +2377,84 @@ async function toggleRetailerStatus(
 
 /* =====================================================
    SERVICES
+   LOCAL ONLY
 ===================================================== */
 
-function loadServices() {
+function renderServices() {
 
-  const grid = document.getElementById("servicesGrid");
+  const grid =
+    document.getElementById(
+      "servicesGrid"
+    );
+
 
   if (!grid) {
     return;
   }
 
-  const services = [
-    "Ration Card Services",
-    "PAN Card Services",
-    "Recharge Services",
-    "iKhedut Portal અરજી",
-    "PM Kisan Samman Nidhi",
-    "Aadhaar → Mobile Link Check",
-    "Aadhaar → PAN Link Check",
-    "RC PDF Download",
-    "DL PDF Download",
-    "LMS Certificate Apply"
-  ];
+
+  const count =
+    document.getElementById(
+      "serviceCount"
+    );
 
 
-  grid.innerHTML = services.map(function(service) {
+  if (count) {
 
-    return `
-      <div class="service-card">
+    count.textContent =
+      SERVICES.length +
+      " Services";
 
-        <h3>
-          ${escapeHtml(service)}
-        </h3>
+  }
 
-        <div class="service-price">
-          Available
-        </div>
 
-        <span class="status active">
-          Active
-        </span>
+  grid.innerHTML =
+    SERVICES
+      .map(
+        function (service, index) {
 
-      </div>
-    `;
+          return `
 
-  }).join("");
+            <div class="service-card">
+
+              <div class="service-number">
+                SERVICE ${String(
+                  index + 1
+                ).padStart(2, "0")}
+              </div>
+
+              <div style="
+                font-size:30px;
+                margin-bottom:10px;
+              ">
+                ${service.icon}
+              </div>
+
+              <h3>
+                ${escapeHtml(
+                  service.name
+                )}
+              </h3>
+
+              <div class="service-price">
+                Available on Rajkumar Website
+              </div>
+
+              <span class="status active">
+                Active
+              </span>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
 
 }
+
+
 /* =====================================================
    LOGOUT
 ===================================================== */
@@ -1981,9 +2468,7 @@ function logoutAdmin() {
 
 
   if (!confirmed) {
-
     return;
-
   }
 
 
@@ -2002,8 +2487,130 @@ function logoutAdmin() {
   );
 
 
-  window.location.href =
-    "login.html";
+  localStorage.removeItem(
+    "adminName"
+  );
+
+
+  sessionStorage.clear();
+
+
+  window.location.replace(
+    "login.html"
+  );
+
+}
+
+
+/* =====================================================
+   APPLICATION HELPERS
+===================================================== */
+
+function getApplicationId(
+  app
+) {
+
+  return (
+    app?.applicationId ||
+    app?.applicationID ||
+    app?.appId ||
+    app?.id ||
+    ""
+  );
+
+}
+
+
+function getCustomerName(
+  app
+) {
+
+  return (
+    app?.customerName ||
+    app?.finalName ||
+    app?.englishName ||
+    app?.name ||
+    "-"
+  );
+
+}
+
+
+function getApplicationDate(
+  app
+) {
+
+  return (
+    app?.applicationDate ||
+    app?.date ||
+    app?.createdAt ||
+    "-"
+  );
+
+}
+
+
+function formatAmount(
+  amount
+) {
+
+  const number =
+    Number(
+      amount || 0
+    );
+
+
+  if (
+    Number.isNaN(
+      number
+    )
+  ) {
+
+    return "0";
+
+  }
+
+
+  return number.toLocaleString(
+    "en-IN"
+  );
+
+}
+
+
+/* =====================================================
+   NORMALIZE SELECT
+===================================================== */
+
+function normalizeSelectValue(
+  value,
+  allowed,
+  fallback
+) {
+
+  const normalized =
+    normalizeStatus(
+      value
+    );
+
+
+  const match =
+    allowed.find(
+      function (item) {
+
+        return (
+          normalizeStatus(
+            item
+          ) ===
+          normalized
+        );
+
+      }
+    );
+
+
+  return match ||
+    fallback;
 
 }
 
@@ -2062,16 +2669,39 @@ function statusBadge(
     String(
       status ||
       "Pending"
-    ).trim();
+    )
+      .trim();
 
 
-  const className =
+  let className =
     value
       .toLowerCase()
       .replace(
         /\s+/g,
         "-"
       );
+
+
+  if (
+    className ===
+    "success"
+  ) {
+
+    className =
+      "completed";
+
+  }
+
+
+  if (
+    className ===
+    "complete"
+  ) {
+
+    className =
+      "completed";
+
+  }
 
 
   return `
@@ -2104,33 +2734,48 @@ function detail(
     value
   ) {
 
-    return `
+    const safeUrl =
+      String(
+        value
+      ).trim();
 
-      <div class="detail-item">
 
-        <span>
-          ${escapeHtml(
-            label
-          )}
-        </span>
+    if (
+      /^https?:\/\//i.test(
+        safeUrl
+      )
+    ) {
 
-        <strong>
+      return `
 
-          <a
-            href="${escapeAttribute(
-              value
-            )}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Open Document
-          </a>
+        <div class="detail-item">
 
-        </strong>
+          <span>
+            ${escapeHtml(
+              label
+            )}
+          </span>
 
-      </div>
+          <strong>
 
-    `;
+            <a
+              href="${escapeAttribute(
+                safeUrl
+              )}"
+              target="_blank"
+              rel="noopener noreferrer">
+
+              Open Document ↗
+
+            </a>
+
+          </strong>
+
+        </div>
+
+      `;
+
+    }
 
   }
 
@@ -2233,8 +2878,15 @@ function showToast(
 
 
   if (!toast) {
-
     return;
+  }
+
+
+  if (toastTimer) {
+
+    clearTimeout(
+      toastTimer
+    );
 
   }
 
@@ -2256,14 +2908,53 @@ function showToast(
   }
 
 
-  setTimeout(
+  toastTimer =
+    setTimeout(
+      function () {
+
+        toast.className =
+          "toast";
+
+      },
+      3500
+    );
+
+}
+
+
+/* =====================================================
+   MOBILE INPUT
+===================================================== */
+
+function setupMobileInput() {
+
+  const mobile =
+    document.getElementById(
+      "retailerMobileInput"
+    );
+
+
+  if (!mobile) {
+    return;
+  }
+
+
+  mobile.addEventListener(
+    "input",
     function () {
 
-      toast.className =
-        "toast";
+      this.value =
+        this.value
+          .replace(
+            /\D/g,
+            ""
+          )
+          .slice(
+            0,
+            10
+          );
 
-    },
-    3000
+    }
   );
 
 }
@@ -2303,7 +2994,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   ESC KEY CLOSE MODALS
+   ESC KEY
 ===================================================== */
 
 document.addEventListener(
@@ -2311,7 +3002,8 @@ document.addEventListener(
   function (event) {
 
     if (
-      event.key !== "Escape"
+      event.key !==
+      "Escape"
     ) {
 
       return;
@@ -2322,6 +3014,8 @@ document.addEventListener(
     closeRetailerModal();
 
     closeApplicationModal();
+
+    toggleSidebar(false);
 
   }
 );
