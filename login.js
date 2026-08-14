@@ -8,16 +8,11 @@
    GOOGLE APPS SCRIPT URL
 ===================================================== */
 
-/*
-   IMPORTANT:
-   અહીં તમારો DEPLOYED WEB APP URL મૂકવો.
+const SPREADSHEET_ID = "1tnwWh_FFUiaF9__2FDbu_87NG0LjaQ26BOJx4sjOvc1";
 
-   Example:
-
-   https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-*/
-
-https://script.google.com/macros/s/AKfycbyBpdPfX5tkjRwAoPYjSMNdOdos9te73n-vVg676He21YqV2oB4BvIrq4dKmfcyWHkK1g/exec
+function getSpreadsheet() {
+  return SpreadsheetApp.openById(SPREADSHEET_ID);
+}
 
 /* =====================================================
    OPEN LOGIN
