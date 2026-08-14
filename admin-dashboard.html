@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Admin Dashboard | Rajkumar Website</title>
+
+<link
+  rel="stylesheet"
+  href="admin-dashboard.css"
+>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+
+    <div class="logo-icon">👑</div>
+
+    <div>
+      <h2>Rajkumar</h2>
+      <span>Admin Panel</span>
+    </div>
+
+  </div>
+
+
+  <nav class="sidebar-nav">
+
+    <button
+      class="nav-item active"
+      onclick="showSection('dashboard', this)"
+    >
+      📊 Dashboard
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="showSection('applications', this)"
+    >
+      📋 Applications
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="showSection('retailers', this)"
+    >
+      👥 Retailers
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="showSection('services', this)"
+    >
+      🛠️ Services
+    </button>
+
+  </nav>
+
+
+  <div class="sidebar-bottom">
+
+    <button
+      class="logout-btn"
+      onclick="logoutAdmin()"
+    >
+      🚪 Logout
+    </button>
+
+  </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main-content">
+
+
+  <!-- HEADER -->
+
+  <header class="top-header">
+
+    <button
+      class="menu-btn"
+      onclick="toggleSidebar()"
+    >
+      ☰
+    </button>
+
+
+    <div class="header-title">
+
+      <h1 id="pageTitle">
+        Admin Dashboard
+      </h1>
+
+      <p>
+        Rajkumar Website Management
+      </p>
+
+    </div>
+
+
+    <div class="admin-profile">
+
+      <div class="admin-avatar">
+        👑
+      </div>
+
+      <div>
+
+        <strong id="adminName">
+          Administrator
+        </strong>
+
+        <small>
+          Admin
+        </small>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =====================================================
+       DASHBOARD SECTION
+  ===================================================== -->
+
+  <section
+    id="dashboardSection"
+    class="page-section active"
+  >
+
+    <div class="welcome-card">
+
+      <div>
+
+        <span>WELCOME BACK</span>
+
+        <h2>
+          <span id="welcomeName">
+            Administrator
+          </span>
+        </h2>
+
+        <p>
+          Manage applications, retailers,
+          payments and services from here.
+        </p>
+
+      </div>
+
+      <div class="welcome-icon">
+        👑
+      </div>
+
+    </div>
+
+
+
+    <!-- STATS -->
+
+    <div class="stats-grid">
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📋
+        </div>
+
+        <div>
+
+          <span>Total Applications</span>
+
+          <strong id="totalApplications">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          🟡
+        </div>
+
+        <div>
+
+          <span>Payment Pending</span>
+
+          <strong id="paymentPending">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          🟢
+        </div>
+
+        <div>
+
+          <span>Payment Verified</span>
+
+          <strong id="paymentVerified">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          ⚙️
+        </div>
+
+        <div>
+
+          <span>Processing</span>
+
+          <strong id="processing">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          ✅
+        </div>
+
+        <div>
+
+          <span>Completed</span>
+
+          <strong id="completed">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          ❌
+        </div>
+
+        <div>
+
+          <span>Rejected</span>
+
+          <strong id="rejected">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="section-card">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>Quick Actions</h2>
+
+          <p>
+            Manage your website quickly.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="quick-grid">
+
+        <button
+          onclick="showSectionByName('applications')"
+          class="quick-btn"
+        >
+          📋
+          <span>Applications</span>
+        </button>
+
+
+        <button
+          onclick="showSectionByName('retailers')"
+          class="quick-btn"
+        >
+          👥
+          <span>Retailers</span>
+        </button>
+
+
+        <button
+          onclick="showSectionByName('services')"
+          class="quick-btn"
+        >
+          🛠️
+          <span>Services</span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       APPLICATIONS SECTION
+  ===================================================== -->
+
+  <section
+    id="applicationsSection"
+    class="page-section"
+  >
+
+    <div class="section-card">
+
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>Applications</h2>
+
+          <p>
+            View and manage all customer applications.
+          </p>
+
+        </div>
+
+
+        <button
+          class="refresh-btn"
+          onclick="loadApplications()"
+        >
+          🔄 Refresh
+        </button>
+
+      </div>
+
+
+      <div class="filters">
+
+
+        <input
+          type="text"
+          id="applicationSearch"
+          placeholder="Search Application ID / Name / Mobile"
+          oninput="filterApplications()"
+        >
+
+
+        <select
+          id="paymentFilter"
+          onchange="filterApplications()"
+        >
+
+          <option value="">
+            All Payment
+          </option>
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Verified">
+            Verified
+          </option>
+
+          <option value="Failed">
+            Failed
+          </option>
+
+        </select>
+
+
+        <select
+          id="statusFilter"
+          onchange="filterApplications()"
+        >
+
+          <option value="">
+            All Status
+          </option>
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Processing">
+            Processing
+          </option>
+
+          <option value="Completed">
+            Completed
+          </option>
+
+          <option value="Rejected">
+            Rejected
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Application ID</th>
+
+              <th>Customer</th>
+
+              <th>Mobile</th>
+
+              <th>Retailer</th>
+
+              <th>Service</th>
+
+              <th>Amount</th>
+
+              <th>Payment</th>
+
+              <th>Status</th>
+
+              <th>Date</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="applicationsTable">
+
+            <tr>
+
+              <td
+                colspan="10"
+                class="empty-row"
+              >
+                Loading applications...
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       RETAILERS SECTION
+  ===================================================== -->
+
+  <section
+    id="retailersSection"
+    class="page-section"
+  >
+
+    <div class="section-card">
+
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>Retailers</h2>
+
+          <p>
+            Create and manage retailer accounts.
+          </p>
+
+        </div>
+
+
+        <button
+          class="primary-btn"
+          onclick="openRetailerModal()"
+        >
+          ➕ Add Retailer
+        </button>
+
+      </div>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Retailer ID</th>
+
+              <th>Name</th>
+
+              <th>Mobile</th>
+
+              <th>Username</th>
+
+              <th>Status</th>
+
+              <th>Total Applications</th>
+
+              <th>Last Login</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="retailersTable">
+
+            <tr>
+
+              <td
+                colspan="8"
+                class="empty-row"
+              >
+                Loading retailers...
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       SERVICES SECTION
+  ===================================================== -->
+
+  <section
+    id="servicesSection"
+    class="page-section"
+  >
+
+    <div class="section-card">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>Services</h2>
+
+          <p>
+            Services currently available on Rajkumar Website.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="servicesGrid"
+        class="services-grid"
+      >
+
+        <div class="loading-box">
+          Loading services...
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     RETAILER MODAL
+===================================================== -->
+
+<div
+  class="modal"
+  id="retailerModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Add Retailer
+        </h2>
+
+        <p>
+          Create a new retailer login.
+        </p>
+
+      </div>
+
+
+      <button
+        class="close-btn"
+        onclick="closeRetailerModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      id="retailerForm"
+      onsubmit="createNewRetailer(event)"
+    >
+
+
+      <label>
+        Retailer Name
+      </label>
+
+      <input
+        type="text"
+        id="retailerNameInput"
+        required
+      >
+
+
+      <label>
+        Mobile Number
+      </label>
+
+      <input
+        type="tel"
+        id="retailerMobileInput"
+        maxlength="10"
+      >
+
+
+      <label>
+        Username
+      </label>
+
+      <input
+        type="text"
+        id="retailerUsernameInput"
+        required
+      >
+
+
+      <label>
+        Password
+      </label>
+
+      <input
+        type="text"
+        id="retailerPasswordInput"
+        required
+      >
+
+
+      <div
+        id="retailerFormMessage"
+        class="form-message"
+      ></div>
+
+
+      <button
+        type="submit"
+        class="primary-btn full-btn"
+        id="createRetailerBtn"
+      >
+        Create Retailer
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     APPLICATION MODAL
+===================================================== -->
+
+<div
+  class="modal"
+  id="applicationModal"
+>
+
+  <div class="modal-box large-modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Application Details
+        </h2>
+
+      </div>
+
+
+      <button
+        class="close-btn"
+        onclick="closeApplicationModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      id="applicationDetails"
+      class="application-details"
+    ></div>
+
+
+    <div class="status-actions">
+
+      <div>
+
+        <label>
+          Payment Status
+        </label>
+
+        <select id="modalPaymentStatus">
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Verified">
+            Verified
+          </option>
+
+          <option value="Failed">
+            Failed
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Application Status
+        </label>
+
+        <select id="modalApplicationStatus">
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Processing">
+            Processing
+          </option>
+
+          <option value="Completed">
+            Completed
+          </option>
+
+          <option value="Rejected">
+            Rejected
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <label>
+      Admin Remarks
+    </label>
+
+    <textarea
+      id="modalRemarks"
+      rows="3"
+      placeholder="Enter remarks..."
+    ></textarea>
+
+
+    <div class="modal-actions">
+
+      <button
+        class="primary-btn"
+        onclick="saveApplicationChanges()"
+      >
+        💾 Save Changes
+      </button>
+
+
+      <button
+        class="danger-btn"
+        onclick="deleteCurrentApplication()"
+      >
+        🗑️ Delete
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+  id="toast"
+  class="toast"
+></div>
+
+
+<script src="admin-dashboard.js"></script>
+
+</body>
+
+</html>
