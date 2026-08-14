@@ -9,7 +9,7 @@
 ===================================================== */
 
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";
+  "https://script.google.com/macros/s/AKfycbyiCbRx6pfYpG17OFbU_iCnyZUnGSnolAgzy3VIH2X1p78uD2WULdQpkG-3aKWeyJpd-w/exec";
 
 const LOGIN_SCRIPT_URL = SCRIPT_URL;
 
