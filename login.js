@@ -1,10 +1,21 @@
 /* =====================================================
    RAJKUMAR LOGIN SYSTEM
+   ADMIN + RETAILER LOGIN
+===================================================== */
+
+
+/* =====================================================
+   GOOGLE APPS SCRIPT URL
+   ADMIN LOGIN ALREADY WORKING - DO NOT CHANGE
 ===================================================== */
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxcvT9nvNFEnK6dYVoUakpVOQ_9RW2zFnfPmwp0rgcY7e69vKYiRTerE-NcUwuJV7yQjQ/exec";
 
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 const loginFormBox =
     document.getElementById("loginFormBox");
@@ -35,7 +46,7 @@ const submitLoginBtn =
 
 
 /* =====================================================
-   RETAILER BUTTON
+   RETAILER LOGIN BUTTON
 ===================================================== */
 
 document
@@ -48,7 +59,7 @@ document
 
 
 /* =====================================================
-   ADMIN BUTTON
+   ADMIN LOGIN BUTTON
 ===================================================== */
 
 document
@@ -75,9 +86,12 @@ function openLogin(type) {
     username.value = "";
 
 
+    /* ================= ADMIN ================= */
+
     if (type === "admin") {
 
-        selectedLoginIcon.textContent = "👑";
+        selectedLoginIcon.textContent =
+            "👑";
 
         loginFormTitle.textContent =
             "ADMIN LOGIN";
@@ -91,9 +105,12 @@ function openLogin(type) {
     }
 
 
+    /* ================= RETAILER ================= */
+
     if (type === "retailer") {
 
-        selectedLoginIcon.textContent = "👤";
+        selectedLoginIcon.textContent =
+            "👤";
 
         loginFormTitle.textContent =
             "RETAILER LOGIN";
@@ -107,7 +124,10 @@ function openLogin(type) {
     }
 
 
-    loginFormBox.classList.add("active");
+    loginFormBox.classList.add(
+        "active"
+    );
+
 
     setTimeout(function () {
 
@@ -126,7 +146,9 @@ document
     .getElementById("closeLoginBtn")
     .addEventListener("click", function () {
 
-        loginFormBox.classList.remove("active");
+        loginFormBox.classList.remove(
+            "active"
+        );
 
         document
             .getElementById("loginForm")
@@ -147,17 +169,23 @@ document
     .getElementById("showPasswordBtn")
     .addEventListener("click", function () {
 
-        if (password.type === "password") {
+        if (
+            password.type === "password"
+        ) {
 
             password.type = "text";
 
-            this.textContent = "🙈";
+            this.textContent =
+                "🙈";
 
-        } else {
+        }
+        else {
 
-            password.type = "password";
+            password.type =
+                "password";
 
-            this.textContent = "👁";
+            this.textContent =
+                "👁";
 
         }
 
@@ -165,13 +193,20 @@ document
 
 
 /* =====================================================
-   LOGIN
+   LOGIN FORM
 ===================================================== */
 
 document
     .getElementById("loginForm")
-    .addEventListener("submit", handleLogin);
+    .addEventListener(
+        "submit",
+        handleLogin
+    );
 
+
+/* =====================================================
+   HANDLE LOGIN
+===================================================== */
 
 async function handleLogin(event) {
 
@@ -181,12 +216,16 @@ async function handleLogin(event) {
     const type =
         loginType.value;
 
+
     const user =
         username.value.trim();
+
 
     const pass =
         password.value;
 
+
+    /* ================= VALIDATION ================= */
 
     if (!type) {
 
@@ -196,17 +235,19 @@ async function handleLogin(event) {
         );
 
         return;
+
     }
 
 
     if (!user) {
 
         showMessage(
-            "Please enter username.",
+            "Please enter username / Retailer ID.",
             "error"
         );
 
         return;
+
     }
 
 
@@ -218,12 +259,16 @@ async function handleLogin(event) {
         );
 
         return;
+
     }
 
 
-    submitLoginBtn.disabled = true;
+    submitLoginBtn.disabled =
+        true;
 
-    submitLoginBtn.textContent = "LOGIN...";
+
+    submitLoginBtn.textContent =
+        "LOGIN...";
 
 
     showMessage(
@@ -234,36 +279,57 @@ async function handleLogin(event) {
 
     try {
 
+        /* ================= ACTION ================= */
+
         const action =
             type === "admin"
                 ? "adminLogin"
                 : "retailerLogin";
 
 
+        /* ================= API ================= */
+
         const response =
             await fetch(
                 SCRIPT_URL,
                 {
 
-                    method: "POST",
+                    method:
+                        "POST",
 
                     headers: {
+
                         "Content-Type":
                             "text/plain;charset=utf-8"
+
                     },
 
-                    body: JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        action: action,
+                            action:
+                                action,
 
-                        username: user,
+                            username:
+                                user,
 
-                        password: pass
+                            password:
+                                pass
 
-                    })
+                        })
 
                 }
             );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP Error " +
+                response.status
+            );
+
+        }
 
 
         const result =
@@ -276,7 +342,14 @@ async function handleLogin(event) {
         );
 
 
-        if (result.success) {
+        /* =================================================
+           LOGIN SUCCESS
+        ================================================= */
+
+        if (
+            result &&
+            result.success === true
+        ) {
 
             showMessage(
                 "Login successful. Please wait...",
@@ -284,85 +357,186 @@ async function handleLogin(event) {
             );
 
 
-            /* ================= ADMIN ================= */
+            /* =============================================
+               ADMIN
+            ============================================= */
 
-            if (type === "admin") {
+            if (
+                type === "admin"
+            ) {
 
                 localStorage.setItem(
                     "rajkumarRole",
                     "admin"
                 );
 
+
                 localStorage.setItem(
                     "rajkumarAdminId",
                     result.adminId || ""
                 );
 
+
                 localStorage.setItem(
                     "rajkumarAdminName",
-                    result.adminName || "Administrator"
+                    result.adminName ||
+                    "Administrator"
                 );
 
 
-                setTimeout(function () {
+                setTimeout(
+                    function () {
 
-                    window.location.href =
-                        "admin-dashboard.html";
+                        window.location.href =
+                            "admin-dashboard.html";
 
-                }, 500);
+                    },
+                    500
+                );
 
 
                 return;
+
             }
 
 
-            /* ================= RETAILER ================= */
+            /* =============================================
+               RETAILER
+            ============================================= */
 
-            if (type === "retailer") {
+            if (
+                type === "retailer"
+            ) {
+
+                const retailerId =
+                    result.retailerId || "";
+
+
+                const retailerName =
+                    result.retailerName || "";
+
+
+                const retailerMobile =
+                    result.mobile || "";
+
+
+                const retailerUsername =
+                    result.username ||
+                    user;
+
+
+                /* =========================================
+                   NEW STANDARD KEYS
+                ========================================= */
 
                 localStorage.setItem(
                     "rajkumarRole",
                     "retailer"
                 );
 
+
                 localStorage.setItem(
                     "rajkumarRetailerId",
-                    result.retailerId || ""
+                    retailerId
                 );
+
 
                 localStorage.setItem(
                     "rajkumarRetailerName",
-                    result.retailerName || ""
+                    retailerName
                 );
+
 
                 localStorage.setItem(
                     "rajkumarRetailerMobile",
-                    result.mobile || ""
+                    retailerMobile
                 );
 
 
-                setTimeout(function () {
+                localStorage.setItem(
+                    "rajkumarRetailerUsername",
+                    retailerUsername
+                );
 
-                    window.location.href =
-                        "retailer-dashboard.html";
 
-                }, 500);
+                /* =========================================
+                   COMPATIBILITY KEYS
+                   retailer-dashboard.js માટે
+                ========================================= */
+
+                localStorage.setItem(
+                    "retailerId",
+                    retailerId
+                );
+
+
+                localStorage.setItem(
+                    "retailerName",
+                    retailerName
+                );
+
+
+                localStorage.setItem(
+                    "retailerMobile",
+                    retailerMobile
+                );
+
+
+                localStorage.setItem(
+                    "retailerUsername",
+                    retailerUsername
+                );
+
+
+                console.log(
+                    "Retailer Login Saved:",
+                    {
+                        retailerId:
+                            retailerId,
+
+                        retailerName:
+                            retailerName,
+
+                        retailerMobile:
+                            retailerMobile,
+
+                        retailerUsername:
+                            retailerUsername
+                    }
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "retailer-dashboard.html";
+
+                    },
+                    500
+                );
 
 
                 return;
+
             }
 
         }
 
 
+        /* =================================================
+           LOGIN FAILED
+        ================================================= */
+
         showMessage(
-            result.message ||
-            "Invalid username or password.",
+            result &&
+            result.message
+                ? result.message
+                : "Invalid username or password.",
             "error"
         );
 
     }
-
     catch (error) {
 
         console.error(
@@ -370,18 +544,20 @@ async function handleLogin(event) {
             error
         );
 
+
         showMessage(
             "Server connection failed. Please check Apps Script URL.",
             "error"
         );
 
     }
-
     finally {
 
-        submitLoginBtn.disabled = false;
+        submitLoginBtn.disabled =
+            false;
 
-        submitLoginBtn.textContent = "LOGIN";
+        submitLoginBtn.textContent =
+            "LOGIN";
 
     }
 
@@ -392,20 +568,31 @@ async function handleLogin(event) {
    MESSAGE
 ===================================================== */
 
-function showMessage(message, type) {
+function showMessage(
+    message,
+    type
+) {
 
     loginMessage.textContent =
         message;
 
+
     loginMessage.className =
-        "login-message " + type;
+        "login-message " +
+        type;
 
 }
 
 
+/* =====================================================
+   CLEAR MESSAGE
+===================================================== */
+
 function clearMessage() {
 
-    loginMessage.textContent = "";
+    loginMessage.textContent =
+        "";
+
 
     loginMessage.className =
         "login-message";
@@ -421,7 +608,9 @@ document.addEventListener(
     "keydown",
     function (event) {
 
-        if (event.key === "Escape") {
+        if (
+            event.key === "Escape"
+        ) {
 
             loginFormBox.classList.remove(
                 "active"
