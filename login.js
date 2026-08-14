@@ -1,18 +1,17 @@
 /* =====================================================
    RAJKUMAR WEBSITE
    LOGIN SYSTEM
+   NEW LOGIN BACKEND
 ===================================================== */
 
 
 /* =====================================================
-   GOOGLE APPS SCRIPT URL
+   GOOGLE APPS SCRIPT LOGIN URL
 ===================================================== */
 
-const SPREADSHEET_ID = "1tnwWh_FFUiaF9__2FDbu_87NG0LjaQ26BOJx4sjOvcU";
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbx58Oqv9XwQiT--JZ9mnJASOSGsl0yPI3qDWlRZgoS3APcNlCy593wzaKkVzD1ZOSsD6Q/exec";
 
-function getSpreadsheet() {
-  return SpreadsheetApp.openById(SPREADSHEET_ID);
-}
 
 /* =====================================================
    OPEN LOGIN
@@ -21,38 +20,31 @@ function getSpreadsheet() {
 function openLogin(type) {
 
   const box =
-    document.getElementById(
-      "loginFormBox"
-    );
+    document.getElementById("loginFormBox");
 
   const loginType =
-    document.getElementById(
-      "loginType"
-    );
+    document.getElementById("loginType");
 
   const title =
-    document.getElementById(
-      "loginFormTitle"
-    );
+    document.getElementById("loginFormTitle");
 
   const subtitle =
-    document.getElementById(
-      "loginFormSubtitle"
-    );
+    document.getElementById("loginFormSubtitle");
 
   const icon =
-    document.getElementById(
-      "selectedLoginIcon"
-    );
+    document.getElementById("selectedLoginIcon");
 
   const username =
-    document.getElementById(
-      "username"
-    );
+    document.getElementById("username");
 
 
-  loginType.value =
-    type;
+  if (!box || !loginType || !title || !subtitle || !icon || !username) {
+    console.error("Login HTML elements not found.");
+    return;
+  }
+
+
+  loginType.value = type;
 
 
   /* ================= RETAILER ================= */
@@ -91,9 +83,7 @@ function openLogin(type) {
   }
 
 
-  box.classList.add(
-    "active"
-  );
+  box.classList.add("active");
 
 
   setTimeout(function() {
@@ -115,21 +105,23 @@ function openLogin(type) {
 function closeLogin() {
 
   const box =
-    document.getElementById(
-      "loginFormBox"
-    );
+    document.getElementById("loginFormBox");
+
+  if (box) {
+
+    box.classList.remove("active");
+
+  }
 
 
-  box.classList.remove(
-    "active"
-  );
+  const form =
+    document.getElementById("loginForm");
 
+  if (form) {
 
-  document
-    .getElementById(
-      "loginForm"
-    )
-    .reset();
+    form.reset();
+
+  }
 
 
   clearMessage();
@@ -144,35 +136,30 @@ function closeLogin() {
 function togglePassword() {
 
   const password =
-    document.getElementById(
-      "password"
-    );
+    document.getElementById("password");
 
   const button =
-    document.querySelector(
-      ".show-password"
-    );
+    document.querySelector(".show-password");
 
 
-  if (
-    password.type === "password"
-  ) {
+  if (!password || !button) {
+    return;
+  }
 
-    password.type =
-      "text";
 
-    button.textContent =
-      "🙈";
+  if (password.type === "password") {
+
+    password.type = "text";
+
+    button.textContent = "🙈";
 
   }
 
   else {
 
-    password.type =
-      "password";
+    password.type = "password";
 
-    button.textContent =
-      "👁";
+    button.textContent = "👁";
 
   }
 
@@ -189,28 +176,27 @@ async function handleLogin(event) {
 
 
   const type =
-    document.getElementById(
-      "loginType"
-    ).value;
+    document.getElementById("loginType").value;
 
 
   const username =
-    document.getElementById(
-      "username"
-    ).value.trim();
+    document
+      .getElementById("username")
+      .value
+      .trim();
 
 
   const password =
-    document.getElementById(
-      "password"
-    ).value;
+    document.getElementById("password").value;
 
 
   const button =
-    document.getElementById(
-      "submitLoginBtn"
-    );
+    document.getElementById("submitLoginBtn");
 
+
+  /* ===================================================
+     VALIDATION
+  =================================================== */
 
   if (!type) {
 
@@ -248,13 +234,13 @@ async function handleLogin(event) {
   }
 
 
-  /* ================= LOADING ================= */
+  /* ===================================================
+     LOADING
+  =================================================== */
 
-  button.disabled =
-    true;
+  button.disabled = true;
 
-  button.textContent =
-    "LOGIN...";
+  button.textContent = "LOGIN...";
 
 
   showMessage(
@@ -265,11 +251,20 @@ async function handleLogin(event) {
 
   try {
 
+
+    /* =================================================
+       SELECT ACTION
+    ================================================= */
+
     const action =
       type === "retailer"
         ? "retailerLogin"
         : "adminLogin";
 
+
+    /* =================================================
+       SEND REQUEST
+    ================================================= */
 
     const response =
       await fetch(
@@ -285,19 +280,30 @@ async function handleLogin(event) {
 
           body: JSON.stringify({
 
-            action:
-              action,
+            action: action,
 
-            username:
-              username,
+            username: username,
 
-            password:
-              password
+            password: password
 
           })
 
         }
       );
+
+
+    /* =================================================
+       RESPONSE CHECK
+    ================================================= */
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP Error: " +
+        response.status
+      );
+
+    }
 
 
     const result =
@@ -310,11 +316,11 @@ async function handleLogin(event) {
     );
 
 
-    /* ================= SUCCESS ================= */
+    /* =================================================
+       SUCCESS
+    ================================================= */
 
-    if (
-      result.success
-    ) {
+    if (result.success === true) {
 
       showMessage(
         "Login successful. Redirecting...",
@@ -322,11 +328,11 @@ async function handleLogin(event) {
       );
 
 
-      /* ================= RETAILER ================= */
+      /* ===============================================
+         RETAILER
+      =============================================== */
 
-      if (
-        type === "retailer"
-      ) {
+      if (type === "retailer") {
 
         localStorage.setItem(
           "rajkumarRole",
@@ -336,19 +342,25 @@ async function handleLogin(event) {
 
         localStorage.setItem(
           "rajkumarRetailerId",
-          result.retailerId
+          result.retailerId || ""
         );
 
 
         localStorage.setItem(
           "rajkumarRetailerName",
-          result.retailerName
+          result.retailerName || ""
         );
 
 
         localStorage.setItem(
           "rajkumarRetailerMobile",
           result.mobile || ""
+        );
+
+
+        localStorage.setItem(
+          "rajkumarRetailerUsername",
+          result.username || username
         );
 
 
@@ -365,11 +377,11 @@ async function handleLogin(event) {
       }
 
 
-      /* ================= ADMIN ================= */
+      /* ===============================================
+         ADMIN
+      =============================================== */
 
-      if (
-        type === "admin"
-      ) {
+      if (type === "admin") {
 
         localStorage.setItem(
           "rajkumarRole",
@@ -379,13 +391,13 @@ async function handleLogin(event) {
 
         localStorage.setItem(
           "rajkumarAdminId",
-          result.adminId
+          result.adminId || ""
         );
 
 
         localStorage.setItem(
           "rajkumarAdminName",
-          result.adminName
+          result.adminName || "Administrator"
         );
 
 
@@ -404,7 +416,9 @@ async function handleLogin(event) {
     }
 
 
-    /* ================= FAILED ================= */
+    /* =================================================
+       LOGIN FAILED
+    ================================================= */
 
     showMessage(
 
@@ -428,7 +442,7 @@ async function handleLogin(event) {
 
     showMessage(
 
-      "Server connection failed. Please check Apps Script Web App URL.",
+      "Server connection failed. Please check Login Backend URL.",
 
       "error"
 
@@ -439,11 +453,9 @@ async function handleLogin(event) {
 
   finally {
 
-    button.disabled =
-      false;
+    button.disabled = false;
 
-    button.textContent =
-      "LOGIN";
+    button.textContent = "LOGIN";
 
   }
 
@@ -451,7 +463,7 @@ async function handleLogin(event) {
 
 
 /* =====================================================
-   MESSAGE
+   SHOW MESSAGE
 ===================================================== */
 
 function showMessage(
@@ -460,9 +472,12 @@ function showMessage(
 ) {
 
   const box =
-    document.getElementById(
-      "loginMessage"
-    );
+    document.getElementById("loginMessage");
+
+
+  if (!box) {
+    return;
+  }
 
 
   box.textContent =
@@ -483,13 +498,15 @@ function showMessage(
 function clearMessage() {
 
   const box =
-    document.getElementById(
-      "loginMessage"
-    );
+    document.getElementById("loginMessage");
 
 
-  box.textContent =
-    "";
+  if (!box) {
+    return;
+  }
+
+
+  box.textContent = "";
 
   box.className =
     "login-message";
