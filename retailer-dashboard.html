@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Retailer Dashboard | Rajkumar Website</title>
+
+    <link rel="stylesheet" href="retailer-dashboard.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="dashboard-header">
+
+    <div class="brand">
+        <span>🌐</span>
+        <div>
+            <strong>RAJKUMAR WEBSITE</strong>
+            <small>Retailer Portal</small>
+        </div>
+    </div>
+
+    <div class="header-right">
+
+        <div class="retailer-info">
+            👤
+            <span id="retailerName">Retailer</span>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            🚪 Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= LAYOUT ================= -->
+
+<div class="dashboard-layout">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-title">
+            RETAILER MENU
+        </div>
+
+        <button
+            class="menu-item active"
+            onclick="showSection('dashboard', this)"
+        >
+            🏠 Dashboard
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="showSection('newApplication', this)"
+        >
+            ➕ New Application
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="showSection('applications', this)"
+        >
+            📋 My Applications
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="showSection('tracking', this)"
+        >
+            🔍 Track Application
+        </button>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section id="dashboard" class="content-section active">
+
+            <div class="page-heading">
+
+                <div>
+                    <p>WELCOME</p>
+                    <h1>Retailer Dashboard</h1>
+                </div>
+
+                <button
+                    class="primary-btn"
+                    onclick="openNewApplication()"
+                >
+                    ➕ NEW APPLICATION
+                </button>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">📋</div>
+
+                    <div>
+                        <span>Total Applications</span>
+                        <strong id="totalApplications">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon yellow">🟡</div>
+
+                    <div>
+                        <span>Pending</span>
+                        <strong id="pendingApplications">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">⚙️</div>
+
+                    <div>
+                        <span>Processing</span>
+                        <strong id="processingApplications">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon green">✅</div>
+
+                    <div>
+                        <span>Completed</span>
+                        <strong id="completedApplications">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="panel">
+
+                <div class="panel-heading">
+
+                    <h2>Quick Actions</h2>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <button onclick="openNewApplication()">
+                        <span>➕</span>
+                        <strong>New Application</strong>
+                        <small>Submit a new customer application</small>
+                    </button>
+
+
+                    <button onclick="showSectionById('applications')">
+                        <span>📋</span>
+                        <strong>My Applications</strong>
+                        <small>View submitted applications</small>
+                    </button>
+
+
+                    <button onclick="showSectionById('tracking')">
+                        <span>🔍</span>
+                        <strong>Track Application</strong>
+                        <small>Check application status</small>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= NEW APPLICATION ================= -->
+
+        <section
+            id="newApplication"
+            class="content-section"
+        >
+
+            <div class="page-heading">
+
+                <div>
+                    <p>APPLICATION</p>
+                    <h1>New Application</h1>
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+
+                <!-- STEP INDICATOR -->
+
+                <div class="steps">
+
+                    <div class="step active">
+                        <span>1</span>
+                        <b>Service</b>
+                    </div>
+
+                    <div class="step">
+                        <span>2</span>
+                        <b>Details</b>
+                    </div>
+
+                    <div class="step">
+                        <span>3</span>
+                        <b>Documents</b>
+                    </div>
+
+                    <div class="step">
+                        <span>4</span>
+                        <b>Payment</b>
+                    </div>
+
+                    <div class="step">
+                        <span>5</span>
+                        <b>Submit</b>
+                    </div>
+
+                </div>
+
+
+                <!-- SERVICE -->
+
+                <div class="form-section">
+
+                    <div class="form-title">
+
+                        <span>1</span>
+
+                        <div>
+                            <h2>Select Service</h2>
+                            <p>Select the service required by customer.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="serviceSelect">
+                            Select Service *
+                        </label>
+
+                        <select
+                            id="serviceSelect"
+                            onchange="serviceSelected()"
+                        >
+
+                            <option value="">
+                                -- Select Service --
+                            </option>
+
+                            <option value="Ration Card Services">
+                                Ration Card Services
+                            </option>
+
+                            <option value="PAN Card Services">
+                                PAN Card Services
+                            </option>
+
+                            <option value="Recharge Services">
+                                Recharge Services
+                            </option>
+
+                            <option value="iKhedut Portal અરજી">
+                                iKhedut Portal અરજી
+                            </option>
+
+                            <option value="PM Kisan Samman Nidhi">
+                                PM Kisan Samman Nidhi
+                            </option>
+
+                            <option value="Aadhaar → Mobile Link Check">
+                                Aadhaar → Mobile Link Check
+                            </option>
+
+                            <option value="Aadhaar → PAN Link Check">
+                                Aadhaar → PAN Link Check
+                            </option>
+
+                            <option value="RC PDF Download">
+                                RC PDF Download
+                            </option>
+
+                            <option value="DL PDF Download">
+                                DL PDF Download
+                            </option>
+
+                            <option value="LMS Certificate Apply">
+                                LMS Certificate Apply
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- AMOUNT -->
+
+                    <div
+                        id="serviceInfo"
+                        class="service-info"
+                    >
+
+                        <div>
+                            <span>Selected Service</span>
+                            <strong id="selectedServiceText">
+                                -
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Service Amount</span>
+                            <strong id="serviceAmount">
+                                ₹0
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOMER DETAILS -->
+
+                <div
+                    id="customerDetails"
+                    class="form-section hidden"
+                >
+
+                    <div class="form-title">
+
+                        <span>2</span>
+
+                        <div>
+                            <h2>Customer Details</h2>
+                            <p>Enter customer information.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Customer Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customerName"
+                                placeholder="Enter Customer Name"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Mobile Number *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="customerMobile"
+                                maxlength="10"
+                                placeholder="Enter 10 Digit Mobile Number"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Village
+                            </label>
+
+                            <input
+                                type="text"
+                                id="village"
+                                placeholder="Enter Village"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Taluka
+                            </label>
+
+                            <input
+                                type="text"
+                                id="taluka"
+                                placeholder="Enter Taluka"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                District
+                            </label>
+
+                            <input
+                                type="text"
+                                id="district"
+                                placeholder="Enter District"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Aadhaar Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="aadhaarNumber"
+                                maxlength="12"
+                                placeholder="Enter Aadhaar Number"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- DOCUMENTS -->
+
+                <div
+                    id="documentsSection"
+                    class="form-section hidden"
+                >
+
+                    <div class="form-title">
+
+                        <span>3</span>
+
+                        <div>
+                            <h2>Documents</h2>
+                            <p>Upload required customer documents.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="document-grid">
+
+
+                        <div class="upload-box">
+
+                            <div>📄</div>
+
+                            <label>
+                                Aadhaar Document
+                            </label>
+
+                            <input
+                                type="file"
+                                id="aadhaarDocument"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                            >
+
+                            <small>
+                                PDF / JPG / PNG
+                            </small>
+
+                        </div>
+
+
+                        <div class="upload-box">
+
+                            <div>📄</div>
+
+                            <label>
+                                Service Document
+                            </label>
+
+                            <input
+                                type="file"
+                                id="serviceDocument"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                            >
+
+                            <small>
+                                PDF / JPG / PNG
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+
+                <div
+                    id="paymentSection"
+                    class="form-section hidden"
+                >
+
+                    <div class="form-title">
+
+                        <span>4</span>
+
+                        <div>
+                            <h2>UPI Payment</h2>
+                            <p>Complete payment and upload payment proof.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="payment-layout">
+
+
+                        <div class="payment-details">
+
+                            <div class="amount-box">
+
+                                <span>Payment Amount</span>
+
+                                <strong id="paymentAmount">
+                                    ₹0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="upi-box">
+
+                                <h3>📱 UPI Payment</h3>
+
+                                <p>
+                                    Pay the above amount using UPI / QR Code.
+                                </p>
+
+                                <div class="qr-placeholder">
+                                    QR CODE
+                                </div>
+
+                                <small>
+                                    Actual QR Code will be added later.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="payment-form">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    UTR / Transaction ID *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="transactionId"
+                                    placeholder="Enter UTR / Transaction ID"
+                                >
+
+                            </div>
+
+
+                            <div class="upload-box payment-upload">
+
+                                <div>🧾</div>
+
+                                <label>
+                                    Payment Screenshot *
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="paymentScreenshot"
+                                    accept=".jpg,.jpeg,.png,.pdf"
+                                >
+
+                                <small>
+                                    Upload payment screenshot
+                                </small>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <div
+                    id="submitSection"
+                    class="submit-section hidden"
+                >
+
+                    <div class="status-preview">
+
+                        <div>
+                            <span>Payment Status</span>
+                            <strong>🟡 Pending</strong>
+                        </div>
+
+                        <div>
+                            <span>Application Status</span>
+                            <strong>🟡 Pending</strong>
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="submit-application-btn"
+                        onclick="submitApplication()"
+                    >
+                        🚀 SUBMIT APPLICATION
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MY APPLICATIONS ================= -->
+
+        <section
+            id="applications"
+            class="content-section"
+        >
+
+            <div class="page-heading">
+
+                <div>
+                    <p>HISTORY</p>
+                    <h1>My Applications</h1>
+                </div>
+
+                <button
+                    class="primary-btn"
+                    onclick="openNewApplication()"
+                >
+                    ➕ NEW APPLICATION
+                </button>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="empty-state">
+
+                    <div>📋</div>
+
+                    <h2>No Applications Yet</h2>
+
+                    <p>
+                        Your submitted applications will appear here.
+                    </p>
+
+                    <button
+                        class="primary-btn"
+                        onclick="openNewApplication()"
+                    >
+                        CREATE APPLICATION
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TRACKING ================= -->
+
+        <section
+            id="tracking"
+            class="content-section"
+        >
+
+            <div class="page-heading">
+
+                <div>
+                    <p>STATUS</p>
+                    <h1>Track Application</h1>
+                </div>
+
+            </div>
+
+
+            <div class="tracking-box">
+
+                <div class="tracking-icon">
+                    🔍
+                </div>
+
+                <h2>Track Your Application</h2>
+
+                <p>
+                    Enter your unique Application ID.
+                </p>
+
+
+                <div class="tracking-form">
+
+                    <input
+                        type="text"
+                        id="trackingId"
+                        placeholder="Example: RC20260001"
+                    >
+
+                    <button
+                        onclick="trackApplication()"
+                    >
+                        🔍 TRACK
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="trackingResult"
+                    class="tracking-result"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script src="retailer-dashboard.js"></script>
+
+</body>
+
+</html>

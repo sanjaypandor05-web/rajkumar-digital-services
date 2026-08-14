@@ -1,0 +1,705 @@
+/* =====================================================
+   RAJKUMAR WEBSITE
+   HOME PAGE CSS
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Noto Sans Gujarati", Arial, sans-serif;
+    background: #f5f7fb;
+    color: #222;
+    line-height: 1.6;
+}
+
+
+/* ================= HEADER ================= */
+
+.header {
+    width: 100%;
+    min-height: 72px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 6%;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo span {
+    font-size: 30px;
+}
+
+.logo h2 {
+    color: #0756c9;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.navbar a {
+    color: #222;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: #0756c9;
+}
+
+
+.login-btn {
+    background: #0756c9 !important;
+    color: #ffffff !important;
+
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    box-shadow: 0 5px 15px rgba(7, 86, 201, 0.25);
+}
+
+.login-btn:hover {
+    background: #003f99 !important;
+}
+
+
+.menu-btn {
+    display: none;
+
+    border: none;
+    background: transparent;
+
+    font-size: 28px;
+    cursor: pointer;
+}
+
+
+/* ================= HERO ================= */
+
+.hero {
+    min-height: 650px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 70px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaf3ff 0%,
+            #ffffff 50%,
+            #eef7ff 100%
+        );
+}
+
+
+.hero-content {
+    max-width: 900px;
+}
+
+
+.welcome-small {
+    color: #0756c9;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 10px;
+}
+
+
+.hero h1 {
+    font-size: clamp(42px, 7vw, 78px);
+
+    line-height: 1.1;
+
+    color: #092c5c;
+
+    font-weight: 900;
+
+    margin-bottom: 20px;
+}
+
+
+.hero-text {
+    font-size: 20px;
+
+    color: #555;
+
+    margin-bottom: 35px;
+}
+
+
+.hero-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+.primary-btn,
+.secondary-btn {
+    text-decoration: none;
+
+    padding: 14px 25px;
+
+    border-radius: 8px;
+
+    font-weight: 800;
+
+    transition: 0.3s;
+}
+
+
+.primary-btn {
+    background: #0756c9;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #003f99;
+    transform: translateY(-2px);
+}
+
+
+.secondary-btn {
+    background: white;
+    color: #0756c9;
+
+    border: 2px solid #0756c9;
+}
+
+.secondary-btn:hover {
+    background: #0756c9;
+    color: white;
+}
+
+
+/* ================= SECTION ================= */
+
+.section {
+    padding: 90px 6%;
+}
+
+
+.section-title {
+    text-align: center;
+
+    margin-bottom: 45px;
+}
+
+.section-title p {
+    color: #0756c9;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.section-title h2 {
+    font-size: 38px;
+
+    color: #092c5c;
+
+    margin-top: 5px;
+}
+
+
+/* ================= ABOUT ================= */
+
+.about-box {
+    max-width: 1050px;
+
+    margin: auto;
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 45px;
+
+    display: flex;
+
+    gap: 35px;
+
+    align-items: center;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+}
+
+
+.about-icon {
+    width: 120px;
+    height: 120px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #eaf3ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 55px;
+}
+
+
+.about-content h3 {
+    color: #0756c9;
+
+    font-size: 25px;
+
+    margin-bottom: 12px;
+}
+
+
+.about-content p {
+    color: #555;
+
+    margin-bottom: 10px;
+}
+
+
+/* ================= SERVICES ================= */
+
+.services-section {
+    background: #f0f5fb;
+}
+
+
+.service-cards {
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 22px;
+}
+
+
+.service-card {
+    background: #ffffff;
+
+    padding: 30px 24px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    border: 1px solid #e7edf5;
+
+    transition: 0.3s;
+}
+
+
+.service-card:hover {
+    transform: translateY(-7px);
+
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.10);
+}
+
+
+.service-icon {
+    font-size: 42px;
+
+    margin-bottom: 15px;
+}
+
+
+.service-card h3 {
+    color: #092c5c;
+
+    font-size: 19px;
+
+    margin-bottom: 8px;
+}
+
+
+.service-card p {
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+/* ================= SERVICE LIST ================= */
+
+.service-list {
+    max-width: 900px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+
+.service-list-item {
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 18px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    border: 1px solid #e5eaf1;
+
+    transition: 0.3s;
+}
+
+
+.service-list-item:hover {
+    border-color: #0756c9;
+
+    transform: translateX(4px);
+}
+
+
+.service-list-item span {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    background: #eaf3ff;
+
+    color: #0756c9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 800;
+
+    flex-shrink: 0;
+}
+
+
+.service-list-item strong {
+    color: #333;
+}
+
+
+/* ================= CONTACT ================= */
+
+.contact-section {
+    background: #f0f5fb;
+}
+
+
+.contact-box {
+    max-width: 1050px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+
+.contact-item {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    gap: 18px;
+
+    align-items: center;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+
+.contact-icon {
+    font-size: 35px;
+}
+
+
+.contact-item h3 {
+    color: #092c5c;
+
+    margin-bottom: 3px;
+}
+
+
+.contact-item p {
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+/* ================= WHATSAPP ================= */
+
+.whatsapp-btn {
+    position: fixed;
+
+    right: 22px;
+    bottom: 22px;
+
+    z-index: 999;
+
+    background: #25d366;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 13px 18px;
+
+    border-radius: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.20);
+
+    font-size: 14px;
+
+    transition: 0.3s;
+}
+
+
+.whatsapp-btn:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+.whatsapp-btn span {
+    font-size: 22px;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer {
+    background: #092c5c;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 40px 20px;
+}
+
+
+.footer h3 {
+    font-size: 24px;
+
+    margin-bottom: 8px;
+}
+
+
+.footer p {
+    color: #dce8f8;
+
+    font-size: 14px;
+}
+
+
+.footer .copyright {
+    margin-top: 15px;
+
+    opacity: 0.8;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        position: absolute;
+
+        top: 72px;
+        left: 0;
+
+        width: 100%;
+
+        background: white;
+
+        display: none;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 0;
+
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+    }
+
+
+    .navbar.active {
+        display: flex;
+    }
+
+
+    .navbar a {
+        padding: 15px 6%;
+
+        border-bottom: 1px solid #eeeeee;
+    }
+
+
+    .login-btn {
+        border-radius: 0;
+    }
+
+
+    .menu-btn {
+        display: block;
+    }
+
+
+    .service-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .contact-box {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .header {
+        padding: 0 5%;
+    }
+
+
+    .logo h2 {
+        font-size: 19px;
+    }
+
+
+    .hero {
+        min-height: 560px;
+
+        padding: 50px 18px;
+    }
+
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+
+    .hero-text {
+        font-size: 16px;
+    }
+
+
+    .section {
+        padding: 65px 5%;
+    }
+
+
+    .section-title h2 {
+        font-size: 30px;
+    }
+
+
+    .about-box {
+        padding: 28px;
+
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+
+    .service-cards {
+        grid-template-columns: 1fr;
+    }
+
+
+    .service-list {
+        grid-template-columns: 1fr;
+    }
+
+
+    .whatsapp-btn {
+        right: 15px;
+        bottom: 15px;
+
+        padding: 12px 15px;
+    }
+
+
+    .whatsapp-btn b {
+        display: none;
+    }
+}

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Rajkumar Website</title>
+
+    <link rel="stylesheet" href="login.css">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="login-header">
+
+    <a href="index.html" class="back-home">
+        ← HOME
+    </a>
+
+    <div class="login-logo">
+        🌐 RAJKUMAR WEBSITE
+    </div>
+
+</header>
+
+
+<!-- ================= LOGIN PAGE ================= -->
+
+<main class="login-page">
+
+
+    <div class="login-container">
+
+
+        <div class="login-title">
+
+            <p>SECURE ACCESS</p>
+
+            <h1>🔐 LOGIN</h1>
+
+            <span>
+                Select your login type
+            </span>
+
+        </div>
+
+
+        <!-- ================= LOGIN OPTIONS ================= -->
+
+        <div class="login-options">
+
+
+            <!-- ================= RETAILER ================= -->
+
+            <div class="login-card retailer-card">
+
+                <div class="login-card-icon">
+                    👤
+                </div>
+
+                <h2>RETAILER LOGIN</h2>
+
+                <p>
+                    Retailer માટે application submit
+                    અને tracking માટે login કરો.
+                </p>
+
+                <button
+                    type="button"
+                    class="login-option-btn retailer-btn"
+                    onclick="openLogin('retailer')"
+                >
+                    👤 RETAILER LOGIN
+                </button>
+
+            </div>
+
+
+            <!-- ================= ADMIN ================= -->
+
+            <div class="login-card admin-card">
+
+                <div class="login-card-icon">
+                    👑
+                </div>
+
+                <h2>ADMIN LOGIN</h2>
+
+                <p>
+                    Admin માટે applications,
+                    payment અને status manage કરવા login કરો.
+                </p>
+
+                <button
+                    type="button"
+                    class="login-option-btn admin-btn"
+                    onclick="openLogin('admin')"
+                >
+                    👑 ADMIN LOGIN
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================= LOGIN FORM ================= -->
+
+        <div id="loginFormBox" class="login-form-box">
+
+
+            <button
+                type="button"
+                class="close-login"
+                onclick="closeLogin()"
+            >
+                ×
+            </button>
+
+
+            <div id="selectedLoginIcon"
+                 class="selected-login-icon">
+                👤
+            </div>
+
+
+            <h2 id="loginFormTitle">
+                RETAILER LOGIN
+            </h2>
+
+
+            <p id="loginFormSubtitle">
+                Enter your login details
+            </p>
+
+
+            <form id="loginForm"
+                  onsubmit="handleLogin(event)">
+
+
+                <input
+                    type="hidden"
+                    id="loginType"
+                    value=""
+                >
+
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username / Retailer ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter Username / Retailer ID"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter Password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    id="submitLoginBtn"
+                    class="submit-login-btn"
+                >
+                    LOGIN
+                </button>
+
+
+                <div id="loginMessage"
+                     class="login-message">
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+        <!-- ================= SECURITY NOTE ================= -->
+
+        <div class="security-note">
+
+            🔒
+            <span>
+                Secure Login • Authorized Users Only
+            </span>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="login-footer">
+
+    <h3>RAJKUMAR WEBSITE</h3>
+
+    <p>
+        Online Services • Government Services • Digital Services
+    </p>
+
+    <p>
+        © 2026 Rajkumar Website. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<script src="login.js"></script>
+
+</body>
+
+</html>
