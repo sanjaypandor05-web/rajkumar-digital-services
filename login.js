@@ -8,9 +8,8 @@
    GOOGLE APPS SCRIPT URL
    ADMIN LOGIN ALREADY WORKING - DO NOT CHANGE
 ===================================================== */
-
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxzur__8Lzuis0fQxWtyhjW6XiB6XNC72yxuBSyuv0tOO2PSZQeS45Ssup5F-AlAGGhGQ/exec";
+"https://script.google.com/macros/s/AKfycbw1mKC92_EjWJS_x2o8LMqiL9sssMbFh089IhMujZLd6_9VuujoVckjoMS8fbajVn-uQQ/exec";
 /* =====================================================
    ELEMENTS
 ===================================================== */
