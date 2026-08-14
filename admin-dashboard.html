@@ -2,25 +2,29 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+  <meta name="theme-color" content="#0756c9">
 
-<title>Admin Dashboard | Rajkumar Website</title>
+  <title>Rajkumar Admin Dashboard</title>
 
-<link
-  rel="stylesheet"
-  href="admin-dashboard.css"
->
+  <link rel="stylesheet"
+        href="admin-dashboard.css?v=20260814">
 
 </head>
 
-
 <body>
+
+<!-- =====================================================
+     SIDEBAR OVERLAY - MOBILE
+===================================================== -->
+<div id="sidebarOverlay"
+     class="sidebar-overlay"
+     onclick="toggleSidebar(false)">
+</div>
 
 
 <!-- =====================================================
@@ -31,9 +35,11 @@
 
   <div class="sidebar-logo">
 
-    <div class="logo-icon">👑</div>
+    <div class="logo-icon">
+      👑
+    </div>
 
-    <div>
+    <div class="logo-text">
       <h2>Rajkumar</h2>
       <span>Admin Panel</span>
     </div>
@@ -43,35 +49,47 @@
 
   <nav class="sidebar-nav">
 
-    <button
-      class="nav-item active"
-      onclick="showSection('dashboard', this)"
-    >
-      📊 Dashboard
+    <div class="nav-label">
+      MAIN MENU
+    </div>
+
+    <button class="nav-item active"
+            type="button"
+            onclick="showSection('dashboard', this)">
+
+      <span class="nav-icon">📊</span>
+      <span>Dashboard</span>
+
     </button>
 
 
-    <button
-      class="nav-item"
-      onclick="showSection('applications', this)"
-    >
-      📋 Applications
+    <button class="nav-item"
+            type="button"
+            onclick="showSection('applications', this)">
+
+      <span class="nav-icon">📋</span>
+      <span>Applications</span>
+
     </button>
 
 
-    <button
-      class="nav-item"
-      onclick="showSection('retailers', this)"
-    >
-      👥 Retailers
+    <button class="nav-item"
+            type="button"
+            onclick="showSection('retailers', this)">
+
+      <span class="nav-icon">👥</span>
+      <span>Retailers</span>
+
     </button>
 
 
-    <button
-      class="nav-item"
-      onclick="showSection('services', this)"
-    >
-      🛠️ Services
+    <button class="nav-item"
+            type="button"
+            onclick="showSection('services', this)">
+
+      <span class="nav-icon">🛠️</span>
+      <span>Services</span>
+
     </button>
 
   </nav>
@@ -79,11 +97,32 @@
 
   <div class="sidebar-bottom">
 
-    <button
-      class="logout-btn"
-      onclick="logoutAdmin()"
-    >
-      🚪 Logout
+    <div class="sidebar-user">
+
+      <div class="sidebar-user-avatar">
+        👑
+      </div>
+
+      <div>
+        <strong id="sidebarAdminName">
+          Administrator
+        </strong>
+
+        <small>
+          Administrator
+        </small>
+      </div>
+
+    </div>
+
+
+    <button class="logout-btn"
+            type="button"
+            onclick="logoutAdmin()">
+
+      <span>🚪</span>
+      Logout
+
     </button>
 
   </div>
@@ -91,54 +130,75 @@
 </aside>
 
 
-
 <!-- =====================================================
-     MAIN
+     MAIN CONTENT
 ===================================================== -->
 
 <main class="main-content">
 
 
-  <!-- HEADER -->
+  <!-- ===================================================
+       HEADER
+  =================================================== -->
 
   <header class="top-header">
 
-    <button
-      class="menu-btn"
-      onclick="toggleSidebar()"
-    >
-      ☰
-    </button>
+    <div class="header-left">
+
+      <button class="menu-btn"
+              type="button"
+              onclick="toggleSidebar()"
+              aria-label="Open menu">
+
+        ☰
+
+      </button>
 
 
-    <div class="header-title">
+      <div class="header-title">
 
-      <h1 id="pageTitle">
-        Admin Dashboard
-      </h1>
+        <h1 id="pageTitle">
+          Admin Dashboard
+        </h1>
 
-      <p>
-        Rajkumar Website Management
-      </p>
+        <p>
+          Rajkumar Website Management
+        </p>
+
+      </div>
 
     </div>
 
 
-    <div class="admin-profile">
+    <div class="header-right">
 
-      <div class="admin-avatar">
-        👑
-      </div>
+      <button class="header-refresh"
+              type="button"
+              onclick="refreshCurrentSection()"
+              title="Refresh">
 
-      <div>
+        🔄
 
-        <strong id="adminName">
-          Administrator
-        </strong>
+      </button>
 
-        <small>
-          Admin
-        </small>
+
+      <div class="admin-profile">
+
+        <div class="admin-avatar">
+          👑
+        </div>
+
+        <div class="admin-profile-info">
+
+          <strong id="adminName">
+            Administrator
+          </strong>
+
+          <small>
+            Admin
+          </small>
+
+        </div>
 
       </div>
 
@@ -147,41 +207,45 @@
   </header>
 
 
+  <!-- ===================================================
+       DASHBOARD
+  =================================================== -->
 
-  <!-- =====================================================
-       DASHBOARD SECTION
-  ===================================================== -->
-
-  <section
-    id="dashboardSection"
-    class="page-section active"
-  >
+  <section id="dashboardSection"
+           class="page-section active">
 
     <div class="welcome-card">
 
-      <div>
+      <div class="welcome-content">
 
-        <span>WELCOME BACK</span>
+        <div class="welcome-badge">
+          ✨ ADMIN PANEL
+        </div>
 
         <h2>
+          Welcome back,
           <span id="welcomeName">
             Administrator
           </span>
         </h2>
 
         <p>
-          Manage applications, retailers,
-          payments and services from here.
+          Manage applications, payments, retailers
+          and services from one place.
         </p>
 
       </div>
 
-      <div class="welcome-icon">
-        👑
+
+      <div class="welcome-illustration">
+
+        <div class="welcome-circle">
+          👑
+        </div>
+
       </div>
 
     </div>
-
 
 
     <!-- STATS -->
@@ -189,116 +253,152 @@
     <div class="stats-grid">
 
 
-      <div class="stat-card">
+      <div class="stat-card stat-blue">
 
-        <div class="stat-icon">
-          📋
-        </div>
+        <div class="stat-top">
 
-        <div>
+          <div class="stat-icon">
+            📋
+          </div>
 
-          <span>Total Applications</span>
-
-          <strong id="totalApplications">
-            0
-          </strong>
+          <span class="stat-arrow">
+            ↗
+          </span>
 
         </div>
+
+        <div class="stat-label">
+          Total Applications
+        </div>
+
+        <strong id="totalApplications">
+          0
+        </strong>
 
       </div>
 
 
-      <div class="stat-card">
+      <div class="stat-card stat-yellow">
 
-        <div class="stat-icon">
-          🟡
-        </div>
+        <div class="stat-top">
 
-        <div>
+          <div class="stat-icon">
+            🟡
+          </div>
 
-          <span>Payment Pending</span>
-
-          <strong id="paymentPending">
-            0
-          </strong>
+          <span class="stat-arrow">
+            !
+          </span>
 
         </div>
+
+        <div class="stat-label">
+          Payment Pending
+        </div>
+
+        <strong id="paymentPending">
+          0
+        </strong>
 
       </div>
 
 
-      <div class="stat-card">
+      <div class="stat-card stat-green">
 
-        <div class="stat-icon">
-          🟢
-        </div>
+        <div class="stat-top">
 
-        <div>
+          <div class="stat-icon">
+            🟢
+          </div>
 
-          <span>Payment Verified</span>
-
-          <strong id="paymentVerified">
-            0
-          </strong>
+          <span class="stat-arrow">
+            ✓
+          </span>
 
         </div>
+
+        <div class="stat-label">
+          Payment Verified
+        </div>
+
+        <strong id="paymentVerified">
+          0
+        </strong>
 
       </div>
 
 
-      <div class="stat-card">
+      <div class="stat-card stat-purple">
 
-        <div class="stat-icon">
-          ⚙️
-        </div>
+        <div class="stat-top">
 
-        <div>
+          <div class="stat-icon">
+            ⚙️
+          </div>
 
-          <span>Processing</span>
-
-          <strong id="processing">
-            0
-          </strong>
+          <span class="stat-arrow">
+            →
+          </span>
 
         </div>
+
+        <div class="stat-label">
+          Processing
+        </div>
+
+        <strong id="processing">
+          0
+        </strong>
 
       </div>
 
 
-      <div class="stat-card">
+      <div class="stat-card stat-success">
 
-        <div class="stat-icon">
-          ✅
-        </div>
+        <div class="stat-top">
 
-        <div>
+          <div class="stat-icon">
+            ✅
+          </div>
 
-          <span>Completed</span>
-
-          <strong id="completed">
-            0
-          </strong>
+          <span class="stat-arrow">
+            ✓
+          </span>
 
         </div>
+
+        <div class="stat-label">
+          Completed
+        </div>
+
+        <strong id="completed">
+          0
+        </strong>
 
       </div>
 
 
-      <div class="stat-card">
+      <div class="stat-card stat-danger">
 
-        <div class="stat-icon">
-          ❌
-        </div>
+        <div class="stat-top">
 
-        <div>
+          <div class="stat-icon">
+            ❌
+          </div>
 
-          <span>Rejected</span>
-
-          <strong id="rejected">
-            0
-          </strong>
+          <span class="stat-arrow">
+            !
+          </span>
 
         </div>
+
+        <div class="stat-label">
+          Rejected
+        </div>
+
+        <strong id="rejected">
+          0
+        </strong>
 
       </div>
 
@@ -313,10 +413,13 @@
 
         <div>
 
-          <h2>Quick Actions</h2>
+          <div class="section-title-row">
+            <span class="section-title-icon">⚡</span>
+            <h2>Quick Actions</h2>
+          </div>
 
           <p>
-            Manage your website quickly.
+            Quickly access important admin sections.
           </p>
 
         </div>
@@ -326,30 +429,63 @@
 
       <div class="quick-grid">
 
-        <button
-          onclick="showSectionByName('applications')"
-          class="quick-btn"
-        >
-          📋
-          <span>Applications</span>
+        <button class="quick-btn"
+                type="button"
+                onclick="showSectionByName('applications')">
+
+          <span class="quick-icon blue">
+            📋
+          </span>
+
+          <span class="quick-text">
+            <strong>Applications</strong>
+            <small>Manage customer applications</small>
+          </span>
+
+          <span class="quick-arrow">
+            →
+          </span>
+
         </button>
 
 
-        <button
-          onclick="showSectionByName('retailers')"
-          class="quick-btn"
-        >
-          👥
-          <span>Retailers</span>
+        <button class="quick-btn"
+                type="button"
+                onclick="showSectionByName('retailers')">
+
+          <span class="quick-icon green">
+            👥
+          </span>
+
+          <span class="quick-text">
+            <strong>Retailers</strong>
+            <small>Manage retailer accounts</small>
+          </span>
+
+          <span class="quick-arrow">
+            →
+          </span>
+
         </button>
 
 
-        <button
-          onclick="showSectionByName('services')"
-          class="quick-btn"
-        >
-          🛠️
-          <span>Services</span>
+        <button class="quick-btn"
+                type="button"
+                onclick="showSectionByName('services')">
+
+          <span class="quick-icon purple">
+            🛠️
+          </span>
+
+          <span class="quick-text">
+            <strong>Services</strong>
+            <small>View available services</small>
+          </span>
+
+          <span class="quick-arrow">
+            →
+          </span>
+
         </button>
 
       </div>
@@ -359,24 +495,28 @@
   </section>
 
 
+  <!-- ===================================================
+       APPLICATIONS
+  =================================================== -->
 
-  <!-- =====================================================
-       APPLICATIONS SECTION
-  ===================================================== -->
-
-  <section
-    id="applicationsSection"
-    class="page-section"
-  >
+  <section id="applicationsSection"
+           class="page-section">
 
     <div class="section-card">
-
 
       <div class="section-header">
 
         <div>
 
-          <h2>Applications</h2>
+          <div class="section-title-row">
+
+            <span class="section-title-icon">
+              📋
+            </span>
+
+            <h2>Applications</h2>
+
+          </div>
 
           <p>
             View and manage all customer applications.
@@ -385,11 +525,12 @@
         </div>
 
 
-        <button
-          class="refresh-btn"
-          onclick="loadApplications()"
-        >
+        <button class="refresh-btn"
+                type="button"
+                onclick="loadApplications()">
+
           🔄 Refresh
+
         </button>
 
       </div>
@@ -397,19 +538,21 @@
 
       <div class="filters">
 
+        <div class="filter-box">
 
-        <input
-          type="text"
-          id="applicationSearch"
-          placeholder="Search Application ID / Name / Mobile"
-          oninput="filterApplications()"
-        >
+          <span>🔍</span>
+
+          <input type="text"
+                 id="applicationSearch"
+                 placeholder="Search ID, name, mobile..."
+                 autocomplete="off"
+                 oninput="filterApplications()">
+
+        </div>
 
 
-        <select
-          id="paymentFilter"
-          onchange="filterApplications()"
-        >
+        <select id="paymentFilter"
+                onchange="filterApplications()">
 
           <option value="">
             All Payment
@@ -430,10 +573,8 @@
         </select>
 
 
-        <select
-          id="statusFilter"
-          onchange="filterApplications()"
-        >
+        <select id="statusFilter"
+                onchange="filterApplications()">
 
           <option value="">
             All Status
@@ -469,23 +610,14 @@
             <tr>
 
               <th>Application ID</th>
-
               <th>Customer</th>
-
               <th>Mobile</th>
-
               <th>Retailer</th>
-
               <th>Service</th>
-
               <th>Amount</th>
-
               <th>Payment</th>
-
               <th>Status</th>
-
               <th>Date</th>
-
               <th>Action</th>
 
             </tr>
@@ -497,11 +629,13 @@
 
             <tr>
 
-              <td
-                colspan="10"
-                class="empty-row"
-              >
-                Loading applications...
+              <td colspan="10"
+                  class="empty-row">
+
+                <div class="table-loading">
+                  <span class="spinner"></span>
+                  Loading applications...
+                </div>
 
               </td>
 
@@ -518,24 +652,28 @@
   </section>
 
 
+  <!-- ===================================================
+       RETAILERS
+  =================================================== -->
 
-  <!-- =====================================================
-       RETAILERS SECTION
-  ===================================================== -->
-
-  <section
-    id="retailersSection"
-    class="page-section"
-  >
+  <section id="retailersSection"
+           class="page-section">
 
     <div class="section-card">
-
 
       <div class="section-header">
 
         <div>
 
-          <h2>Retailers</h2>
+          <div class="section-title-row">
+
+            <span class="section-title-icon">
+              👥
+            </span>
+
+            <h2>Retailers</h2>
+
+          </div>
 
           <p>
             Create and manage retailer accounts.
@@ -544,11 +682,12 @@
         </div>
 
 
-        <button
-          class="primary-btn"
-          onclick="openRetailerModal()"
-        >
+        <button class="primary-btn"
+                type="button"
+                onclick="openRetailerModal()">
+
           ➕ Add Retailer
+
         </button>
 
       </div>
@@ -563,19 +702,12 @@
             <tr>
 
               <th>Retailer ID</th>
-
               <th>Name</th>
-
               <th>Mobile</th>
-
               <th>Username</th>
-
               <th>Status</th>
-
-              <th>Total Applications</th>
-
+              <th>Applications</th>
               <th>Last Login</th>
-
               <th>Action</th>
 
             </tr>
@@ -587,11 +719,13 @@
 
             <tr>
 
-              <td
-                colspan="8"
-                class="empty-row"
-              >
-                Loading retailers...
+              <td colspan="8"
+                  class="empty-row">
+
+                <div class="table-loading">
+                  <span class="spinner"></span>
+                  Loading retailers...
+                </div>
 
               </td>
 
@@ -608,15 +742,12 @@
   </section>
 
 
+  <!-- ===================================================
+       SERVICES
+  =================================================== -->
 
-  <!-- =====================================================
-       SERVICES SECTION
-  ===================================================== -->
-
-  <section
-    id="servicesSection"
-    class="page-section"
-  >
+  <section id="servicesSection"
+           class="page-section">
 
     <div class="section-card">
 
@@ -624,7 +755,15 @@
 
         <div>
 
-          <h2>Services</h2>
+          <div class="section-title-row">
+
+            <span class="section-title-icon">
+              🛠️
+            </span>
+
+            <h2>Services</h2>
+
+          </div>
 
           <p>
             Services currently available on Rajkumar Website.
@@ -632,17 +771,20 @@
 
         </div>
 
+        <div class="service-count"
+             id="serviceCount">
+
+          10 Services
+
+        </div>
+
       </div>
 
 
-      <div
-        id="servicesGrid"
-        class="services-grid"
-      >
+      <div id="servicesGrid"
+           class="services-grid">
 
-        <div class="loading-box">
-          Loading services...
-        </div>
+        <!-- Services loaded locally by JS -->
 
       </div>
 
@@ -653,15 +795,12 @@
 </main>
 
 
-
 <!-- =====================================================
      RETAILER MODAL
 ===================================================== -->
 
-<div
-  class="modal"
-  id="retailerModal"
->
+<div class="modal"
+     id="retailerModal">
 
   <div class="modal-box">
 
@@ -669,89 +808,108 @@
 
       <div>
 
-        <h2>
-          Add Retailer
-        </h2>
+        <div class="modal-icon">
+          👥
+        </div>
 
-        <p>
-          Create a new retailer login.
-        </p>
+        <div>
+
+          <h2>
+            Add Retailer
+          </h2>
+
+          <p>
+            Create a new retailer login account.
+          </p>
+
+        </div>
 
       </div>
 
 
-      <button
-        class="close-btn"
-        onclick="closeRetailerModal()"
-      >
+      <button class="close-btn"
+              type="button"
+              onclick="closeRetailerModal()">
+
         ×
+
       </button>
 
     </div>
 
 
-    <form
-      id="retailerForm"
-      onsubmit="createNewRetailer(event)"
-    >
+    <form id="retailerForm"
+          onsubmit="createNewRetailer(event)">
 
-
-      <label>
+      <label for="retailerNameInput">
         Retailer Name
       </label>
 
-      <input
-        type="text"
-        id="retailerNameInput"
-        required
-      >
+      <input type="text"
+             id="retailerNameInput"
+             placeholder="Enter retailer name"
+             autocomplete="off"
+             required>
 
 
-      <label>
+      <label for="retailerMobileInput">
         Mobile Number
       </label>
 
-      <input
-        type="tel"
-        id="retailerMobileInput"
-        maxlength="10"
-      >
+      <input type="tel"
+             id="retailerMobileInput"
+             placeholder="10 digit mobile number"
+             maxlength="10"
+             inputmode="numeric"
+             autocomplete="off">
 
 
-      <label>
+      <label for="retailerUsernameInput">
         Username
       </label>
 
-      <input
-        type="text"
-        id="retailerUsernameInput"
-        required
-      >
+      <input type="text"
+             id="retailerUsernameInput"
+             placeholder="Enter username"
+             autocomplete="off"
+             required>
 
 
-      <label>
+      <label for="retailerPasswordInput">
         Password
       </label>
 
-      <input
-        type="text"
-        id="retailerPasswordInput"
-        required
-      >
+      <div class="password-field">
+
+        <input type="password"
+               id="retailerPasswordInput"
+               placeholder="Enter password"
+               autocomplete="new-password"
+               required>
+
+        <button type="button"
+                onclick="togglePasswordVisibility()"
+                class="password-toggle"
+                id="passwordToggle">
+
+          👁️
+
+        </button>
+
+      </div>
 
 
-      <div
-        id="retailerFormMessage"
-        class="form-message"
-      ></div>
+      <div id="retailerFormMessage"
+           class="form-message">
+      </div>
 
 
-      <button
-        type="submit"
-        class="primary-btn full-btn"
-        id="createRetailerBtn"
-      >
-        Create Retailer
+      <button type="submit"
+              class="primary-btn full-btn"
+              id="createRetailerBtn">
+
+        ➕ Create Retailer
+
       </button>
 
     </form>
@@ -761,15 +919,12 @@
 </div>
 
 
-
 <!-- =====================================================
      APPLICATION MODAL
 ===================================================== -->
 
-<div
-  class="modal"
-  id="applicationModal"
->
+<div class="modal"
+     id="applicationModal">
 
   <div class="modal-box large-modal">
 
@@ -777,34 +932,46 @@
 
       <div>
 
-        <h2>
-          Application Details
-        </h2>
+        <div class="modal-icon">
+          📋
+        </div>
+
+        <div>
+
+          <h2>
+            Application Details
+          </h2>
+
+          <p>
+            View and update application information.
+          </p>
+
+        </div>
 
       </div>
 
 
-      <button
-        class="close-btn"
-        onclick="closeApplicationModal()"
-      >
+      <button class="close-btn"
+              type="button"
+              onclick="closeApplicationModal()">
+
         ×
+
       </button>
 
     </div>
 
 
-    <div
-      id="applicationDetails"
-      class="application-details"
-    ></div>
+    <div id="applicationDetails"
+         class="application-details">
+    </div>
 
 
     <div class="status-actions">
 
       <div>
 
-        <label>
+        <label for="modalPaymentStatus">
           Payment Status
         </label>
 
@@ -829,7 +996,7 @@
 
       <div>
 
-        <label>
+        <label for="modalApplicationStatus">
           Application Status
         </label>
 
@@ -858,32 +1025,32 @@
     </div>
 
 
-    <label>
+    <label for="modalRemarks">
       Admin Remarks
     </label>
 
-    <textarea
-      id="modalRemarks"
-      rows="3"
-      placeholder="Enter remarks..."
-    ></textarea>
+    <textarea id="modalRemarks"
+              rows="3"
+              placeholder="Enter admin remarks..."></textarea>
 
 
     <div class="modal-actions">
 
-      <button
-        class="primary-btn"
-        onclick="saveApplicationChanges()"
-      >
+      <button class="primary-btn"
+              type="button"
+              onclick="saveApplicationChanges()">
+
         💾 Save Changes
+
       </button>
 
 
-      <button
-        class="danger-btn"
-        onclick="deleteCurrentApplication()"
-      >
+      <button class="danger-btn"
+              type="button"
+              onclick="deleteCurrentApplication()">
+
         🗑️ Delete
+
       </button>
 
     </div>
@@ -893,18 +1060,16 @@
 </div>
 
 
-
 <!-- =====================================================
      TOAST
 ===================================================== -->
 
-<div
-  id="toast"
-  class="toast"
-></div>
+<div id="toast"
+     class="toast">
+</div>
 
 
-<script src="admin-dashboard.js"></script>
+<script src="admin-dashboard.js?v=20260814"></script>
 
 </body>
 
