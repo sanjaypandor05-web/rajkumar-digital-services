@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0d6efd"
+  >
+
+  <title>
+    Ration Card Application | Rajkumar Digital Services
+  </title>
+
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family:
+        "Noto Sans Gujarati",
+        Arial,
+        sans-serif;
+      background:
+        linear-gradient(
+          135deg,
+          #eef5ff,
+          #f8fbff
+        );
+      color: #222;
+      min-height: 100vh;
+    }
+
+    /* =================================================
+       HEADER
+    ================================================= */
+
+    .header {
+      background:
+        linear-gradient(
+          135deg,
+          #0d6efd,
+          #084298
+        );
+      color: white;
+      padding: 18px 20px;
+      box-shadow:
+        0 4px 15px
+        rgba(0,0,0,0.12);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .brand small {
+      display: block;
+      font-size: 12px;
+      opacity: 0.9;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      color: white;
+      border:
+        1px solid
+        rgba(255,255,255,0.5);
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* =================================================
+       PAGE
+    ================================================= */
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .page-title h1 {
+      font-size: 28px;
+      color: #084298;
+      margin-bottom: 5px;
+    }
+
+    .page-title p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* =================================================
+       CARD
+    ================================================= */
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow:
+        0 8px 30px
+        rgba(0,0,0,0.08);
+      border:
+        1px solid #e7edf7;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 19px;
+      font-weight: 700;
+      color: #084298;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      border-bottom:
+        1px solid #e5eaf2;
+    }
+
+    /* =================================================
+       GRID
+    ================================================= */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 7px;
+      color: #333;
+    }
+
+    label span {
+      color: #dc3545;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border:
+        1px solid #ccd5e2;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      background: white;
+      transition: 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #0d6efd;
+      box-shadow:
+        0 0 0 3px
+        rgba(13,110,253,0.1);
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      background: #f8fafc;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #777;
+      margin-top: 5px;
+    }
+
+    /* =================================================
+       SERVICE
+    ================================================= */
+
+    .service-box {
+      background:
+        linear-gradient(
+          135deg,
+          #edf5ff,
+          #f8fbff
+        );
+      border:
+        1px solid #cfe0ff;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .service-badge {
+      display: inline-block;
+      background: #0d6efd;
+      color: white;
+      padding: 7px 13px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .service-description {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* =================================================
+       HUSBAND
+    ================================================= */
+
+    #husbandNameGroup {
+      display: none;
+    }
+
+    /* =================================================
+       PAYMENT
+    ================================================= */
+
+    .payment-box {
+      background:
+        linear-gradient(
+          135deg,
+          #fff8e8,
+          #fffdf7
+        );
+      border:
+        1px solid #f0d58a;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .payment-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #8a5a00;
+      margin-bottom: 10px;
+    }
+
+    .payment-note {
+      background: white;
+      border-radius: 9px;
+      padding: 12px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      line-height: 1.7;
+      border:
+        1px solid #f0e3bd;
+    }
+
+    .upi-box {
+      text-align: center;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border:
+        1px solid #eadfca;
+      margin-bottom: 18px;
+    }
+
+    .qr-image {
+      width: 240px;
+      max-width: 80%;
+      height: auto;
+      display: block;
+      margin: 0 auto 15px;
+      border-radius: 10px;
+      border:
+        1px solid #ddd;
+      padding: 5px;
+      background: white;
+    }
+
+    .upi-id {
+      display: inline-block;
+      background: #f1f5f9;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: #333;
+      font-size: 14px;
+      word-break: break-all;
+    }
+
+    .payment-steps {
+      margin: 15px 0 0;
+      padding-left: 20px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    /* =================================================
+       MESSAGE
+    ================================================= */
+
+    .form-message {
+      display: none;
+      padding: 13px 15px;
+      border-radius: 9px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .form-message.info {
+      display: block;
+      background: #e8f2ff;
+      color: #084298;
+      border:
+        1px solid #b8d5ff;
+    }
+
+    .form-message.success {
+      display: block;
+      background: #eaf8ef;
+      color: #146c2e;
+      border:
+        1px solid #b9e5c5;
+    }
+
+    .form-message.error {
+      display: block;
+      background: #fff0f0;
+      color: #a51d2d;
+      border:
+        1px solid #f0b8be;
+    }
+
+    /* =================================================
+       SUBMIT
+    ================================================= */
+
+    .submit-area {
+      text-align: center;
+      padding-top: 5px;
+    }
+
+    .submit-btn {
+      border: none;
+      background:
+        linear-gradient(
+          135deg,
+          #0d6efd,
+          #084298
+        );
+      color: white;
+      padding: 14px 35px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 230px;
+      box-shadow:
+        0 5px 15px
+        rgba(13,110,253,0.25);
+      transition: 0.2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 7px 18px
+        rgba(13,110,253,0.3);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* =================================================
+       FOOTER
+    ================================================= */
+
+    footer {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      padding: 20px 10px 30px;
+    }
+
+    /* =================================================
+       MOBILE
+    ================================================= */
+
+    @media (max-width: 700px) {
+
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+
+      .back-btn {
+        text-align: center;
+      }
+
+      .container {
+        margin-top: 20px;
+      }
+
+      .page-title h1 {
+        font-size: 23px;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .qr-image {
+        width: 210px;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+  <!-- =================================================
+       HEADER
+  ================================================= -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <div class="brand">
+
+        Rajkumar Digital Services
+
+        <small>
+          Ration Card Online Services
+        </small>
+
+      </div>
+
+      <a
+        href="retailer-dashboard.html"
+        class="back-btn"
+      >
+        ← Back to Dashboard
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =================================================
+       MAIN
+  ================================================= -->
+
+  <main class="container">
+
+
+    <div class="page-title">
+
+      <h1>
+        Ration Card Application
+      </h1>
+
+      <p>
+        Ration Card Service માટે નીચેની વિગતો ભરો
+      </p>
+
+    </div>
+
+
+    <!-- =================================================
+         MESSAGE
+    ================================================= -->
+
+    <div
+      id="formMessage"
+      class="form-message"
+    ></div>
+
+
+    <form
+      id="applicationForm"
+      enctype="multipart/form-data"
+      novalidate
+    >
+
+
+      <!-- =================================================
+           SERVICE
+      ================================================= -->
+
+      <div class="card">
+
+        <div class="section-title">
+          📋 Service Details
+        </div>
+
+
+        <div class="service-box">
+
+          <div class="service-badge">
+            Ration Card Service
+          </div>
+
+          <div class="service-description">
+            Ration Card સંબંધિત અરજી માટે આ ફોર્મ ભરો.
+            જરૂરી documents અને payment screenshot upload
+            કરવાનું રહેશે.
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="service">
+            Select Service <span>*</span>
+          </label>
+
+          <select
+            id="service"
+            name="service"
+            required
+          >
+
+            <option value="">
+              -- Select Ration Card Service --
+            </option>
+
+            <option value="Ration Card Name Add">
+              Ration Card Name Add
+            </option>
+
+            <option value="Ration Card Name Remove">
+              Ration Card Name Remove
+            </option>
+
+            <option value="Ration Card Correction">
+              Ration Card Correction
+            </option>
+
+            <option value="Ration Card New">
+              Ration Card New
+            </option>
+
+            <option value="Ration Card Other">
+              Ration Card Other
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           APPLICANT DETAILS
+      ================================================= -->
+
+      <div class="card">
+
+        <div class="section-title">
+          👤 Applicant Details
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- English Name -->
+
+          <div class="form-group">
+
+            <label for="englishName">
+              English Name (As per Aadhaar)
+              <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              id="englishName"
+              name="englishName"
+              placeholder="Enter English Name"
+              autocomplete="off"
+              required
+            >
+
+          </div>
+
+
+          <!-- Gujarati Name -->
+
+          <div class="form-group">
+
+            <label for="gujaratiName">
+              Gujarati Name
+            </label>
+
+            <input
+              type="text"
+              id="gujaratiName"
+              name="gujaratiName"
+              placeholder="ગુજરાતીમાં નામ લખો"
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <!-- Name Type -->
+
+          <div class="form-group">
+
+            <label for="nameType">
+              Name Type
+            </label>
+
+            <select
+              id="nameType"
+              name="nameType"
+            >
+
+              <option value="Self">
+                Self
+              </option>
+
+              <option value="Husband">
+                Husband / W/O
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Husband -->
+
+          <div
+            class="form-group"
+            id="husbandNameGroup"
+          >
+
+            <label for="husbandName">
+              Husband Name
+            </label>
+
+            <input
+              type="text"
+              id="husbandName"
+              name="husbandName"
+              placeholder="Enter Husband Name"
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <!-- Mobile -->
+
+          <div class="form-group">
+
+            <label for="mobile">
+              Mobile Number <span>*</span>
+            </label>
+
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              placeholder="10 digit mobile number"
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="tel"
+              required
+            >
+
+          </div>
+
+
+          <!-- Ration Card Number -->
+
+          <div class="form-group">
+
+            <label for="rationCardNumber">
+              Ration Card Number
+            </label>
+
+            <input
+              type="text"
+              id="rationCardNumber"
+              name="rationCardNumber"
+              placeholder="Enter Ration Card Number"
+              autocomplete="off"
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           ADDRESS
+      ================================================= -->
+
+      <div class="card">
+
+        <div class="section-title">
+          📍 Address Details
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <div class="form-group">
+
+            <label for="village">
+              Village <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              id="village"
+              name="village"
+              placeholder="Enter Village"
+              autocomplete="off"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="taluka">
+              Taluka <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              id="taluka"
+              name="taluka"
+              placeholder="Enter Taluka"
+              autocomplete="off"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="district">
+              District <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              id="district"
+              name="district"
+              placeholder="Enter District"
+              autocomplete="off"
+              required
+            >
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           DOCUMENTS
+      ================================================= -->
+
+      <div class="card">
+
+        <div class="section-title">
+          📎 Document Upload
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- Aadhaar -->
+
+          <div class="form-group">
+
+            <label for="aadhaarFile">
+              Aadhaar Card PDF / Image
+            </label>
+
+            <input
+              type="file"
+              id="aadhaarFile"
+              name="aadhaarFile"
+              accept=".pdf,.jpg,.jpeg,.png"
+            >
+
+            <div class="hint">
+              PDF, JPG અથવા PNG — Maximum 10 MB
+            </div>
+
+          </div>
+
+
+          <!-- Ration -->
+
+          <div class="form-group">
+
+            <label for="rationFile">
+              Ration Card PDF / Image
+            </label>
+
+            <input
+              type="file"
+              id="rationFile"
+              name="rationFile"
+              accept=".pdf,.jpg,.jpeg,.png"
+            >
+
+            <div class="hint">
+              PDF, JPG અથવા PNG — Maximum 10 MB
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           PAYMENT
+      ================================================= -->
+
+      <div class="card">
+
+        <div class="section-title">
+          💳 Payment
+        </div>
+
+
+        <div class="payment-box">
+
+
+          <div class="payment-title">
+            Payment કરો અને Screenshot Upload કરો
+          </div>
+
+
+          <div class="payment-note">
+
+            <strong>
+              Payment Process:
+            </strong>
+
+            <br>
+
+            1. નીચે આપેલ QR Code scan કરો.
+
+            <br>
+
+            2. UPI Payment complete કરો.
+
+            <br>
+
+            3. Payment થયા પછી Screenshot લો.
+
+            <br>
+
+            4. નીચે Payment Screenshot upload કરો.
+
+          </div>
+
+
+          <div class="upi-box">
+
+
+            <!--
+              IMPORTANT:
+              GitHub repository માં તમારી QR image નું
+              actual filename હોય તો અહીં બદલો.
+
+              Example:
+              payment-qr.png
+            -->
+
+            <img
+              src="payment-qr.png"
+              alt="Payment QR Code"
+              class="qr-image"
+              onerror="
+                this.style.display='none';
+                document.getElementById('qrError').style.display='block';
+              "
+            >
+
+
+            <div
+              id="qrError"
+              style="
+                display:none;
+                padding:15px;
+                color:#a51d2d;
+                background:#fff0f0;
+                border-radius:8px;
+                margin-bottom:12px;
+                font-size:13px;
+              "
+            >
+              Payment QR image મળતી નથી.
+              GitHubમાં <b>payment-qr.png</b> upload કરો.
+            </div>
+
+
+            <div>
+              UPI ID
+            </div>
+
+
+            <div class="upi-id">
+              gujrat.nsfa@ybl
+            </div>
+
+
+          </div>
+
+
+          <!-- Transaction ID -->
+
+          <div class="form-group">
+
+            <label for="transactionId">
+              UPI Transaction ID
+            </label>
+
+            <input
+              type="text"
+              id="transactionId"
+              name="transactionId"
+              placeholder="Enter UPI Transaction ID"
+              autocomplete="off"
+            >
+
+            <div class="hint">
+              Payment successful થયા પછી Transaction ID નાખો.
+            </div>
+
+          </div>
+
+
+          <br>
+
+
+          <!-- Payment Screenshot -->
+
+          <div class="form-group">
+
+            <label for="paymentScreenshot">
+              Payment Screenshot <span>*</span>
+            </label>
+
+            <input
+              type="file"
+              id="paymentScreenshot"
+              name="paymentScreenshot"
+              accept=".jpg,.jpeg,.png,.pdf"
+              required
+            >
+
+            <div class="hint">
+              JPG, PNG અથવા PDF — Maximum 10 MB
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           SUBMIT
+      ================================================= -->
+
+      <div class="card">
+
+        <div class="submit-area">
+
+          <p
+            style="
+              color:#666;
+              font-size:13px;
+              margin-bottom:15px;
+              line-height:1.6;
+            "
+          >
+            Submit કરતા પહેલા તમામ વિગતો ચેક કરી લો.
+            Application submit થયા પછી Application ID મળશે.
+          </p>
+
+
+          <button
+            type="submit"
+            id="submitBtn"
+            class="submit-btn"
+          >
+            Submit Application
+          </button>
+
+        </div>
+
+      </div>
+
+
+    </form>
+
+
+  </main>
+
+
+  <!-- =================================================
+       FOOTER
+  ================================================= -->
+
+  <footer>
+
+    © 2026 Rajkumar Digital Services.
+    All Rights Reserved.
+
+  </footer>
+
+
+  <!-- =================================================
+       APPLY JS
+  ================================================= -->
+
+  <script src="apply.js"></script>
+
+
+</body>
+</html>
