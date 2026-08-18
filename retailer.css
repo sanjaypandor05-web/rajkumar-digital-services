@@ -1,1019 +1,356 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* =====================================================
+   RAJKUMAR RETAILER PORTAL
+===================================================== */
+
+.retailer-page {
+    min-height: 100vh;
+    background:
+        linear-gradient(
+            135deg,
+            #f4f8ff,
+            #ffffff 50%,
+            #f0fbf8
+        );
 }
 
-body {
-    font-family: "Noto Sans Gujarati", Arial, sans-serif;
-    background: #f4f7fb;
-    color: #222;
-}
+/* =====================================================
+   TOP BAR
+===================================================== */
 
-
-/* ================= HEADER ================= */
-
-.dashboard-header {
-    height: 70px;
-    background: #ffffff;
+.retailer-topbar {
+    min-height: 72px;
+    padding: 12px 5%;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
-    padding: 0 25px;
+    background: rgba(255,255,255,.96);
+    border-bottom: 1px solid #e3e9f2;
 
-    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    box-shadow: 0 4px 18px rgba(0,0,0,.05);
 
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 100;
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.retailer-brand {
+    color: #1565c0;
+    font-size: 20px;
+    font-weight: 900;
 }
 
-.brand > span {
-    font-size: 30px;
-}
-
-.brand strong {
-    display: block;
-    color: #0756c9;
-    font-size: 18px;
-}
-
-.brand small {
-    color: #777;
-    font-size: 11px;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.retailer-info {
-    background: #eef5ff;
-    color: #0756c9;
-
-    padding: 9px 14px;
-
-    border-radius: 8px;
-
+.retailer-phone {
+    color: #667085;
     font-weight: 700;
 }
 
-.logout-btn {
-    border: none;
+/* =====================================================
+   LOGIN
+===================================================== */
 
-    background: #dc2626;
-    color: white;
-
-    padding: 10px 15px;
-
-    border-radius: 7px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-
-/* ================= LAYOUT ================= */
-
-.dashboard-layout {
-    display: flex;
-    min-height: calc(100vh - 70px);
-}
-
-
-/* ================= SIDEBAR ================= */
-
-.sidebar {
-    width: 245px;
-
-    background: #092c5c;
-
-    padding: 25px 15px;
-
-    flex-shrink: 0;
-}
-
-.sidebar-title {
-    color: #9fc3ed;
-
-    font-size: 12px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    padding: 0 12px 15px;
-}
-
-.menu-item {
+.login-wrapper {
     width: 100%;
-
-    border: none;
-
-    background: transparent;
-
-    color: #dce8f8;
-
-    padding: 14px 15px;
-
-    text-align: left;
-
-    border-radius: 8px;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    margin-bottom: 5px;
-
-    transition: .2s;
+    max-width: 480px;
+    margin: 65px auto;
+    padding: 0 18px;
 }
 
-.menu-item:hover,
-.menu-item.active {
-    background: #0756c9;
-    color: white;
-}
-
-
-/* ================= MAIN ================= */
-
-.main-content {
-    flex: 1;
-
-    padding: 30px;
-
-    min-width: 0;
-}
-
-.content-section {
-    display: none;
-}
-
-.content-section.active {
-    display: block;
-}
-
-
-/* ================= HEADING ================= */
-
-.page-heading {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 25px;
-}
-
-.page-heading p {
-    color: #0756c9;
-
-    font-size: 12px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-}
-
-.page-heading h1 {
-    color: #092c5c;
-
-    font-size: 30px;
-}
-
-
-/* ================= BUTTON ================= */
-
-.primary-btn {
-    border: none;
-
-    background: #0756c9;
-
-    color: white;
-
-    padding: 12px 18px;
-
-    border-radius: 8px;
-
-    font-weight: 800;
-
-    cursor: pointer;
-}
-
-.primary-btn:hover {
-    background: #003f99;
-}
-
-
-/* ================= STATS ================= */
-
-.stats-grid {
-    display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
-    gap: 18px;
-
-    margin-bottom: 25px;
-}
-
-.stat-card {
+.retailer-page .login-card {
     background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 35px;
 
-    border-radius: 12px;
-
-    padding: 20px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    box-shadow:
+        0 20px 55px
+        rgba(21,101,192,.10);
 }
 
-.stat-icon {
-    width: 50px;
-    height: 50px;
+.retailer-page .login-icon {
+    width: 75px;
+    height: 75px;
 
-    border-radius: 10px;
+    margin: 0 auto 18px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 24px;
+    border-radius: 22px;
+    background: #edf5ff;
+
+    font-size: 34px;
 }
 
-.stat-icon.blue {
-    background: #eaf3ff;
+.retailer-page .login-card h1 {
+    text-align: center;
+    color: #172033;
+    font-size: 27px;
+    font-weight: 900;
 }
 
-.stat-icon.yellow {
-    background: #fff8dc;
+.retailer-page .login-card > p {
+    text-align: center;
+    color: #667085;
+    margin: 6px 0 25px;
 }
 
-.stat-icon.orange {
-    background: #fff0dc;
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+#dashboardSection {
+    padding: 30px 4%;
 }
 
-.stat-icon.green {
-    background: #e7f8ed;
+.dashboard {
+    width: min(1250px, 100%);
+    margin: auto;
 }
 
-.stat-card span {
-    display: block;
+/* HEADER */
 
-    color: #777;
-
-    font-size: 12px;
-}
-
-.stat-card strong {
-    display: block;
-
-    color: #092c5c;
-
-    font-size: 24px;
-}
-
-
-/* ================= PANEL ================= */
-
-.panel {
+.dashboard-header {
     background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 23px 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+
+    box-shadow: 0 8px 25px rgba(20,40,80,.06);
+}
+
+.dashboard-header h1 {
+    color: #172033;
+    font-size: 27px;
+    font-weight: 900;
+}
+
+.dashboard-header p {
+    color: #667085;
+    margin-top: 4px;
+}
+
+.dashboard-header strong {
+    color: #1565c0;
+}
+
+#loggedRetailerId {
+    color: #98a2b3;
+}
+
+/* LOGOUT */
+
+.logout-button {
+    border: none;
+    border-radius: 11px;
+
+    padding: 11px 19px;
+
+    background: #fff0f0;
+    color: #d32f2f;
+
+    font-weight: 850;
+
+    transition: .25s;
+}
+
+.logout-button:hover {
+    background: #d32f2f;
+    color: white;
+}
+
+/* =====================================================
+   BOXES
+===================================================== */
+
+.services-box,
+.application-box {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+
+    padding: 25px;
+    margin-bottom: 22px;
+
+    box-shadow: 0 8px 25px rgba(20,40,80,.05);
+}
+
+.services-box h2,
+.application-box h2 {
+    color: #172033;
+    font-size: 21px;
+    font-weight: 900;
+    margin-bottom: 17px;
+}
+
+/* SERVICE */
+
+.service-select {
+    min-height: 52px;
+    border-radius: 12px;
+    border: 1px solid #dbe2ea;
+
+    padding: 12px 14px;
+
+    background: #fff;
+    color: #172033;
+    font-weight: 650;
+
+    width: 100%;
+}
+
+.service-select:focus {
+    outline: none;
+    border-color: #1565c0;
+    box-shadow: 0 0 0 4px rgba(21,101,192,.08);
+}
+
+/* =====================================================
+   AMOUNT
+===================================================== */
+
+.amount-box {
+    margin-top: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 17px 20px;
 
     border-radius: 14px;
 
-    padding: 25px;
+    background:
+        linear-gradient(
+            135deg,
+            #f1f7ff,
+            #f3fbf9
+        );
 
-    box-shadow: 0 5px 20px rgba(0,0,0,.05);
-
-    margin-bottom: 25px;
+    border: 1px solid #dbe8f5;
 }
 
-.panel-heading {
-    margin-bottom: 20px;
+.amount-label {
+    color: #667085;
+    font-weight: 750;
 }
 
-.panel-heading h2 {
-    color: #092c5c;
-    font-size: 20px;
+.amount-value {
+    color: #1565c0;
+    font-size: 25px;
+    font-weight: 900;
 }
 
+/* =====================================================
+   APPLICATION GRID
+===================================================== */
 
-/* ================= QUICK ACTION ================= */
-
-.quick-actions {
+.application-box .form-grid {
     display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 15px;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 17px;
 }
 
-.quick-actions button {
-    border: 1px solid #e1e7ef;
-
-    background: white;
-
-    border-radius: 10px;
-
-    padding: 20px;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    transition: .2s;
-}
-
-.quick-actions button:hover {
-    border-color: #0756c9;
-
-    transform: translateY(-3px);
-}
-
-.quick-actions span {
-    display: block;
-
-    font-size: 28px;
-
-    margin-bottom: 10px;
-}
-
-.quick-actions strong {
-    display: block;
-
-    color: #092c5c;
-}
-
-.quick-actions small {
-    display: block;
-
-    color: #777;
-
-    margin-top: 5px;
-}
-
-
-/* ================= STEPS ================= */
-
-.steps {
-    display: flex;
-
-    justify-content: space-between;
-
-    margin-bottom: 35px;
-
-    position: relative;
-}
-
-.steps::before {
-    content: "";
-
-    position: absolute;
-
-    left: 5%;
-    right: 5%;
-
-    top: 18px;
-
-    height: 2px;
-
-    background: #dfe5ed;
-
-    z-index: 0;
-}
-
-.step {
-    position: relative;
-
-    z-index: 1;
-
-    background: white;
-
-    text-align: center;
-
-    color: #999;
-}
-
-.step span {
-    width: 36px;
-    height: 36px;
-
-    border-radius: 50%;
-
-    background: #e8edf3;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    margin: auto;
-
-    font-weight: 800;
-}
-
-.step b {
-    display: block;
-
-    font-size: 11px;
-
-    margin-top: 5px;
-}
-
-.step.active {
-    color: #0756c9;
-}
-
-.step.active span {
-    background: #0756c9;
-
-    color: white;
-}
-
-
-/* ================= FORM ================= */
-
-.form-section {
-    border-top: 1px solid #edf0f4;
-
-    padding-top: 25px;
-
-    margin-top: 25px;
-}
-
-.form-section.hidden {
-    display: none;
-}
-
-.form-title {
-    display: flex;
-
-    gap: 12px;
-
-    align-items: center;
-
-    margin-bottom: 22px;
-}
-
-.form-title > span {
-    width: 35px;
-    height: 35px;
-
-    background: #0756c9;
-
-    color: white;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-weight: 800;
-}
-
-.form-title h2 {
-    color: #092c5c;
-
-    font-size: 20px;
-}
-
-.form-title p {
-    color: #777;
-
-    font-size: 12px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    display: block;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    margin-bottom: 7px;
-}
-
-.form-group input,
-.form-group select {
+/* =====================================================
+   SUBMIT
+===================================================== */
+
+.application-box .login-button {
     width: 100%;
-
-    padding: 13px;
-
-    border: 1px solid #d6dde7;
-
-    border-radius: 8px;
-
-    outline: none;
-
-    font-size: 14px;
-
-    background: white;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    border-color: #0756c9;
-
-    box-shadow: 0 0 0 3px rgba(7,86,201,.08);
-}
-
-.form-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 0 18px;
-}
-
-
-/* ================= SERVICE INFO ================= */
-
-.service-info {
-    display: none;
-
     margin-top: 20px;
 
-    background: #eef6ff;
+    min-height: 52px;
 
-    border: 1px solid #cfe2ff;
-
-    border-radius: 10px;
-
-    padding: 18px;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 20px;
-}
-
-.service-info.show {
-    display: grid;
-}
-
-.service-info span {
-    display: block;
-
-    color: #666;
-
-    font-size: 12px;
-}
-
-.service-info strong {
-    display: block;
-
-    color: #0756c9;
-
-    margin-top: 3px;
-}
-
-
-/* ================= DOCUMENTS ================= */
-
-.document-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 18px;
-}
-
-.upload-box {
-    border: 2px dashed #ccd5e1;
-
-    border-radius: 10px;
-
-    padding: 25px;
-
-    text-align: center;
-
-    background: #fafcff;
-}
-
-.upload-box > div {
-    font-size: 30px;
-
-    margin-bottom: 8px;
-}
-
-.upload-box label {
-    display: block;
-
-    font-weight: 700;
-
-    margin-bottom: 12px;
-}
-
-.upload-box input {
-    max-width: 100%;
-
-    font-size: 12px;
-}
-
-.upload-box small {
-    display: block;
-
-    color: #888;
-
-    margin-top: 8px;
-}
-
-
-/* ================= PAYMENT ================= */
-
-.payment-layout {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 25px;
-}
-
-.amount-box {
-    background: #eef6ff;
-
-    border-radius: 10px;
-
-    padding: 20px;
-
-    margin-bottom: 18px;
-}
-
-.amount-box span {
-    display: block;
-
-    color: #666;
-
-    font-size: 13px;
-}
-
-.amount-box strong {
-    display: block;
-
-    color: #0756c9;
-
-    font-size: 30px;
-}
-
-.upi-box {
-    border: 1px solid #e1e7ef;
-
-    border-radius: 10px;
-
-    padding: 20px;
-
-    text-align: center;
-}
-
-.upi-box h3 {
-    color: #092c5c;
-
-    margin-bottom: 5px;
-}
-
-.upi-box p {
-    color: #777;
-
-    font-size: 13px;
-}
-
-.qr-placeholder {
-    width: 170px;
-    height: 170px;
-
-    margin: 20px auto;
-
-    border: 2px dashed #aaa;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #888;
-
-    font-weight: 800;
-}
-
-.upi-box small {
-    color: #999;
-}
-
-
-/* ================= SUBMIT ================= */
-
-.submit-section {
-    border-top: 1px solid #edf0f4;
-
-    margin-top: 25px;
-
-    padding-top: 25px;
-
-    text-align: center;
-}
-
-.submit-section.hidden {
-    display: none;
-}
-
-.status-preview {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 15px;
-
-    margin-bottom: 20px;
-}
-
-.status-preview div {
-    background: #fff9df;
-
-    border: 1px solid #f2df9c;
-
-    padding: 15px;
-
-    border-radius: 8px;
-}
-
-.status-preview span {
-    display: block;
-
-    color: #777;
-
-    font-size: 12px;
-}
-
-.status-preview strong {
-    display: block;
-
-    margin-top: 3px;
-}
-
-.submit-application-btn {
-    width: 100%;
-
-    max-width: 500px;
-
-    padding: 16px;
-
-    border: none;
-
-    border-radius: 9px;
-
-    background: #0756c9;
-
+    background: #1565c0;
     color: white;
 
+    border: none;
+    border-radius: 12px;
+
+    font-weight: 850;
     font-size: 16px;
 
-    font-weight: 900;
-
-    cursor: pointer;
+    transition: .25s;
 }
 
-.submit-application-btn:hover {
-    background: #003f99;
+.application-box .login-button:hover {
+    background: #0d47a1;
+    transform: translateY(-2px);
 }
 
+/* =====================================================
+   MESSAGE
+===================================================== */
 
-/* ================= EMPTY ================= */
-
-.empty-state {
+#applicationMessage {
+    font-weight: 750;
     text-align: center;
-
-    padding: 60px 20px;
 }
 
-.empty-state > div {
-    font-size: 55px;
+/* =====================================================
+   MOBILE
+===================================================== */
 
-    margin-bottom: 10px;
-}
+@media(max-width:700px) {
 
-.empty-state h2 {
-    color: #092c5c;
-}
-
-.empty-state p {
-    color: #777;
-
-    margin: 8px 0 20px;
-}
-
-
-/* ================= TRACKING ================= */
-
-.tracking-box {
-    max-width: 650px;
-
-    margin: 40px auto;
-
-    background: white;
-
-    padding: 40px;
-
-    border-radius: 15px;
-
-    text-align: center;
-
-    box-shadow: 0 8px 30px rgba(0,0,0,.07);
-}
-
-.tracking-icon {
-    font-size: 50px;
-}
-
-.tracking-box h2 {
-    color: #092c5c;
-
-    margin-top: 10px;
-}
-
-.tracking-box p {
-    color: #777;
-
-    margin-bottom: 25px;
-}
-
-.tracking-form {
-    display: flex;
-
-    gap: 10px;
-}
-
-.tracking-form input {
-    flex: 1;
-
-    padding: 13px;
-
-    border: 1px solid #d6dde7;
-
-    border-radius: 8px;
-
-    outline: none;
-}
-
-.tracking-form button {
-    border: none;
-
-    background: #0756c9;
-
-    color: white;
-
-    padding: 0 20px;
-
-    border-radius: 8px;
-
-    font-weight: 800;
-
-    cursor: pointer;
-}
-
-.tracking-result {
-    margin-top: 20px;
-}
-
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 1000px) {
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .retailer-topbar {
+        padding: 12px 4%;
     }
 
-    .quick-actions {
-        grid-template-columns: 1fr;
+    .retailer-brand {
+        font-size: 16px;
     }
-}
 
+    .retailer-phone {
+        font-size: 13px;
+    }
 
-@media (max-width: 750px) {
+    .login-wrapper {
+        margin: 35px auto;
+    }
+
+    .retailer-page .login-card {
+        padding: 25px 20px;
+    }
+
+    #dashboardSection {
+        padding: 18px 3%;
+    }
 
     .dashboard-header {
-        padding: 0 15px;
-    }
-
-    .brand strong {
-        font-size: 14px;
-    }
-
-    .brand small {
-        display: none;
-    }
-
-    .retailer-info {
-        display: none;
-    }
-
-    .dashboard-layout {
-        display: block;
-    }
-
-    .sidebar {
-        width: 100%;
-
-        display: flex;
-
-        overflow-x: auto;
-
-        padding: 8px;
-    }
-
-    .sidebar-title {
-        display: none;
-    }
-
-    .menu-item {
-        min-width: 145px;
-
-        margin: 0 3px;
-    }
-
-    .main-content {
-        padding: 20px 15px;
-    }
-
-    .page-heading {
         align-items: flex-start;
-
+        gap: 15px;
         flex-direction: column;
     }
 
-    .form-grid {
-        grid-template-columns: 1fr;
+    .dashboard-header h1 {
+        font-size: 23px;
     }
 
-    .document-grid,
-    .payment-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .status-preview {
-        grid-template-columns: 1fr;
-    }
-
-    .tracking-form {
-        flex-direction: column;
-    }
-
-    .tracking-form button {
-        padding: 13px;
-    }
-}
-
-
-@media (max-width: 500px) {
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .panel {
+    .services-box,
+    .application-box {
         padding: 18px;
+        border-radius: 16px;
     }
 
-    .steps {
-        overflow-x: auto;
-
-        gap: 20px;
-    }
-
-    .steps::before {
-        display: none;
-    }
-
-    .step {
-        min-width: 65px;
-    }
-
-    .service-info {
+    .application-box .form-grid {
         grid-template-columns: 1fr;
+    }
+
+    .amount-box {
+        padding: 14px;
+    }
+
+    .amount-value {
+        font-size: 21px;
     }
 }
