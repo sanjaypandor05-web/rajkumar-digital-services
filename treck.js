@@ -1,570 +1,216 @@
-/* =====================================================
-   RAJKUMAR RATIONCARD SERVICES
-   TRACK APPLICATION
-===================================================== */
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwN-xev_9yNqkrce0rnZ-ePCwQ3wkqvQC1brT0CncJv4ce8yv7LuaKcuLojQKfMuaHS/exec";
 
 
-/*
- * Code.gs Deploy કર્યા પછી અહીં
- * Web App URL નાખવાનો રહેશે.
- */
+document.addEventListener("DOMContentLoaded", function () {
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwN-xev_9yNqkrce0rnZ-ePCwQ3wkqvQC1brT0CncJv4ce8yv7LuaKcuLojQKfMuaHS/exec";
+  const form = document.getElementById("trackForm");
+  const input = document.getElementById("applicationId");
+  const result = document.getElementById("trackResult");
+  const button = document.getElementById("trackButton");
 
+  if (!form) {
+    console.log("Track form not found");
+    return;
+  }
 
-/* PAGE LOAD */
+  form.addEventListener("submit", async function (e) {
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+    e.preventDefault();
 
-        setupTrackForm();
+    const applicationId =
+      input ? input.value.trim() : "";
 
+    if (!applicationId) {
+      showMessage(
+        "Please enter Application ID",
+        "error"
+      );
+      return;
     }
-);
 
+    button.disabled = true;
+    button.innerText = "Checking...";
 
-/* FORM */
+    result.innerHTML = "";
 
-function setupTrackForm() {
+    try {
 
-    const form =
-        document.getElementById(
-            "trackForm"
+      const url =
+        GOOGLE_SCRIPT_URL +
+        "?action=trackApplication" +
+        "&applicationId=" +
+        encodeURIComponent(applicationId);
+
+      const response =
+        await fetch(url);
+
+      const data =
+        await response.json();
+
+      if (data.success) {
+
+        showApplication(data);
+
+      } else {
+
+        showMessage(
+          data.message ||
+          "Application not found.",
+          "error"
         );
 
+      }
 
-    form.addEventListener(
-        "submit",
-        async function (event) {
+    } catch (error) {
 
-            event.preventDefault();
+      console.error(error);
 
-
-            const input =
-                document.getElementById(
-                    "applicationId"
-                );
-
-
-            const button =
-                document.getElementById(
-                    "trackButton"
-                );
-
-
-            const message =
-                document.getElementById(
-                    "trackMessage"
-                );
-
-
-            const applicationId =
-                input.value
-                    .trim()
-                    .toUpperCase();
-
-
-            if (
-                !applicationId
-            ) {
-
-                showMessage(
-                    message,
-                    "⚠️ Application ID નાખો.",
-                    false
-                );
-
-                return;
-
-            }
-
-
-            button.disabled =
-                true;
-
-
-            button.textContent =
-                "⏳ Searching...";
-
-
-            try {
-
-                if (
-                    !GOOGLE_SCRIPT_URL
-                ) {
-
-                    showMessage(
-                        message,
-
-                        "⚠️ Google Apps Script URL હજુ connect કરવાનું બાકી છે.",
-
-                        false
-                    );
-
-                    return;
-
-                }
-
-
-                const result =
-                    await trackApplication(
-                        applicationId
-                    );
-
-
-                if (
-                    result.success
-                ) {
-
-                    displayResult(
-                        result
-                    );
-
-                    hideMessage(
-                        message
-                    );
-
-                } else {
-
-                    hideResult();
-
-                    showMessage(
-                        message,
-
-                        "❌ " +
-                        (
-                            result.message ||
-                            "Application મળ્યું નથી."
-                        ),
-
-                        false
-                    );
-
-                }
-
-
-            } catch (error) {
-
-                console.error(
-                    error
-                );
-
-
-                hideResult();
-
-
-                showMessage(
-                    message,
-
-                    "❌ Server સાથે connection થઈ શક્યું નથી.",
-
-                    false
-                );
-
-
-            } finally {
-
-                button.disabled =
-                    false;
-
-                button.textContent =
-                    "🔎 Track Application";
-
-            }
-
-        }
-    );
-
-}
-
-
-/* TRACK API */
-
-async function trackApplication(
-    applicationId
-) {
-
-    const response =
-        await fetch(
-            GOOGLE_SCRIPT_URL,
-            {
-
-                method: "POST",
-
-                body:
-                    JSON.stringify({
-
-                        action:
-                            "trackApplication",
-
-                        applicationId:
-                            applicationId
-
-                    })
-
-            }
-        );
-
-
-    return await response.json();
-
-}
-
-
-/* DISPLAY RESULT */
-
-function displayResult(
-    data
-) {
-
-    const section =
-        document.getElementById(
-            "resultSection"
-        );
-
-
-    section.style.display =
-        "block";
-
-
-    setText(
-        "resultApplicationId",
-        data.applicationId
-    );
-
-
-    setText(
-        "resultApplicant",
-        data.applicant || "-"
-    );
-
-
-    setText(
-        "resultService",
-        data.service || "-"
-    );
-
-
-    setText(
-        "resultAmount",
-        "₹" +
-        Number(
-            data.amount || 0
-        )
-    );
-
-
-    setText(
-        "resultMobile",
-        data.mobile || "-"
-    );
-
-
-    setText(
-        "resultDate",
-        data.date || "-"
-    );
-
-
-    setText(
-        "resultRetailer",
-        data.retailerId || "-"
-    );
-
-
-    setText(
-        "paymentStatus",
-        data.paymentStatus || "Pending"
-    );
-
-
-    setText(
-        "mainApplicationStatus",
-        data.applicationStatus || "Pending"
-    );
-
-
-    setText(
-        "resultUpdated",
-        data.updatedAt || "-"
-    );
-
-
-    updateStatusBadge(
-        data.applicationStatus
-    );
-
-
-    updateTimeline(
-        data.paymentStatus,
-        data.applicationStatus
-    );
-
-
-    section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-
-}
-
-
-/* TEXT */
-
-function setText(
-    id,
-    value
-) {
-
-    const element =
-        document.getElementById(
-            id
-        );
-
-
-    if (element) {
-
-        element.textContent =
-            value;
+      showMessage(
+        "Server connection error. Please try again.",
+        "error"
+      );
 
     }
 
-}
+    button.disabled = false;
+    button.innerText = "Track Application";
+
+  });
+
+});
 
 
-/* STATUS BADGE */
+function showApplication(data) {
 
-function updateStatusBadge(
-    status
-) {
+  const result =
+    document.getElementById("trackResult");
 
-    const badge =
-        document.getElementById(
-            "applicationStatusBadge"
-        );
+  result.innerHTML = `
 
+    <div class="track-card">
 
-    if (!badge) return;
+      <div class="track-title">
+        RAJKUMAR RATIONCARD SERVICES
+      </div>
 
+      <div class="track-id">
+        Application ID:
+        <strong>${safe(data.applicationId)}</strong>
+      </div>
 
-    const value =
-        String(
-            status || "Pending"
-        );
+      <div class="track-row">
+        <span>Applicant Name</span>
+        <strong>${safe(data.applicant)}</strong>
+      </div>
 
+      <div class="track-row">
+        <span>Service</span>
+        <strong>${safe(data.service)}</strong>
+      </div>
 
-    badge.textContent =
-        value;
+      <div class="track-row">
+        <span>Amount</span>
+        <strong>₹${safe(data.amount)}</strong>
+      </div>
 
+      <div class="track-row">
+        <span>Mobile</span>
+        <strong>${safe(data.mobile)}</strong>
+      </div>
 
-    badge.className =
-        "status-badge";
+      <div class="track-row">
+        <span>Application Date</span>
+        <strong>${safe(data.date)}</strong>
+      </div>
 
+      <div class="track-status">
 
-    if (
-        value.toLowerCase()
-            .includes("complete")
-    ) {
+        <div>
+          <small>Payment Status</small>
+          <strong class="${statusClass(data.paymentStatus)}">
+            ${safe(data.paymentStatus || "Pending")}
+          </strong>
+        </div>
 
-        badge.classList.add(
-            "complete"
-        );
+        <div>
+          <small>Application Status</small>
+          <strong class="${statusClass(data.applicationStatus)}">
+            ${safe(data.applicationStatus || "Submitted")}
+          </strong>
+        </div>
 
-    } else if (
-        value.toLowerCase()
-            .includes("process")
-    ) {
+      </div>
 
-        badge.classList.add(
-            "processing"
-        );
+      <div class="track-updated">
+        Last Updated:
+        ${safe(data.updatedAt)}
+      </div>
 
-    } else {
+    </div>
 
-        badge.classList.add(
-            "pending"
-        );
-
-    }
-
-}
-
-
-/* TIMELINE */
-
-function updateTimeline(
-    paymentStatus,
-    applicationStatus
-) {
-
-    clearTimeline();
-
-
-    activate(
-        "stepSubmitted"
-    );
-
-
-    const payment =
-        String(
-            paymentStatus || ""
-        ).toLowerCase();
-
-
-    const status =
-        String(
-            applicationStatus || ""
-        ).toLowerCase();
-
-
-    if (
-        payment.includes("paid") ||
-        payment.includes("verified") ||
-        payment.includes("success")
-    ) {
-
-        activate(
-            "stepPayment"
-        );
-
-    }
-
-
-    if (
-        status.includes("process") ||
-        status.includes("approved") ||
-        status.includes("complete")
-    ) {
-
-        activate(
-            "stepProcessing"
-        );
-
-    }
-
-
-    if (
-        status.includes("complete") ||
-        status.includes("completed") ||
-        status.includes("done")
-    ) {
-
-        activate(
-            "stepCompleted"
-        );
-
-    }
+  `;
 
 }
 
 
-/* CLEAR */
+function showMessage(message, type) {
 
-function clearTimeline() {
+  const result =
+    document.getElementById("trackResult");
 
-    document
-        .querySelectorAll(
-            ".timeline-item"
-        )
-        .forEach(
-            function (item) {
+  result.innerHTML = `
 
-                item.classList.remove(
-                    "active"
-                );
+    <div class="track-message ${type}">
+      ${safe(message)}
+    </div>
 
-            }
-        );
+  `;
 
 }
 
 
-/* ACTIVATE */
+function statusClass(status) {
 
-function activate(
-    id
-) {
+  const value =
+    String(status || "")
+      .toLowerCase();
 
-    const element =
-        document.getElementById(
-            id
-        );
+  if (
+    value.includes("approved") ||
+    value.includes("success") ||
+    value.includes("paid") ||
+    value.includes("completed")
+  ) {
+    return "success";
+  }
 
+  if (
+    value.includes("reject") ||
+    value.includes("cancel")
+  ) {
+    return "danger";
+  }
 
-    if (element) {
-
-        element.classList.add(
-            "active"
-        );
-
-    }
-
-}
-
-
-/* MESSAGE */
-
-function showMessage(
-    element,
-    message,
-    success
-) {
-
-    element.style.display =
-        "block";
-
-    element.innerHTML =
-        message;
-
-
-    if (success) {
-
-        element.style.background =
-            "#e8f5e9";
-
-        element.style.color =
-            "#2e7d32";
-
-    } else {
-
-        element.style.background =
-            "#ffebee";
-
-        element.style.color =
-            "#c62828";
-
-    }
+  return "pending";
 
 }
 
 
-/* HIDE MESSAGE */
+function safe(value) {
 
-function hideMessage(
-    element
-) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
 
-    element.style.display =
-        "none";
-
-    element.innerHTML =
-        "";
-
-}
-
-
-/* HIDE RESULT */
-
-function hideResult() {
-
-    const section =
-        document.getElementById(
-            "resultSection"
-        );
-
-
-    section.style.display =
-        "none";
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
