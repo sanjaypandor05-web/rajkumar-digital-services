@@ -26,6 +26,7 @@
 
 </head>
 
+
 <body>
 
 <div class="retailer-page">
@@ -66,6 +67,7 @@
                 <p>
                     Enter your Retailer ID and Password
                 </p>
+
 
                 <form id="retailerLoginForm"
                       autocomplete="off"
@@ -329,8 +331,6 @@
                 </div>
 
 
-                <!-- QR AUTO SHOWS -->
-
                 <div id="qrContainer"
                      style="display:none;">
 
@@ -345,8 +345,6 @@
                             QR automatically generate થશે.
                         </p>
 
-
-                        <!-- CLICK QR = UPI -->
 
                         <a
                             id="qrPaymentLink"
@@ -435,13 +433,12 @@
 
                 <form
                     id="applicationForm"
-                    autocomplete="off">
+                    autocomplete="off"
+                    enctype="multipart/form-data">
 
 
                     <div class="form-grid">
 
-
-                        <!-- AADHAAR NAME -->
 
                         <div class="form-group">
 
@@ -459,8 +456,6 @@
                         </div>
 
 
-                        <!-- ENGLISH NAME -->
-
                         <div class="form-group">
 
                             <label for="englishName">
@@ -475,8 +470,6 @@
 
                         </div>
 
-
-                        <!-- GUJARATI NAME -->
 
                         <div class="form-group">
 
@@ -493,8 +486,6 @@
                         </div>
 
 
-                        <!-- RATIONCARD NUMBER -->
-
                         <div class="form-group">
 
                             <label for="rationCardNo">
@@ -509,8 +500,6 @@
 
                         </div>
 
-
-                        <!-- GENDER -->
 
                         <div class="form-group">
 
@@ -544,8 +533,6 @@
                         </div>
 
 
-                        <!-- VILLAGE -->
-
                         <div class="form-group">
 
                             <label for="village">
@@ -560,8 +547,6 @@
 
                         </div>
 
-
-                        <!-- TALUKA -->
 
                         <div class="form-group">
 
@@ -578,8 +563,6 @@
                         </div>
 
 
-                        <!-- DISTRICT -->
-
                         <div class="form-group">
 
                             <label for="district">
@@ -595,8 +578,6 @@
                         </div>
 
 
-                        <!-- PINCODE -->
-
                         <div class="form-group">
 
                             <label for="pincode">
@@ -609,12 +590,11 @@
                                 name="pincode"
                                 maxlength="6"
                                 inputmode="numeric"
+                                pattern="[0-9]{6}"
                                 required>
 
                         </div>
 
-
-                        <!-- MOBILE -->
 
                         <div class="form-group">
 
@@ -628,12 +608,11 @@
                                 name="mobile"
                                 maxlength="10"
                                 inputmode="numeric"
+                                pattern="[0-9]{10}"
                                 required>
 
                         </div>
 
-
-                        <!-- EMAIL -->
 
                         <div class="form-group">
 
@@ -649,8 +628,6 @@
                         </div>
 
 
-                        <!-- BIRTH DATE -->
-
                         <div class="form-group">
 
                             <label for="birthDate">
@@ -664,8 +641,6 @@
 
                         </div>
 
-
-                        <!-- BIRTH YEAR -->
 
                         <div class="form-group">
 
@@ -682,8 +657,6 @@
 
                         </div>
 
-
-                        <!-- RATIONCARD STATUS -->
 
                         <div class="form-group">
 
@@ -711,8 +684,6 @@
 
                         </div>
 
-
-                        <!-- UTR -->
 
                         <div class="form-group">
 
@@ -743,8 +714,6 @@
                         </h3>
 
 
-                        <!-- AADHAAR PDF -->
-
                         <div class="file-group">
 
                             <label for="aadhaarFile">
@@ -755,17 +724,15 @@
                                 type="file"
                                 id="aadhaarFile"
                                 name="aadhaarFile"
-                                accept="application/pdf,.pdf"
+                                accept=".pdf,application/pdf"
                                 required>
 
                             <small>
-                                Only PDF file allowed
+                                Only PDF file allowed. Maximum 8 MB.
                             </small>
 
                         </div>
 
-
-                        <!-- RATIONCARD PDF -->
 
                         <div class="file-group">
 
@@ -777,16 +744,14 @@
                                 type="file"
                                 id="rationcardFile"
                                 name="rationcardFile"
-                                accept="application/pdf,.pdf">
+                                accept=".pdf,application/pdf">
 
                             <small>
-                                Only PDF file allowed
+                                Only PDF file allowed. Maximum 8 MB.
                             </small>
 
                         </div>
 
-
-                        <!-- PAYMENT SCREENSHOT -->
 
                         <div class="file-group">
 
@@ -803,14 +768,13 @@
 
                             <small>
                                 Payment કર્યા પછી screenshot upload કરો.
+                                Maximum 5 MB.
                             </small>
 
                         </div>
 
                     </div>
 
-
-                    <!-- FINAL AMOUNT -->
 
                     <div class="amount-box">
 
@@ -827,8 +791,6 @@
                     </div>
 
 
-                    <!-- SUBMIT -->
-
                     <button
                         type="submit"
                         id="applicationSubmitButton"
@@ -838,8 +800,6 @@
 
                     </button>
 
-
-                    <!-- MESSAGE -->
 
                     <div
                         id="applicationMessage"
@@ -860,7 +820,7 @@
 </div>
 
 
-<script src="retailer.js" defer></script>
+<script src="retailer.js?v=20260818" defer></script>
 
 </body>
 
