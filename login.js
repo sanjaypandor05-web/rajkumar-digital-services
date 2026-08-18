@@ -1,320 +1,217 @@
 /* =====================================================
-   RAJKUMAR LOGIN SYSTEM
-   ADMIN + RETAILER LOGIN
+   RAJKUMAR WEBSITE
+   LOGIN SYSTEM
+   ADMIN + RETAILER
 ===================================================== */
 
-
-/* =====================================================
-   GOOGLE APPS SCRIPT URL
-   ADMIN LOGIN ALREADY WORKING - DO NOT CHANGE
-===================================================== */
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbw1mKC92_EjWJS_x2o8LMqiL9sssMbFh089IhMujZLd6_9VuujoVckjoMS8fbajVn-uQQ/exec";
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const loginFormBox =
-    document.getElementById("loginFormBox");
-
-const loginType =
-    document.getElementById("loginType");
-
-const loginFormTitle =
-    document.getElementById("loginFormTitle");
-
-const loginFormSubtitle =
-    document.getElementById("loginFormSubtitle");
-
-const selectedLoginIcon =
-    document.getElementById("selectedLoginIcon");
-
-const username =
-    document.getElementById("username");
-
-const password =
-    document.getElementById("password");
-
-const loginMessage =
-    document.getElementById("loginMessage");
-
-const submitLoginBtn =
-    document.getElementById("submitLoginBtn");
 
 
-/* =====================================================
-   RETAILER LOGIN BUTTON
-===================================================== */
-
-document
-    .getElementById("retailerLoginBtn")
-    .addEventListener("click", function () {
-
-        openLogin("retailer");
-
-    });
+let selectedLoginType = "";
 
 
-/* =====================================================
-   ADMIN LOGIN BUTTON
-===================================================== */
-
-document
-    .getElementById("adminLoginBtn")
-    .addEventListener("click", function () {
-
-        openLogin("admin");
-
-    });
-
-
-/* =====================================================
-   OPEN LOGIN
-===================================================== */
+/* ================= OPEN LOGIN ================= */
 
 function openLogin(type) {
 
+    selectedLoginType = type;
+
+    const loginBox =
+        document.getElementById("loginFormBox");
+
+    const loginType =
+        document.getElementById("loginType");
+
+    const title =
+        document.getElementById("loginFormTitle");
+
+    const subtitle =
+        document.getElementById("loginFormSubtitle");
+
+    const icon =
+        document.getElementById("selectedLoginIcon");
+
+    const username =
+        document.getElementById("username");
+
+    const message =
+        document.getElementById("loginMessage");
+
+    message.textContent = "";
+    message.className = "login-message";
+
     loginType.value = type;
-
-    clearMessage();
-
-    password.value = "";
-
-    username.value = "";
-
-
-    /* ================= ADMIN ================= */
-
-    if (type === "admin") {
-
-        selectedLoginIcon.textContent =
-            "👑";
-
-        loginFormTitle.textContent =
-            "ADMIN LOGIN";
-
-        loginFormSubtitle.textContent =
-            "Enter Admin Username and Password";
-
-        username.placeholder =
-            "Enter Admin Username";
-
-    }
-
-
-    /* ================= RETAILER ================= */
 
     if (type === "retailer") {
 
-        selectedLoginIcon.textContent =
-            "👤";
+        icon.textContent = "👤";
 
-        loginFormTitle.textContent =
-            "RETAILER LOGIN";
+        title.textContent = "RETAILER LOGIN";
 
-        loginFormSubtitle.textContent =
-            "Enter Retailer ID / Username and Password";
+        subtitle.textContent =
+            "Enter your Retailer ID / Username and Password";
 
         username.placeholder =
             "Enter Retailer ID / Username";
 
     }
 
+    else if (type === "admin") {
 
-    loginFormBox.classList.add(
-        "active"
-    );
+        icon.textContent = "👑";
 
+        title.textContent = "ADMIN LOGIN";
+
+        subtitle.textContent =
+            "Enter your Admin Username and Password";
+
+        username.placeholder =
+            "Enter Admin Username";
+
+    }
+
+    loginBox.style.display = "block";
+
+    loginBox.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 
     setTimeout(function () {
-
         username.focus();
-
-    }, 200);
-
+    }, 300);
 }
 
 
-/* =====================================================
-   CLOSE LOGIN
-===================================================== */
+/* ================= CLOSE LOGIN ================= */
 
-document
-    .getElementById("closeLoginBtn")
-    .addEventListener("click", function () {
+function closeLogin() {
 
-        loginFormBox.classList.remove(
-            "active"
-        );
+    const loginBox =
+        document.getElementById("loginFormBox");
 
-        document
-            .getElementById("loginForm")
-            .reset();
+    const form =
+        document.getElementById("loginForm");
 
-        loginType.value = "";
+    const message =
+        document.getElementById("loginMessage");
 
-        clearMessage();
+    loginBox.style.display = "none";
 
-    });
+    form.reset();
 
+    message.textContent = "";
 
-/* =====================================================
-   PASSWORD SHOW / HIDE
-===================================================== */
+    message.className = "login-message";
 
-document
-    .getElementById("showPasswordBtn")
-    .addEventListener("click", function () {
-
-        if (
-            password.type === "password"
-        ) {
-
-            password.type = "text";
-
-            this.textContent =
-                "🙈";
-
-        }
-        else {
-
-            password.type =
-                "password";
-
-            this.textContent =
-                "👁";
-
-        }
-
-    });
+    selectedLoginType = "";
+}
 
 
-/* =====================================================
-   LOGIN FORM
-===================================================== */
+/* ================= PASSWORD SHOW/HIDE ================= */
 
-document
-    .getElementById("loginForm")
-    .addEventListener(
-        "submit",
-        handleLogin
-    );
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    const button =
+        document.querySelector(".show-password");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        button.textContent = "🙈";
+
+    } else {
+
+        password.type = "password";
+
+        button.textContent = "👁";
+
+    }
+}
 
 
-/* =====================================================
-   HANDLE LOGIN
-===================================================== */
+/* ================= LOGIN ================= */
 
 async function handleLogin(event) {
 
     event.preventDefault();
 
+    const username =
+        document
+            .getElementById("username")
+            .value
+            .trim();
 
-    const type =
-        loginType.value;
+    const password =
+        document
+            .getElementById("password")
+            .value;
 
+    const button =
+        document.getElementById("submitLoginBtn");
 
-    const user =
-        username.value.trim();
-
-
-    const pass =
-        password.value;
-
-
-    /* ================= VALIDATION ================= */
-
-    if (!type) {
+    if (!selectedLoginType) {
 
         showMessage(
-            "Please select Admin or Retailer Login.",
+            "Please select Retailer or Admin Login.",
             "error"
         );
 
         return;
-
     }
 
-
-    if (!user) {
+    if (!username || !password) {
 
         showMessage(
-            "Please enter username / Retailer ID.",
+            "Please enter Username and Password.",
             "error"
         );
 
         return;
-
     }
 
+    button.disabled = true;
 
-    if (!pass) {
-
-        showMessage(
-            "Please enter password.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    submitLoginBtn.disabled =
-        true;
-
-
-    submitLoginBtn.textContent =
-        "LOGIN...";
-
+    button.textContent = "CHECKING...";
 
     showMessage(
         "Checking login...",
         "loading"
     );
 
-
     try {
 
-        /* ================= ACTION ================= */
-
         const action =
-            type === "admin"
+            selectedLoginType === "admin"
                 ? "adminLogin"
                 : "retailerLogin";
 
-
-        /* ================= API ================= */
 
         const response =
             await fetch(
                 SCRIPT_URL,
                 {
-
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "text/plain;charset=utf-8"
-
                     },
 
-                    body:
-                        JSON.stringify({
+                    body: JSON.stringify({
 
-                            action:
-                                action,
+                        action: action,
 
-                            username:
-                                user,
+                        username: username,
 
-                            password:
-                                pass
+                        password: password
 
-                        })
-
+                    })
                 }
             );
 
@@ -339,9 +236,7 @@ async function handleLogin(event) {
         );
 
 
-        /* =================================================
-           LOGIN SUCCESS
-        ================================================= */
+        /* ================= SUCCESS ================= */
 
         if (
             result &&
@@ -354,12 +249,10 @@ async function handleLogin(event) {
             );
 
 
-            /* =============================================
-               ADMIN
-            ============================================= */
+            /* ================= ADMIN ================= */
 
             if (
-                type === "admin"
+                selectedLoginType === "admin"
             ) {
 
                 localStorage.setItem(
@@ -367,12 +260,10 @@ async function handleLogin(event) {
                     "admin"
                 );
 
-
                 localStorage.setItem(
                     "rajkumarAdminId",
-                    result.adminId || ""
+                    result.adminId || "admin"
                 );
-
 
                 localStorage.setItem(
                     "rajkumarAdminName",
@@ -381,74 +272,61 @@ async function handleLogin(event) {
                 );
 
 
-                setTimeout(
-                    function () {
+                setTimeout(function () {
 
-                        window.location.href =
-                            "admin-dashboard.html";
+                    window.location.href =
+                        "admin.html";
 
-                    },
-                    500
-                );
+                }, 500);
 
 
                 return;
-
             }
 
 
-            /* =============================================
-               RETAILER
-            ============================================= */
+            /* ================= RETAILER ================= */
 
             if (
-                type === "retailer"
+                selectedLoginType === "retailer"
             ) {
 
                 const retailerId =
                     result.retailerId || "";
 
-
                 const retailerName =
                     result.retailerName || "";
 
-
                 const retailerMobile =
-                    result.mobile || "";
-
+                    result.retailerMobile ||
+                    result.mobile ||
+                    "";
 
                 const retailerUsername =
                     result.username ||
-                    user;
+                    username;
 
 
-                /* =========================================
-                   NEW STANDARD KEYS
-                ========================================= */
+                /* NEW KEYS */
 
                 localStorage.setItem(
                     "rajkumarRole",
                     "retailer"
                 );
 
-
                 localStorage.setItem(
                     "rajkumarRetailerId",
                     retailerId
                 );
-
 
                 localStorage.setItem(
                     "rajkumarRetailerName",
                     retailerName
                 );
 
-
                 localStorage.setItem(
                     "rajkumarRetailerMobile",
                     retailerMobile
                 );
-
 
                 localStorage.setItem(
                     "rajkumarRetailerUsername",
@@ -456,28 +334,22 @@ async function handleLogin(event) {
                 );
 
 
-                /* =========================================
-                   COMPATIBILITY KEYS
-                   retailer-dashboard.js માટે
-                ========================================= */
+                /* COMPATIBILITY KEYS */
 
                 localStorage.setItem(
                     "retailerId",
                     retailerId
                 );
 
-
                 localStorage.setItem(
                     "retailerName",
                     retailerName
                 );
 
-
                 localStorage.setItem(
                     "retailerMobile",
                     retailerMobile
                 );
-
 
                 localStorage.setItem(
                     "retailerUsername",
@@ -486,54 +358,41 @@ async function handleLogin(event) {
 
 
                 console.log(
-                    "Retailer Login Saved:",
+                    "Retailer Login:",
                     {
-                        retailerId:
-                            retailerId,
-
-                        retailerName:
-                            retailerName,
-
-                        retailerMobile:
-                            retailerMobile,
-
-                        retailerUsername:
-                            retailerUsername
+                        retailerId,
+                        retailerName,
+                        retailerMobile,
+                        retailerUsername
                     }
                 );
 
 
-                setTimeout(
-                    function () {
+                setTimeout(function () {
 
-                        window.location.href =
-                            "retailer-dashboard.html";
+                    window.location.href =
+                        "retailer.html";
 
-                    },
-                    500
-                );
+                }, 500);
 
 
                 return;
-
             }
 
         }
 
 
-        /* =================================================
-           LOGIN FAILED
-        ================================================= */
+        /* ================= FAILED ================= */
 
         showMessage(
-            result &&
-            result.message
+            result && result.message
                 ? result.message
                 : "Invalid username or password.",
             "error"
         );
 
     }
+
     catch (error) {
 
         console.error(
@@ -541,65 +400,41 @@ async function handleLogin(event) {
             error
         );
 
-
         showMessage(
-            "Server connection failed. Please check Apps Script URL.",
+            "Server connection failed. Please check Apps Script deployment.",
             "error"
         );
 
     }
+
     finally {
 
-        submitLoginBtn.disabled =
-            false;
+        button.disabled = false;
 
-        submitLoginBtn.textContent =
-            "LOGIN";
+        button.textContent = "LOGIN";
 
     }
-
 }
 
 
-/* =====================================================
-   MESSAGE
-===================================================== */
+/* ================= MESSAGE ================= */
 
 function showMessage(
-    message,
+    text,
     type
 ) {
 
-    loginMessage.textContent =
-        message;
+    const message =
+        document.getElementById("loginMessage");
 
+    message.textContent = text;
 
-    loginMessage.className =
-        "login-message " +
-        type;
-
+    message.className =
+        "login-message " + type;
 }
 
 
-/* =====================================================
-   CLEAR MESSAGE
-===================================================== */
-
-function clearMessage() {
-
-    loginMessage.textContent =
-        "";
-
-
-    loginMessage.className =
-        "login-message";
-
-}
-
-
-/* =====================================================
-   ESC KEY
-===================================================== */
+/* ================= ESC KEY ================= */
 
 document.addEventListener(
     "keydown",
@@ -609,9 +444,7 @@ document.addEventListener(
             event.key === "Escape"
         ) {
 
-            loginFormBox.classList.remove(
-                "active"
-            );
+            closeLogin();
 
         }
 
