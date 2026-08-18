@@ -5,7 +5,7 @@
 ===================================================== */
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbw1mKC92_EjWJS_x2o8LMqiL9sssMbFh089IhMujZLd6_9VuujoVckjoMS8fbajVn-uQQ/exec";
+"https://script.google.com/macros/s/AKfycbw5yfGMA2be2xYiGXltpyg5xmgF7qyveUenGJtlDttmIVym9Ndo_gYgAXmyarJ7WwBZLg/exec";
 
 
 let selectedLoginType = "";
