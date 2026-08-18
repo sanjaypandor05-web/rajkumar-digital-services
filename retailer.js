@@ -1,221 +1,188 @@
 /* =====================================================
    RAJKUMAR RATIONCARD SERVICES
-   RETAILER JAVASCRIPT
+   RETAILER DASHBOARD JAVASCRIPT
 ===================================================== */
 
 
 /* =====================================================
-   DEMO RETAILER LOGIN
-   પછી Google Sheet / Code.gs સાથે connect કરીશું
+   GOOGLE APPS SCRIPT
 ===================================================== */
 
-const DEMO_RETAILER_ID = "retailer";
-
-const DEMO_RETAILER_PASSWORD = "1234";
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbw1mKC92_EjWJS_x2o8LMqiL9sssMbFh089IhMujZLd6_9VuujoVckjoMS8fbajVn-uQQ/exec";
 
 
 /* =====================================================
    PAGE LOAD
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    setupRetailerLogin();
+        checkRetailerSession();
 
-    setupServiceAmount();
+        setupServiceAmount();
 
-    setupApplicationForm();
+        setupApplicationForm();
 
-    checkRetailerSession();
+        loadRetailerInformation();
 
-});
+    }
+);
 
 
 /* =====================================================
-   RETAILER LOGIN
+   CHECK RETAILER SESSION
 ===================================================== */
 
-function setupRetailerLogin() {
+function checkRetailerSession() {
 
-    const loginForm =
-        document.getElementById("retailerLoginForm");
+    const role =
+        localStorage.getItem(
+            "rajkumarRole"
+        );
 
 
-    if (!loginForm) {
-        return;
+    const retailerId =
+        localStorage.getItem(
+            "rajkumarRetailerId"
+        );
+
+
+    /*
+     * Retailer login વગર dashboard open
+     * થાય નહીં.
+     */
+
+    if (
+        role !== "retailer" ||
+        !retailerId
+    ) {
+
+        window.location.href =
+            "login.html";
+
+        return false;
+
     }
 
 
-    loginForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const retailerId =
-                document
-                .getElementById("retailerId")
-                .value
-                .trim();
-
-
-            const password =
-                document
-                .getElementById("retailerPassword")
-                .value;
-
-
-            const message =
-                document.getElementById(
-                    "loginMessage"
-                );
-
-
-            /*
-             * DEMO LOGIN
-             *
-             * ID:
-             * retailer
-             *
-             * Password:
-             * 1234
-             *
-             * પછી આને Google Sheet / Admin
-             * created retailer system સાથે
-             * replace કરીશું.
-             */
-
-
-            if (
-                retailerId === DEMO_RETAILER_ID &&
-                password === DEMO_RETAILER_PASSWORD
-            ) {
-
-                sessionStorage.setItem(
-                    "retailerLoggedIn",
-                    "true"
-                );
-
-
-                sessionStorage.setItem(
-                    "retailerId",
-                    retailerId
-                );
-
-
-                showDashboard(
-                    retailerId
-                );
-
-
-            } else {
-
-                message.style.display =
-                    "block";
-
-                message.style.marginTop =
-                    "15px";
-
-                message.style.padding =
-                    "12px";
-
-                message.style.borderRadius =
-                    "10px";
-
-                message.style.background =
-                    "#ffebee";
-
-                message.style.color =
-                    "#c62828";
-
-                message.innerHTML =
-                    "❌ Retailer ID અથવા Password ખોટો છે.";
-
-            }
-
-        }
-    );
+    return true;
 
 }
 
 
 /* =====================================================
-   SHOW DASHBOARD
+   LOAD RETAILER INFORMATION
 ===================================================== */
 
-function showDashboard(retailerId) {
+function loadRetailerInformation() {
 
-    const loginSection =
-        document.getElementById(
-            "loginSection"
-        );
-
-
-    const dashboard =
-        document.getElementById(
-            "dashboardSection"
-        );
-
-
-    if (loginSection) {
-
-        loginSection.style.display =
-            "none";
-
-    }
-
-
-    if (dashboard) {
-
-        dashboard.style.display =
-            "block";
-
-    }
+    const retailerId =
+        localStorage.getItem(
+            "rajkumarRetailerId"
+        ) || "";
 
 
     const retailerName =
+        localStorage.getItem(
+            "rajkumarRetailerName"
+        ) || "Retailer";
+
+
+    const retailerMobile =
+        localStorage.getItem(
+            "rajkumarRetailerMobile"
+        ) || "";
+
+
+    const retailerUsername =
+        localStorage.getItem(
+            "rajkumarRetailerUsername"
+        ) || "";
+
+
+    const nameElement =
         document.getElementById(
             "loggedRetailerName"
         );
 
 
-    if (retailerName) {
+    const idElement =
+        document.getElementById(
+            "loggedRetailerId"
+        );
 
-        retailerName.textContent =
+
+    const nameDisplay =
+        document.getElementById(
+            "retailerNameDisplay"
+        );
+
+
+    const idDisplay =
+        document.getElementById(
+            "retailerIdDisplay"
+        );
+
+
+    const mobileDisplay =
+        document.getElementById(
+            "retailerMobileDisplay"
+        );
+
+
+    const usernameDisplay =
+        document.getElementById(
+            "retailerUsernameDisplay"
+        );
+
+
+    if (nameElement) {
+
+        nameElement.textContent =
+            retailerName;
+
+    }
+
+
+    if (idElement) {
+
+        idElement.textContent =
             retailerId;
 
     }
 
-}
+
+    if (nameDisplay) {
+
+        nameDisplay.value =
+            retailerName;
+
+    }
 
 
-/* =====================================================
-   CHECK SESSION
-===================================================== */
+    if (idDisplay) {
 
-function checkRetailerSession() {
+        idDisplay.value =
+            retailerId;
 
-    const loggedIn =
-        sessionStorage.getItem(
-            "retailerLoggedIn"
-        );
+    }
 
 
-    const retailerId =
-        sessionStorage.getItem(
-            "retailerId"
-        );
+    if (mobileDisplay) {
+
+        mobileDisplay.value =
+            retailerMobile;
+
+    }
 
 
-    if (
-        loggedIn === "true" &&
-        retailerId
-    ) {
+    if (usernameDisplay) {
 
-        showDashboard(
-            retailerId
-        );
+        usernameDisplay.value =
+            retailerUsername;
 
     }
 
@@ -228,16 +195,48 @@ function checkRetailerSession() {
 
 function retailerLogout() {
 
-    sessionStorage.removeItem(
-        "retailerLoggedIn"
+    localStorage.removeItem(
+        "rajkumarRole"
     );
 
-    sessionStorage.removeItem(
+    localStorage.removeItem(
+        "rajkumarRetailerId"
+    );
+
+    localStorage.removeItem(
+        "rajkumarRetailerName"
+    );
+
+    localStorage.removeItem(
+        "rajkumarRetailerMobile"
+    );
+
+    localStorage.removeItem(
+        "rajkumarRetailerUsername"
+    );
+
+
+    /* Compatibility keys */
+
+    localStorage.removeItem(
         "retailerId"
     );
 
+    localStorage.removeItem(
+        "retailerName"
+    );
 
-    location.reload();
+    localStorage.removeItem(
+        "retailerMobile"
+    );
+
+    localStorage.removeItem(
+        "retailerUsername"
+    );
+
+
+    window.location.href =
+        "login.html";
 
 }
 
@@ -255,7 +254,9 @@ function setupServiceAmount() {
 
 
     if (!serviceSelect) {
+
         return;
+
     }
 
 
@@ -271,7 +272,7 @@ function setupServiceAmount() {
 
 
 /* =====================================================
-   UPDATE AMOUNT
+   UPDATE SERVICE AMOUNT
 ===================================================== */
 
 function updateServiceAmount() {
@@ -282,7 +283,7 @@ function updateServiceAmount() {
         );
 
 
-    const amount =
+    const amountElement =
         document.getElementById(
             "serviceAmount"
         );
@@ -295,36 +296,38 @@ function updateServiceAmount() {
 
 
     if (!select) {
+
         return;
+
     }
 
 
-    const selectedOption =
+    const option =
         select.options[
             select.selectedIndex
         ];
 
 
-    let servicePrice = 0;
+    let amount = 0;
 
 
     if (
-        selectedOption &&
-        selectedOption.dataset.amount
+        option &&
+        option.dataset.amount
     ) {
 
-        servicePrice =
+        amount =
             Number(
-                selectedOption.dataset.amount
-            );
+                option.dataset.amount
+            ) || 0;
 
     }
 
 
-    if (amount) {
+    if (amountElement) {
 
-        amount.textContent =
-            servicePrice;
+        amountElement.textContent =
+            amount;
 
     }
 
@@ -332,7 +335,7 @@ function updateServiceAmount() {
     if (paymentAmount) {
 
         paymentAmount.textContent =
-            servicePrice;
+            amount;
 
     }
 
@@ -352,127 +355,35 @@ function setupApplicationForm() {
 
 
     if (!form) {
+
         return;
+
     }
 
 
     form.addEventListener(
         "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const service =
-                document.getElementById(
-                    "serviceSelect"
-                );
-
-
-            const message =
-                document.getElementById(
-                    "applicationMessage"
-                );
-
-
-            if (
-                !service ||
-                service.value === ""
-            ) {
-
-                showApplicationMessage(
-                    message,
-                    "⚠️ પહેલા Service પસંદ કરો.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            const selectedOption =
-                service.options[
-                    service.selectedIndex
-                ];
-
-
-            const amount =
-                Number(
-                    selectedOption.dataset.amount
-                );
-
-
-            if (amount <= 0) {
-
-                showApplicationMessage(
-                    message,
-                    "⚠️ Service amount મળ્યો નથી.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            /*
-             * IMPORTANT
-             *
-             * અહીંથી આગળ actual data
-             * Google Apps Scriptમાં જશે.
-             *
-             * હાલ demo modeમાં
-             * Application ID બનાવવામાં આવે છે.
-             */
-
-
-            const applicationId =
-                generateApplicationId();
-
-
-            const formData =
-                collectApplicationData(
-                    applicationId,
-                    amount
-                );
-
-
-            console.log(
-                "Application Data:",
-                formData
-            );
-
-
-            showApplicationMessage(
-                message,
-                "✅ Application તૈયાર છે. Application ID: " +
-                applicationId +
-                "<br><br>" +
-                "હવે Google Sheet + Drive + Payment system connect કરવામાં આવશે.",
-                "success"
-            );
-
-
-            /*
-             * Form reset હાલમાં બંધ રાખ્યું છે,
-             * જેથી user data ગુમ ન થાય.
-             */
-
-        }
+        submitApplication
     );
 
 }
 
 
 /* =====================================================
-   COLLECT FORM DATA
+   SUBMIT APPLICATION
 ===================================================== */
 
-function collectApplicationData(
-    applicationId,
-    amount
-) {
+async function submitApplication(event) {
+
+    event.preventDefault();
+
+
+    if (!checkRetailerSession()) {
+
+        return;
+
+    }
+
 
     const form =
         document.getElementById(
@@ -480,152 +391,328 @@ function collectApplicationData(
         );
 
 
-    const formData =
-        new FormData(form);
-
-
-    const data = {
-
-        applicationId:
-            applicationId,
-
-        retailerId:
-            sessionStorage.getItem(
-                "retailerId"
-            ) || "",
-
-        service:
-            document.getElementById(
-                "serviceSelect"
-            ).value,
-
-        amount:
-            amount,
-
-        aadhaarName:
-            formData.get(
-                "aadhaarName"
-            ),
-
-        englishName:
-            formData.get(
-                "englishName"
-            ),
-
-        gujaratiName:
-            formData.get(
-                "gujaratiName"
-            ),
-
-        rationCardNo:
-            formData.get(
-                "rationCardNo"
-            ),
-
-        gender:
-            formData.get(
-                "gender"
-            ),
-
-        village:
-            formData.get(
-                "village"
-            ),
-
-        taluka:
-            formData.get(
-                "taluka"
-            ),
-
-        district:
-            formData.get(
-                "district"
-            ),
-
-        pincode:
-            formData.get(
-                "pincode"
-            ),
-
-        mobile:
-            formData.get(
-                "mobile"
-            ),
-
-        email:
-            formData.get(
-                "email"
-            ),
-
-        birthDate:
-            formData.get(
-                "birthDate"
-            ),
-
-        birthYear:
-            formData.get(
-                "birthYear"
-            ),
-
-        rationcardStatus:
-            formData.get(
-                "rationcardStatus"
-            ),
-
-        utrNumber:
-            formData.get(
-                "utrNumber"
-            )
-
-    };
-
-
-    return data;
-
-}
-
-
-/* =====================================================
-   APPLICATION ID
-===================================================== */
-
-function generateApplicationId() {
-
-    const now =
-        new Date();
-
-
-    const year =
-        now.getFullYear();
-
-
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(2, "0");
-
-
-    const day =
-        String(
-            now.getDate()
-        ).padStart(2, "0");
-
-
-    const random =
-        Math.floor(
-            10000 +
-            Math.random() * 90000
+    const serviceSelect =
+        document.getElementById(
+            "serviceSelect"
         );
 
 
-    return (
-        "RKS-" +
-        year +
-        month +
-        day +
-        "-" +
-        random
+    const message =
+        document.getElementById(
+            "applicationMessage"
+        );
+
+
+    if (
+        !serviceSelect ||
+        !serviceSelect.value
+    ) {
+
+        showApplicationMessage(
+            message,
+            "⚠️ પહેલા Service પસંદ કરો.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const selectedOption =
+        serviceSelect.options[
+            serviceSelect.selectedIndex
+        ];
+
+
+    const amount =
+        Number(
+            selectedOption.dataset.amount
+        ) || 0;
+
+
+    if (amount <= 0) {
+
+        showApplicationMessage(
+            message,
+            "⚠️ Service amount મળ્યો નથી.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const submitButton =
+        form.querySelector(
+            'button[type="submit"]'
+        );
+
+
+    if (submitButton) {
+
+        submitButton.disabled = true;
+
+        submitButton.textContent =
+            "SUBMITTING...";
+
+    }
+
+
+    showApplicationMessage(
+        message,
+        "⏳ Application submit થઈ રહી છે...",
+        "loading"
     );
+
+
+    try {
+
+        const formData =
+            new FormData(form);
+
+
+        const data = {
+
+            action:
+                "submitApplication",
+
+
+            retailerId:
+                localStorage.getItem(
+                    "rajkumarRetailerId"
+                ) || "",
+
+
+            retailerMobile:
+                localStorage.getItem(
+                    "rajkumarRetailerMobile"
+                ) || "",
+
+
+            service:
+                serviceSelect.value,
+
+
+            aadhaarName:
+                formData.get(
+                    "aadhaarName"
+                ) || "",
+
+
+            englishName:
+                formData.get(
+                    "englishName"
+                ) || "",
+
+
+            gujaratiName:
+                formData.get(
+                    "gujaratiName"
+                ) || "",
+
+
+            rationCardNo:
+                formData.get(
+                    "rationCardNo"
+                ) || "",
+
+
+            gender:
+                formData.get(
+                    "gender"
+                ) || "",
+
+
+            village:
+                formData.get(
+                    "village"
+                ) || "",
+
+
+            taluka:
+                formData.get(
+                    "taluka"
+                ) || "",
+
+
+            district:
+                formData.get(
+                    "district"
+                ) || "",
+
+
+            pincode:
+                formData.get(
+                    "pincode"
+                ) || "",
+
+
+            mobile:
+                formData.get(
+                    "mobile"
+                ) || "",
+
+
+            email:
+                formData.get(
+                    "email"
+                ) || "",
+
+
+            birthDate:
+                formData.get(
+                    "birthDate"
+                ) || "",
+
+
+            birthYear:
+                formData.get(
+                    "birthYear"
+                ) || "",
+
+
+            rationcardStatus:
+                formData.get(
+                    "rationcardStatus"
+                ) || "",
+
+
+            utrNumber:
+                formData.get(
+                    "utrNumber"
+                ) || ""
+
+        };
+
+
+        const response =
+            await fetch(
+                SCRIPT_URL,
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            data
+                        )
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP Error " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "APPLICATION RESULT:",
+            result
+        );
+
+
+        if (
+            result &&
+            result.success === true
+        ) {
+
+            showApplicationMessage(
+                message,
+
+                "✅ Application successfully submitted." +
+                "<br><br>" +
+
+                "<strong>Application ID:</strong> " +
+                result.applicationId +
+                "<br><br>" +
+
+                "<strong>Service:</strong> " +
+                (result.service || "") +
+                "<br>" +
+
+                "<strong>Amount:</strong> ₹" +
+                (result.amount || amount),
+
+                "success"
+            );
+
+
+            form.reset();
+
+            updateServiceAmount();
+
+
+        } else {
+
+            showApplicationMessage(
+                message,
+
+                "❌ " +
+                (
+                    result &&
+                    result.message
+                        ? result.message
+                        : "Application submit failed."
+                ),
+
+                "error"
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "APPLICATION ERROR:",
+            error
+        );
+
+
+        showApplicationMessage(
+            message,
+
+            "❌ Server connection failed. Please try again.",
+
+            "error"
+        );
+
+    }
+
+
+    finally {
+
+        if (submitButton) {
+
+            submitButton.disabled =
+                false;
+
+            submitButton.textContent =
+                "📝 Submit Application";
+
+        }
+
+    }
 
 }
 
@@ -641,7 +728,9 @@ function showApplicationMessage(
 ) {
 
     if (!element) {
+
         return;
+
     }
 
 
@@ -664,7 +753,22 @@ function showApplicationMessage(
         element.style.border =
             "1px solid #c8e6c9";
 
-    } else {
+    }
+
+    else if (type === "loading") {
+
+        element.style.background =
+            "#e3f2fd";
+
+        element.style.color =
+            "#1565c0";
+
+        element.style.border =
+            "1px solid #bbdefb";
+
+    }
+
+    else {
 
         element.style.background =
             "#ffebee";
