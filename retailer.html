@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="gu">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex">
+    <meta name="robots" content="noindex,nofollow">
+
     <title>Retailer Login - Rajkumar Rationcard Services</title>
 
     <link rel="stylesheet" href="style.css">
@@ -15,6 +15,7 @@
 
 <div class="retailer-page">
 
+    <!-- TOP BAR -->
     <header class="retailer-topbar">
         <div class="retailer-brand">
             RAJKUMAR RATIONCARD SERVICES
@@ -24,6 +25,7 @@
             Retailer Portal
         </div>
     </header>
+
 
     <!-- LOGIN -->
     <section id="loginSection">
@@ -36,9 +38,13 @@
 
                 <h1>RETAILER LOGIN</h1>
 
-                <p>Enter your Retailer ID and Password</p>
+                <p>
+                    Enter your Retailer ID and Password
+                </p>
 
-                <form id="retailerLoginForm" autocomplete="off">
+                <form id="retailerLoginForm"
+                      autocomplete="off"
+                      novalidate>
 
                     <div class="form-group">
 
@@ -59,6 +65,7 @@
 
                     </div>
 
+
                     <div class="form-group">
 
                         <label for="retailerPassword">
@@ -76,14 +83,16 @@
 
                     </div>
 
+
                     <button
                         type="submit"
-                        class="login-button"
-                        id="retailerLoginButton">
+                        id="retailerLoginButton"
+                        class="login-button">
 
                         LOGIN
 
                     </button>
+
 
                     <div
                         id="loginMessage"
@@ -92,6 +101,7 @@
                     </div>
 
                 </form>
+
 
                 <a
                     href="index.html"
@@ -107,7 +117,456 @@
 
     </section>
 
+
+
+    <!-- RETAILER DASHBOARD -->
+    <section
+        id="dashboardSection"
+        style="display:none;">
+
+        <div class="dashboard">
+
+            <!-- HEADER -->
+            <div class="dashboard-header">
+
+                <div>
+
+                    <h1>
+                        Retailer Dashboard
+                    </h1>
+
+                    <p>
+                        Welcome,
+                        <strong id="loggedRetailerName">
+                            Retailer
+                        </strong>
+                    </p>
+
+                    <small id="loggedRetailerId"></small>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="logout-button"
+                    id="logoutButton">
+
+                    Logout
+
+                </button>
+
+            </div>
+
+
+
+            <!-- SERVICES -->
+            <div class="services-box">
+
+                <h2>
+                    Select Service
+                </h2>
+
+                <select
+                    id="serviceSelect"
+                    class="service-select">
+
+                    <option value="">
+                        -- Select Service --
+                    </option>
+
+                    <option
+                        value="ADD_WITH_RC"
+                        data-amount="150">
+                        Name Add with RATIONCARD - ₹150
+                    </option>
+
+                    <option
+                        value="ADD_WITHOUT_RC"
+                        data-amount="350">
+                        Name Add without RATIONCARD - ₹350
+                    </option>
+
+                    <option
+                        value="REMOVE_WITH_RC"
+                        data-amount="150">
+                        Name Remove with RATIONCARD - ₹150
+                    </option>
+
+                    <option
+                        value="REMOVE_WITHOUT_RC"
+                        data-amount="350">
+                        Name Remove without RATIONCARD - ₹350
+                    </option>
+
+                    <option
+                        value="CORRECTION_WITH_RC"
+                        data-amount="500">
+                        RATIONCARD Correction - ₹500
+                    </option>
+
+                    <option
+                        value="CORRECTION_WITHOUT_RC"
+                        data-amount="700">
+                        RATIONCARD Correction without RATIONCARD - ₹700
+                    </option>
+
+                    <option
+                        value="ADD_HUSBAND_WITH_RC"
+                        data-amount="500">
+                        પિતાના નામવાળા Aadhaarથી પતિના Rationcardમાં નામ - ₹500
+                    </option>
+
+                    <option
+                        value="ADD_HUSBAND_WITHOUT_RC"
+                        data-amount="800">
+                        પિતાના નામવાળા Aadhaarથી Rationcard વગર નામ - ₹800
+                    </option>
+
+                </select>
+
+
+                <div class="amount-box">
+
+                    <span class="amount-label">
+                        Service Amount
+                    </span>
+
+                    <span class="amount-value">
+                        ₹<span id="serviceAmount">0</span>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- APPLICATION -->
+            <div class="application-box">
+
+                <h2>
+                    Application Form
+                </h2>
+
+
+                <form id="applicationForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="aadhaarName">
+                                Aadhaar Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="aadhaarName"
+                                name="aadhaarName"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="englishName">
+                                English Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="englishName"
+                                name="englishName">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="gujaratiName">
+                                Gujarati Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="gujaratiName"
+                                name="gujaratiName">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="rationCardNo">
+                                RATIONCARD Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="rationCardNo"
+                                name="rationCardNo">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="gender">
+                                Gender *
+                            </label>
+
+                            <select
+                                id="gender"
+                                name="gender"
+                                required>
+
+                                <option value="">
+                                    -- Select Gender --
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="village">
+                                Village *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="village"
+                                name="village"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="taluka">
+                                Taluka *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="taluka"
+                                name="taluka"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="district">
+                                District *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="district"
+                                name="district"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="pincode">
+                                Pincode *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="pincode"
+                                name="pincode"
+                                maxlength="6"
+                                inputmode="numeric"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="mobile">
+                                Mobile *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="mobile"
+                                name="mobile"
+                                maxlength="10"
+                                inputmode="numeric"
+                                required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="email">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="birthDate">
+                                Birth Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="birthDate"
+                                name="birthDate">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="birthYear">
+                                Birth Year
+                            </label>
+
+                            <input
+                                type="number"
+                                id="birthYear"
+                                name="birthYear"
+                                min="1900"
+                                max="2100">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="rationcardStatus">
+                                RATIONCARD Status
+                            </label>
+
+                            <select
+                                id="rationcardStatus"
+                                name="rationcardStatus">
+
+                                <option value="">
+                                    -- Select Status --
+                                </option>
+
+                                <option value="Available">
+                                    Available
+                                </option>
+
+                                <option value="Not Available">
+                                    Not Available
+                                </option>
+
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="utrNumber">
+                                UTR Number *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="utrNumber"
+                                name="utrNumber"
+                                required>
+                        </div>
+
+
+                        <!-- AADHAAR PDF -->
+                        <div class="form-group">
+                            <label for="aadhaarFile">
+                                Aadhaar PDF *
+                            </label>
+
+                            <input
+                                type="file"
+                                id="aadhaarFile"
+                                name="aadhaarFile"
+                                accept=".pdf,application/pdf"
+                                required>
+                        </div>
+
+
+                        <!-- RATIONCARD PDF -->
+                        <div class="form-group">
+                            <label for="rationcardFile">
+                                RATIONCARD PDF
+                            </label>
+
+                            <input
+                                type="file"
+                                id="rationcardFile"
+                                name="rationcardFile"
+                                accept=".pdf,application/pdf">
+                        </div>
+
+
+                        <!-- PAYMENT SCREENSHOT -->
+                        <div class="form-group">
+                            <label for="paymentScreenshot">
+                                Payment Screenshot *
+                            </label>
+
+                            <input
+                                type="file"
+                                id="paymentScreenshot"
+                                name="paymentScreenshot"
+                                accept="image/*"
+                                required>
+                        </div>
+
+                    </div>
+
+
+                    <div class="amount-box">
+
+                        <span class="amount-label">
+                            Payment Amount
+                        </span>
+
+                        <span class="amount-value">
+                            ₹<span id="paymentAmount">0</span>
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        id="applicationSubmitButton"
+                        class="login-button">
+
+                        Submit Application
+
+                    </button>
+
+
+                    <div
+                        id="applicationMessage"
+                        style="
+                            display:none;
+                            margin-top:15px;
+                            padding:12px;
+                            border-radius:10px;
+                        ">
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
+
 
 <script src="retailer.js"></script>
 
