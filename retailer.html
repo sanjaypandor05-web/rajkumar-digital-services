@@ -21,14 +21,21 @@
           content="0">
 
     <title>
-        Retailer Login - Rajkumar Rationcard Services
+        Retailer Portal - Rajkumar Rationcard Services
     </title>
+
 
     <link rel="stylesheet"
           href="style.css">
 
     <link rel="stylesheet"
           href="retailer.css">
+
+
+    <!-- QR CODE LIBRARY -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
 
 </head>
 
@@ -99,8 +106,7 @@
                         autocomplete="off"
                         autocapitalize="off"
                         spellcheck="false"
-                        required
-                    >
+                        required>
 
                 </div>
 
@@ -117,8 +123,7 @@
                         name="retailerPassword"
                         placeholder="Enter Password"
                         autocomplete="new-password"
-                        required
-                    >
+                        required>
 
                 </div>
 
@@ -219,13 +224,14 @@
 <div class="services-box">
 
     <h2>
-        🛠️ Select Service
+        Select Service
     </h2>
 
 
     <select
         id="serviceSelect"
-        class="service-select">
+        class="service-select"
+        required>
 
         <option value="">
             -- Select Service --
@@ -306,7 +312,6 @@
     </select>
 
 
-
     <!-- SERVICE AMOUNT -->
 
     <div class="amount-box">
@@ -322,7 +327,6 @@
         </span>
 
     </div>
-
 
 </div>
 
@@ -340,66 +344,110 @@
         💳 Payment
     </h2>
 
-    <p>
-        Service select કર્યા પછી Payment QR automatic generate થશે.
+
+    <p class="payment-instruction">
+
+        Service select કરો. Payment માટે QR Code
+        automatically generate થશે.
+
     </p>
 
 
-    <div class="upi-info">
-
-        <div>
-            <strong>UPI ID</strong>
-            <span>gujrat.nsfa@ybl</span>
-        </div>
-
-        <div>
-            <strong>Name</strong>
-            <span>RAJKUMAR RATIONCARD SERVICES</span>
-        </div>
-
-    </div>
+    <div class="payment-layout">
 
 
-    <div
-        id="qrContainer"
-        class="qr-container"
-        style="display:none;">
+        <!-- QR -->
 
-        <div class="qr-title">
-            Scan & Pay
-        </div>
+        <div class="qr-container">
 
+            <div
+                id="paymentQR"
+                class="payment-qr">
 
-        <img
-            id="paymentQR"
-            src=""
-            alt="UPI Payment QR"
-            class="payment-qr">
+                <div class="qr-placeholder">
 
+                    📱
 
-        <div class="qr-amount">
+                    <br>
 
-            Pay Amount:
+                    Select Service
 
-            <strong>
-                ₹<span id="qrAmount">0</span>
-            </strong>
+                    <br>
+
+                    to Generate QR
+
+                </div>
+
+            </div>
 
         </div>
 
 
-        <div class="qr-note">
-            ઉપરનો QR Scan કરીને Payment કરો.
+        <!-- PAYMENT DETAILS -->
+
+        <div class="payment-details">
+
+            <div class="payment-detail-row">
+
+                <span>
+                    UPI ID
+                </span>
+
+                <strong>
+                    gujrat.nsfa@ybl
+                </strong>
+
+            </div>
+
+
+            <div class="payment-detail-row">
+
+                <span>
+                    Name
+                </span>
+
+                <strong>
+                    RAJKUMAR RATIONCARD SERVICES
+                </strong>
+
+            </div>
+
+
+            <div class="payment-detail-row">
+
+                <span>
+                    Amount
+                </span>
+
+                <strong class="payment-highlight">
+
+                    ₹<span id="qrAmount">0</span>
+
+                </strong>
+
+            </div>
+
+
+            <div
+                id="paymentStatus"
+                class="payment-status">
+
+                Select service to generate payment QR.
+
+            </div>
+
+
+            <a
+                id="upiPayButton"
+                href="#"
+                class="upi-pay-button"
+                style="display:none;">
+
+                📲 Open UPI Payment
+
+            </a>
+
         </div>
-
-    </div>
-
-
-    <div
-        id="paymentWaiting"
-        class="payment-waiting">
-
-        ⚠️ પહેલા Service પસંદ કરો.
 
     </div>
 
@@ -439,11 +487,9 @@
                     type="text"
                     name="aadhaarName"
                     id="aadhaarName"
-                    required
-                >
+                    required>
 
             </div>
-
 
 
             <!-- ENGLISH NAME -->
@@ -457,11 +503,9 @@
                 <input
                     type="text"
                     name="englishName"
-                    id="englishName"
-                >
+                    id="englishName">
 
             </div>
-
 
 
             <!-- GUJARATI NAME -->
@@ -475,14 +519,12 @@
                 <input
                     type="text"
                     name="gujaratiName"
-                    id="gujaratiName"
-                >
+                    id="gujaratiName">
 
             </div>
 
 
-
-            <!-- RATION CARD -->
+            <!-- RATIONCARD NUMBER -->
 
             <div class="form-group">
 
@@ -493,11 +535,9 @@
                 <input
                     type="text"
                     name="rationCardNo"
-                    id="rationCardNo"
-                >
+                    id="rationCardNo">
 
             </div>
-
 
 
             <!-- GENDER -->
@@ -534,7 +574,6 @@
             </div>
 
 
-
             <!-- VILLAGE -->
 
             <div class="form-group">
@@ -547,11 +586,9 @@
                     type="text"
                     name="village"
                     id="village"
-                    required
-                >
+                    required>
 
             </div>
-
 
 
             <!-- TALUKA -->
@@ -566,11 +603,9 @@
                     type="text"
                     name="taluka"
                     id="taluka"
-                    required
-                >
+                    required>
 
             </div>
-
 
 
             <!-- DISTRICT -->
@@ -585,11 +620,9 @@
                     type="text"
                     name="district"
                     id="district"
-                    required
-                >
+                    required>
 
             </div>
-
 
 
             <!-- PINCODE -->
@@ -606,11 +639,9 @@
                     id="pincode"
                     maxlength="6"
                     inputmode="numeric"
-                    required
-                >
+                    required>
 
             </div>
-
 
 
             <!-- MOBILE -->
@@ -627,11 +658,9 @@
                     id="mobile"
                     maxlength="10"
                     inputmode="numeric"
-                    required
-                >
+                    required>
 
             </div>
-
 
 
             <!-- EMAIL -->
@@ -645,11 +674,9 @@
                 <input
                     type="email"
                     name="email"
-                    id="email"
-                >
+                    id="email">
 
             </div>
-
 
 
             <!-- BIRTH DATE -->
@@ -663,11 +690,9 @@
                 <input
                     type="date"
                     name="birthDate"
-                    id="birthDate"
-                >
+                    id="birthDate">
 
             </div>
-
 
 
             <!-- BIRTH YEAR -->
@@ -683,14 +708,12 @@
                     name="birthYear"
                     id="birthYear"
                     min="1900"
-                    max="2100"
-                >
+                    max="2100">
 
             </div>
 
 
-
-            <!-- RATION CARD STATUS -->
+            <!-- RATIONCARD STATUS -->
 
             <div class="form-group">
 
@@ -719,7 +742,6 @@
             </div>
 
 
-
             <!-- UTR -->
 
             <div class="form-group">
@@ -732,36 +754,20 @@
                     type="text"
                     name="utrNumber"
                     id="utrNumber"
-                    placeholder="Payment પછી UTR Number"
-                    required
-                >
+                    placeholder="Payment UTR / Transaction ID"
+                    required>
 
             </div>
 
 
-        </div>
+            <!-- =================================================
+                 AADHAAR PDF
+            ================================================= -->
 
-
-
-        <!-- =================================================
-             DOCUMENTS
-        ================================================== -->
-
-        <div class="documents-section">
-
-            <h3>
-                📂 Required Documents
-            </h3>
-
-
-            <!-- AADHAAR PDF -->
-
-            <div class="upload-card">
+            <div class="form-group file-group">
 
                 <label for="aadhaarFile">
-
                     📄 Aadhaar PDF *
-
                 </label>
 
                 <input
@@ -769,80 +775,61 @@
                     id="aadhaarFile"
                     name="aadhaarFile"
                     accept=".pdf,application/pdf"
-                    required
-                >
+                    required>
 
                 <small>
-                    Only PDF file allowed
+                    Only PDF file
                 </small>
-
-                <div
-                    id="aadhaarFileName"
-                    class="selected-file">
-                </div>
 
             </div>
 
 
+            <!-- =================================================
+                 RATIONCARD PDF
+            ================================================= -->
 
-            <!-- RATION CARD PDF -->
-
-            <div class="upload-card">
+            <div class="form-group file-group">
 
                 <label for="rationcardFile">
-
-                    📄 RATIONCARD PDF
-
+                    📄 Rationcard PDF
                 </label>
 
                 <input
                     type="file"
                     id="rationcardFile"
                     name="rationcardFile"
-                    accept=".pdf,application/pdf"
-                >
+                    accept=".pdf,application/pdf">
 
                 <small>
-                    Only PDF file allowed
+                    Only PDF file
                 </small>
-
-                <div
-                    id="rationcardFileName"
-                    class="selected-file">
-                </div>
 
             </div>
 
 
+            <!-- =================================================
+                 PAYMENT SCREENSHOT
+            ================================================= -->
 
-            <!-- PAYMENT SCREENSHOT -->
-
-            <div class="upload-card">
+            <div class="form-group file-group">
 
                 <label for="paymentScreenshot">
-
-                    🧾 Payment Screenshot *
-
+                    📸 Payment Screenshot *
                 </label>
 
                 <input
                     type="file"
                     id="paymentScreenshot"
                     name="paymentScreenshot"
-                    accept="image/*,.pdf"
-                    required
-                >
+                    accept="image/*"
+                    required>
 
                 <small>
-                    Payment successful થયા પછી screenshot upload કરો.
+                    Upload successful payment screenshot
                 </small>
 
-                <div
-                    id="paymentScreenshotName"
-                    class="selected-file">
-                </div>
-
             </div>
+
 
         </div>
 
@@ -850,12 +837,12 @@
 
         <!-- =================================================
              PAYMENT AMOUNT
-        ================================================== -->
+        ================================================= -->
 
-        <div class="amount-box final-payment-box">
+        <div class="amount-box">
 
             <span class="amount-label">
-                Total Payment
+                Final Payment Amount
             </span>
 
             <span class="amount-value">
@@ -870,7 +857,7 @@
 
         <!-- =================================================
              SUBMIT
-        ================================================== -->
+        ================================================= -->
 
         <button
             type="submit"
@@ -882,15 +869,16 @@
         </button>
 
 
+        <!-- =================================================
+             APPLICATION MESSAGE
+        ================================================= -->
 
         <div
             id="applicationMessage"
-            style="
-                display:none;
-                margin-top:15px;
-                padding:12px;
-                border-radius:10px;
-            ">
+            style="display:none;
+                   margin-top:15px;
+                   padding:12px;
+                   border-radius:10px;">
 
         </div>
 
@@ -906,7 +894,6 @@
 
 
 </div>
-
 
 
 <script
