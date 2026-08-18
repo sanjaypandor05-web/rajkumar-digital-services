@@ -2,37 +2,21 @@
 <html lang="gu">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
 
-    <title>Retailer Login - Rajkumar Rationcard Services</title>
+    <title>Retailer Portal - Rajkumar Rationcard Services</title>
 
     <link rel="stylesheet" href="style.css">
-
     <link rel="stylesheet" href="retailer.css">
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     RETAILER PAGE
-===================================================== -->
-
 <div class="retailer-page">
 
-
-    <!-- =================================================
-         TOP BAR
-    ================================================== -->
-
+    <!-- TOP BAR -->
     <header class="retailer-topbar">
 
         <div class="retailer-brand">
@@ -46,10 +30,9 @@
     </header>
 
 
-
-    <!-- =================================================
-         LOGIN SECTION
-    ================================================== -->
+    <!-- =====================================================
+         LOGIN
+    ====================================================== -->
 
     <section id="loginSection">
 
@@ -57,38 +40,20 @@
 
             <div class="login-card">
 
+                <div class="login-icon">👤</div>
 
-                <!-- ICON -->
+                <h1>RETAILER LOGIN</h1>
 
-                <div class="login-icon">
-                    👤
-                </div>
-
-
-                <!-- TITLE -->
-
-                <h1>
-                    RETAILER LOGIN
-                </h1>
-
-
-                <p>
-                    Enter your Retailer ID and Password
-                </p>
-
-
-                <!-- LOGIN FORM -->
+                <p>Enter your Retailer ID and Password</p>
 
                 <form id="retailerLoginForm"
-                      autocomplete="off">
-
-
-                    <!-- RETAILER ID -->
+                      autocomplete="off"
+                      novalidate>
 
                     <div class="form-group">
 
                         <label for="retailerId">
-                            Retailer ID
+                            Retailer ID / Username
                         </label>
 
                         <input
@@ -97,13 +62,12 @@
                             name="retailerId"
                             placeholder="Enter Retailer ID"
                             autocomplete="off"
-                            required
-                        >
+                            autocapitalize="none"
+                            spellcheck="false"
+                            required>
 
                     </div>
 
-
-                    <!-- PASSWORD -->
 
                     <div class="form-group">
 
@@ -117,24 +81,20 @@
                             name="retailerPassword"
                             placeholder="Enter Password"
                             autocomplete="new-password"
-                            required
-                        >
+                            required>
 
                     </div>
 
 
-                    <!-- LOGIN BUTTON -->
-
                     <button
                         type="submit"
-                        class="login-button">
+                        class="login-button"
+                        id="loginButton">
 
                         LOGIN
 
                     </button>
 
-
-                    <!-- LOGIN MESSAGE -->
 
                     <div
                         id="loginMessage"
@@ -142,20 +102,15 @@
                         style="display:none;">
                     </div>
 
-
                 </form>
 
 
-                <!-- BACK HOME ONLY -->
-
-                <a
-                    href="index.html"
-                    class="back-home">
+                <a href="index.html"
+                   class="back-home">
 
                     ← Back to Home
 
                 </a>
-
 
             </div>
 
@@ -164,21 +119,17 @@
     </section>
 
 
+    <!-- =====================================================
+         DASHBOARD
+    ====================================================== -->
 
-    <!-- =================================================
-         RETAILER DASHBOARD SECTION
-         Initially Hidden
-    ================================================== -->
-
-    <section
-        id="dashboardSection"
-        style="display:none;">
-
+    <section id="dashboardSection"
+             style="display:none;">
 
         <div class="dashboard">
 
 
-            <!-- DASHBOARD HEADER -->
+            <!-- HEADER -->
 
             <div class="dashboard-header">
 
@@ -195,13 +146,20 @@
                         </strong>
                     </p>
 
+                    <small>
+                        Retailer ID:
+                        <strong id="loggedRetailerId">
+                            -
+                        </strong>
+                    </small>
+
                 </div>
 
 
                 <button
                     type="button"
                     class="logout-button"
-                    onclick="retailerLogout()">
+                    id="logoutButton">
 
                     Logout
 
@@ -210,21 +168,18 @@
             </div>
 
 
-
             <!-- =================================================
-                 SERVICES
+                 SERVICE
             ================================================== -->
 
             <div class="services-box">
 
-                <h2>
-                    Select Service
-                </h2>
-
+                <h2>Select Service</h2>
 
                 <select
                     id="serviceSelect"
-                    class="service-select">
+                    class="service-select"
+                    required>
 
                     <option value="">
                         -- Select Service --
@@ -297,8 +252,6 @@
                 </select>
 
 
-                <!-- AMOUNT -->
-
                 <div class="amount-box">
 
                     <span class="amount-label">
@@ -306,15 +259,12 @@
                     </span>
 
                     <span class="amount-value">
-
                         ₹<span id="serviceAmount">0</span>
-
                     </span>
 
                 </div>
 
             </div>
-
 
 
             <!-- =================================================
@@ -323,12 +273,12 @@
 
             <div class="application-box">
 
-                <h2>
-                    Application Form
-                </h2>
+                <h2>Application Form</h2>
 
 
-                <form id="applicationForm">
+                <form id="applicationForm"
+                      autocomplete="off"
+                      enctype="multipart/form-data">
 
 
                     <div class="form-grid">
@@ -346,8 +296,7 @@
                                 type="text"
                                 name="aadhaarName"
                                 id="aadhaarName"
-                                required
-                            >
+                                required>
 
                         </div>
 
@@ -363,8 +312,7 @@
                             <input
                                 type="text"
                                 name="englishName"
-                                id="englishName"
-                            >
+                                id="englishName">
 
                         </div>
 
@@ -380,13 +328,12 @@
                             <input
                                 type="text"
                                 name="gujaratiName"
-                                id="gujaratiName"
-                            >
+                                id="gujaratiName">
 
                         </div>
 
 
-                        <!-- RATION CARD -->
+                        <!-- RATION CARD NUMBER -->
 
                         <div class="form-group">
 
@@ -397,8 +344,7 @@
                             <input
                                 type="text"
                                 name="rationCardNo"
-                                id="rationCardNo"
-                            >
+                                id="rationCardNo">
 
                         </div>
 
@@ -449,8 +395,7 @@
                                 type="text"
                                 name="village"
                                 id="village"
-                                required
-                            >
+                                required>
 
                         </div>
 
@@ -467,8 +412,7 @@
                                 type="text"
                                 name="taluka"
                                 id="taluka"
-                                required
-                            >
+                                required>
 
                         </div>
 
@@ -485,8 +429,7 @@
                                 type="text"
                                 name="district"
                                 id="district"
-                                required
-                            >
+                                required>
 
                         </div>
 
@@ -504,8 +447,8 @@
                                 name="pincode"
                                 id="pincode"
                                 maxlength="6"
-                                required
-                            >
+                                inputmode="numeric"
+                                required>
 
                         </div>
 
@@ -523,8 +466,8 @@
                                 name="mobile"
                                 id="mobile"
                                 maxlength="10"
-                                required
-                            >
+                                inputmode="numeric"
+                                required>
 
                         </div>
 
@@ -540,8 +483,7 @@
                             <input
                                 type="email"
                                 name="email"
-                                id="email"
-                            >
+                                id="email">
 
                         </div>
 
@@ -557,8 +499,7 @@
                             <input
                                 type="date"
                                 name="birthDate"
-                                id="birthDate"
-                            >
+                                id="birthDate">
 
                         </div>
 
@@ -576,13 +517,12 @@
                                 name="birthYear"
                                 id="birthYear"
                                 min="1900"
-                                max="2100"
-                            >
+                                max="2100">
 
                         </div>
 
 
-                        <!-- RATION CARD STATUS -->
+                        <!-- RATIONCARD STATUS -->
 
                         <div class="form-group">
 
@@ -623,8 +563,72 @@
                                 type="text"
                                 name="utrNumber"
                                 id="utrNumber"
-                                required
-                            >
+                                required>
+
+                        </div>
+
+
+                        <!-- AADHAAR PDF -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Aadhaar PDF *
+                            </label>
+
+                            <input
+                                type="file"
+                                name="aadhaarFile"
+                                id="aadhaarFile"
+                                accept=".pdf,application/pdf"
+                                required>
+
+                            <small>
+                                PDF only
+                            </small>
+
+                        </div>
+
+
+                        <!-- RATIONCARD PDF -->
+
+                        <div class="form-group">
+
+                            <label>
+                                RATIONCARD PDF
+                            </label>
+
+                            <input
+                                type="file"
+                                name="rationcardFile"
+                                id="rationcardFile"
+                                accept=".pdf,application/pdf">
+
+                            <small>
+                                PDF only
+                            </small>
+
+                        </div>
+
+
+                        <!-- PAYMENT SCREENSHOT -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Payment Screenshot *
+                            </label>
+
+                            <input
+                                type="file"
+                                name="paymentScreenshot"
+                                id="paymentScreenshot"
+                                accept="image/*,.pdf"
+                                required>
+
+                            <small>
+                                Payment proof upload કરો
+                            </small>
 
                         </div>
 
@@ -632,7 +636,7 @@
                     </div>
 
 
-                    <!-- PAYMENT AMOUNT -->
+                    <!-- PAYMENT BOX -->
 
                     <div class="amount-box">
 
@@ -641,10 +645,40 @@
                         </span>
 
                         <span class="amount-value">
-
                             ₹<span id="paymentAmount">0</span>
-
                         </span>
+
+                    </div>
+
+
+                    <!-- UPI INFO -->
+
+                    <div class="payment-info">
+
+                        <h3>
+                            💳 UPI Payment
+                        </h3>
+
+                        <p>
+                            UPI ID:
+                            <strong>
+                                gujrat.nsfa@ybl
+                            </strong>
+                        </p>
+
+                        <p>
+                            Payment કર્યા પછી UTR Number અને Screenshot
+                            જરૂરથી આપો.
+                        </p>
+
+                        <button
+                            type="button"
+                            id="payButton"
+                            class="payment-button">
+
+                            Pay ₹<span id="payButtonAmount">0</span>
+
+                        </button>
 
                     </div>
 
@@ -653,20 +687,21 @@
 
                     <button
                         type="submit"
+                        id="submitApplicationButton"
                         class="login-button">
 
-                        Submit Application
+                        SUBMIT APPLICATION
 
                     </button>
 
 
-                    <!-- APPLICATION MESSAGE -->
+                    <!-- MESSAGE -->
 
                     <div
                         id="applicationMessage"
                         style="display:none;
                                margin-top:15px;
-                               padding:12px;
+                               padding:14px;
                                border-radius:10px;">
                     </div>
 
@@ -675,23 +710,14 @@
 
             </div>
 
-
         </div>
 
     </section>
 
-
 </div>
 
 
-
-<!-- =====================================================
-     RETAILER JAVASCRIPT
-===================================================== -->
-
 <script src="retailer.js"></script>
 
-
 </body>
-
 </html>
