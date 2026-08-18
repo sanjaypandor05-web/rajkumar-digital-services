@@ -1,315 +1,220 @@
-* {
-    box-sizing: border-box;
-}
+/* =====================================================
+   RAJKUMAR APPLICATION PAGE
+===================================================== */
 
-body {
-    margin: 0;
-    font-family: Arial, "Noto Sans Gujarati", sans-serif;
-    background: #f4f7fb;
-    color: #1f2937;
-}
-
-.apply-header {
-    background: linear-gradient(135deg, #0d47a1, #1976d2);
-    color: white;
-    padding: 18px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.15);
-}
-
-.apply-header h1 {
-    margin: 0;
-    font-size: 23px;
-}
-
-.apply-header p {
-    margin: 5px 0 0;
-    opacity: .9;
-}
-
-.apply-header a {
-    color: white;
-    text-decoration: none;
-    background: rgba(255,255,255,.15);
-    padding: 10px 15px;
-    border-radius: 10px;
+.apply-page {
+    min-height: 100vh;
+    background:
+        linear-gradient(
+            135deg,
+            #f3f8ff,
+            #ffffff 50%,
+            #f1fbf8
+        );
 }
 
 .apply-container {
-    width: min(100% - 24px, 1000px);
-    margin: 25px auto 50px;
+    width: min(1100px, 94%);
+    margin: 35px auto 60px;
 }
 
-.apply-title {
+/* HEADER */
+
+.apply-header {
     text-align: center;
-    margin-bottom: 22px;
+    margin-bottom: 30px;
 }
 
-.title-icon {
-    font-size: 42px;
+.apply-header h1 {
+    color: #172033;
+    font-size: clamp(27px, 4vw, 40px);
+    font-weight: 900;
 }
 
-.apply-title h2 {
-    margin: 8px 0;
-    color: #0d47a1;
-}
-
-.apply-title p {
-    margin: 0;
+.apply-header p {
     color: #667085;
+    margin-top: 6px;
 }
 
-.form-card,
-.submit-card {
+/* CARD */
+
+.apply-card {
     background: white;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 18px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.07);
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+    padding: 30px;
+
+    box-shadow: 0 15px 45px rgba(20,40,80,.08);
 }
 
-.form-card h3 {
-    margin-top: 0;
-    color: #0d47a1;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 12px;
+/* SECTION */
+
+.form-section {
+    margin-bottom: 28px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #edf0f4;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+.form-section:last-child {
+    border-bottom: none;
 }
 
-.field {
+.form-section-title {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    color: #172033;
+    font-size: 20px;
+    font-weight: 900;
+
+    margin-bottom: 18px;
 }
 
-.field.full {
+.form-section-title span {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #edf5ff;
+    color: #1565c0;
+}
+
+/* GRID */
+
+.apply-form-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+/* FULL */
+
+.full-width {
     grid-column: 1 / -1;
 }
 
-.field label {
-    font-weight: 600;
-    margin-bottom: 7px;
-}
+/* PAYMENT */
 
-.field input,
-.field select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d0d5dd;
-    border-radius: 9px;
-    font-size: 15px;
-    background: white;
-    outline: none;
-}
-
-.field input:focus,
-.field select:focus {
-    border-color: #1976d2;
-    box-shadow: 0 0 0 3px rgba(25,118,210,.12);
-}
-
-.field input[type="file"] {
-    padding: 10px;
-}
-
-.field small {
-    margin-top: 6px;
-    color: #667085;
-}
-
-.amount-box,
-.payment-amount {
-    margin-top: 16px;
-    padding: 16px;
-    border-radius: 12px;
-    background: #eaf3ff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.amount-box strong,
-.payment-amount strong {
-    font-size: 24px;
-    color: #0d47a1;
-}
-
-.payment-card {
-    border: 2px solid #e3efff;
-}
-
-.upi-box {
-    text-align: center;
-    padding: 20px;
-    margin: 18px 0;
-    border-radius: 14px;
+.payment-box {
+    padding: 22px;
+    border-radius: 16px;
     background: #f8fbff;
-    border: 1px dashed #1976d2;
-}
-
-.upi-box h4 {
-    margin: 0 0 8px;
-    font-size: 19px;
-    color: #0d47a1;
-}
-
-.upi-id {
-    display: inline-block;
-    margin: 12px 0;
-    padding: 11px 18px;
-    border-radius: 8px;
-    background: white;
-    border: 1px solid #d0d5dd;
-    font-weight: bold;
-    color: #222;
-}
-
-.upi-button {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin: 10px auto;
-    padding: 13px;
-    border: 0;
-    border-radius: 10px;
-    background: #1976d2;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.upi-button:active {
-    transform: scale(.98);
-}
-
-.upi-note {
-    font-size: 13px;
-    color: #667085;
-}
-
-.submit-card {
+    border: 1px solid #dce9f7;
     text-align: center;
 }
 
-#submitApplicationButton {
-    width: 100%;
-    max-width: 450px;
-    padding: 15px;
-    border: 0;
-    border-radius: 11px;
-    background: linear-gradient(135deg, #0d47a1, #1976d2);
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
+.payment-box h3 {
+    color: #172033;
+    margin-bottom: 10px;
 }
 
-#submitApplicationButton:disabled {
+.payment-amount {
+    font-size: 30px;
+    color: #1565c0;
+    font-weight: 900;
+}
+
+/* QR */
+
+.qr-container {
+    margin: 20px auto;
+    width: 220px;
+    min-height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.qr-container img {
+    width: 100%;
+    max-width: 210px;
+    height: auto;
+}
+
+/* FILE */
+
+input[type="file"] {
+    padding: 9px;
+    background: #fafbfc;
+}
+
+/* SUBMIT */
+
+.apply-submit {
+    width: 100%;
+    min-height: 54px;
+
+    border: none;
+    border-radius: 13px;
+
+    background: #1565c0;
+    color: white;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    transition: .25s;
+}
+
+.apply-submit:hover {
+    background: #0d47a1;
+    transform: translateY(-2px);
+}
+
+.apply-submit:disabled {
     opacity: .6;
     cursor: not-allowed;
+    transform: none;
 }
 
-.submit-card p {
-    color: #667085;
-    font-size: 13px;
-}
+/* MESSAGE */
 
-.application-message {
-    display: none;
-    margin-bottom: 15px;
-    padding: 14px;
-    border-radius: 10px;
-    font-weight: 600;
-    line-height: 1.6;
+#applicationMessage,
+#message {
+    margin-top: 18px;
+    padding: 13px;
+    border-radius: 11px;
+    text-align: center;
+    font-weight: 750;
 }
 
 /* MOBILE */
 
-@media (max-width: 700px) {
-
-    .apply-header {
-        padding: 15px;
-        align-items: flex-start;
-    }
-
-    .apply-header h1 {
-        font-size: 17px;
-    }
-
-    .apply-header p {
-        font-size: 13px;
-    }
-
-    .apply-header a {
-        white-space: nowrap;
-        padding: 8px 10px;
-        font-size: 13px;
-    }
+@media(max-width:700px) {
 
     .apply-container {
-        width: min(100% - 16px, 1000px);
-        margin-top: 16px;
+        width: 94%;
+        margin-top: 20px;
     }
 
-    .apply-title h2 {
-        font-size: 21px;
+    .apply-card {
+        padding: 20px 16px;
+        border-radius: 17px;
     }
 
-    .form-card,
-    .submit-card {
-        padding: 15px;
-        border-radius: 13px;
-    }
-
-    .form-grid {
+    .apply-form-grid {
         grid-template-columns: 1fr;
-        gap: 13px;
     }
 
-    .field.full {
+    .full-width {
         grid-column: auto;
     }
 
-    .field input,
-    .field select {
-        font-size: 16px;
-        padding: 12px;
+    .qr-container {
+        width: 190px;
+        min-height: 190px;
     }
-
-    .amount-box,
-    .payment-amount {
-        padding: 13px;
-    }
-
-    .amount-box strong,
-    .payment-amount strong {
-        font-size: 21px;
-    }
-
-}
-
-/* VERY SMALL MOBILE */
-
-@media (max-width: 380px) {
-
-    .apply-header {
-        flex-direction: column;
-    }
-
-    .apply-header a {
-        align-self: flex-start;
-    }
-
-    .title-icon {
-        font-size: 34px;
-    }
-
 }
