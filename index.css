@@ -1,0 +1,99 @@
+/* =====================================================
+   RAJKUMAR HOME PAGE
+===================================================== */
+
+.hero {
+    min-height:520px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:60px 5%;
+    background:
+        linear-gradient(rgba(8,39,91,.82),rgba(13,71,161,.82)),
+        url("banner.jpg") center/cover no-repeat;
+    color:#fff;
+}
+
+.hero-content {
+    max-width:850px;
+}
+
+.hero h1 {
+    font-size:48px;
+    font-weight:900;
+    margin-bottom:15px;
+}
+
+.hero p {
+    font-size:20px;
+    opacity:.95;
+    margin-bottom:25px;
+}
+
+.services-section {
+    padding:55px 5%;
+}
+
+.services-section h2 {
+    text-align:center;
+    color:#0d47a1;
+    margin-bottom:30px;
+}
+
+.services-grid {
+    width:min(1150px,100%);
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.service-card {
+    padding:25px;
+    text-align:center;
+    transition:.25s;
+}
+
+.service-card:hover {
+    transform:translateY(-6px);
+    box-shadow:0 18px 35px rgba(20,40,80,.12);
+}
+
+.service-card h3 {
+    color:#173b72;
+    margin:12px 0;
+}
+
+.contact-section {
+    padding:55px 5%;
+    background:#eef5fc;
+}
+
+@media(max-width:900px) {
+    .services-grid {
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .hero h1 {
+        font-size:36px;
+    }
+}
+
+@media(max-width:550px) {
+    .services-grid {
+        grid-template-columns:1fr;
+    }
+
+    .hero {
+        min-height:430px;
+    }
+
+    .hero h1 {
+        font-size:29px;
+    }
+
+    .hero p {
+        font-size:16px;
+    }
+}
