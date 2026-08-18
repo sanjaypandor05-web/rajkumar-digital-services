@@ -1,57 +1,52 @@
-/* =====================================================
+/* =========================================================
    RAJKUMAR RATIONCARD SERVICES
-   FINAL RETAILER.JS
-   Retailer Login + Application Submission
-===================================================== */
+   FINAL RETAILER JAVASCRIPT
+   Login + Dashboard + Application Submit
+========================================================= */
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbw5yfGMA2be2xYiGXltpyg5xmgF7qyveUenGJtlDttmIVym9Ndo_gYgAXmyarJ7WwBZLg/exec";
+"https://script.google.com/macros/s/AKfycbw1mKC92_EjWJS_x2o8LMqiL9sssMbFh089IhMujZLd6_9VuujoVckjoMS8fbajvN-uQQ/exec";
 
 
-/* =====================================================
+/* =========================================================
    PAGE LOAD
-===================================================== */
+========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
 
     setupRetailerLogin();
-
     setupServiceAmount();
-
     setupApplicationForm();
-
-    setupFileValidation();
-
     checkRetailerSession();
 
 });
 
 
-/* =====================================================
+/* =========================================================
    RETAILER LOGIN
-===================================================== */
+========================================================= */
 
 function setupRetailerLogin() {
 
-    const loginForm =
+    const form =
         document.getElementById("retailerLoginForm");
 
-    if (!loginForm) return;
+    if (!form) return;
 
 
-    loginForm.addEventListener("submit", async function (event) {
+    form.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
 
         const retailerId =
-            document.getElementById("retailerId")?.value.trim() || "";
+            document.getElementById("retailerId")?.value.trim();
 
         const password =
             document.getElementById("retailerPassword")?.value || "";
 
         const button =
-            loginForm.querySelector("button[type='submit']");
+            form.querySelector("button[type='submit']");
 
 
         if (!retailerId || !password) {
@@ -68,7 +63,6 @@ function setupRetailerLogin() {
         if (button) {
 
             button.disabled = true;
-
             button.textContent = "LOGIN...";
 
         }
@@ -82,16 +76,40 @@ function setupRetailerLogin() {
 
         try {
 
+            const response = await fetch(
+                SCRIPT_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body: JSON.stringify({
+
+                        action: "retailerLogin",
+
+                        username: retailerId,
+
+                        password: password
+
+                    })
+                }
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP Error " + response.status
+                );
+
+            }
+
+
             const result =
-                await callAPI({
-
-                    action: "retailerLogin",
-
-                    username: retailerId,
-
-                    password: password
-
-                });
+                await response.json();
 
 
             console.log(
@@ -105,37 +123,27 @@ function setupRetailerLogin() {
                 result.success === true
             ) {
 
+
                 const id =
-                    result.retailerId || retailerId;
+                    result.retailerId ||
+                    retailerId;
 
                 const name =
-                    result.retailerName || "";
+                    result.retailerName ||
+                    "Retailer";
 
                 const mobile =
-                    result.mobile || "";
+                    result.mobile ||
+                    "";
 
                 const username =
-                    result.username || retailerId;
+                    result.username ||
+                    retailerId;
 
 
-                /* ================================
-                   SESSION
-                ================================= */
-
-                sessionStorage.setItem(
-                    "retailerLoggedIn",
-                    "true"
-                );
-
-                sessionStorage.setItem(
-                    "retailerId",
-                    id
-                );
-
-
-                /* ================================
+                /* =====================================
                    LOCAL STORAGE
-                ================================= */
+                ===================================== */
 
                 localStorage.setItem(
                     "rajkumarRole",
@@ -186,18 +194,40 @@ function setupRetailerLogin() {
                 );
 
 
+                /* =====================================
+                   SESSION STORAGE
+                ===================================== */
+
+                sessionStorage.setItem(
+                    "retailerLoggedIn",
+                    "true"
+                );
+
+                sessionStorage.setItem(
+                    "retailerId",
+                    id
+                );
+
+
                 showLoginMessage(
-                    "✅ Login Successful. Dashboard ખૂલી રહ્યું છે...",
+                    "✅ Login Successful.",
                     "success"
                 );
 
 
+                /*
+                 * IMPORTANT:
+                 * અહીં બીજા HTML page પર redirect નથી.
+                 * retailer.htmlમાં જ dashboard ખૂલશે.
+                 */
+
                 setTimeout(function () {
 
-                    window.location.href =
-                        "retailer-dashboard.html";
+                    showDashboard(id);
 
-                }, 600);
+                    loadRetailerApplications();
+
+                }, 400);
 
 
                 return;
@@ -206,11 +236,9 @@ function setupRetailerLogin() {
 
 
             showLoginMessage(
-                "❌ " +
-                (
-                    result?.message ||
-                    "Retailer ID અથવા Password ખોટો છે."
-                ),
+                result && result.message
+                    ? "❌ " + result.message
+                    : "❌ Invalid Retailer ID or Password.",
                 "error"
             );
 
@@ -224,18 +252,18 @@ function setupRetailerLogin() {
 
 
             showLoginMessage(
-                "❌ Server connection failed. Apps Script URL અથવા Deployment ચેક કરો.",
+                "❌ Server connection failed. Apps Script URL અથવા deployment ચેક કરો.",
                 "error"
             );
 
-        }
+        } finally {
 
+            if (button) {
 
-        if (button) {
+                button.disabled = false;
+                button.textContent = "LOGIN";
 
-            button.disabled = false;
-
-            button.textContent = "LOGIN";
+            }
 
         }
 
@@ -244,108 +272,34 @@ function setupRetailerLogin() {
 }
 
 
-/* =====================================================
-   API CALL
-===================================================== */
-
-async function callAPI(data) {
-
-    const response =
-        await fetch(
-            SCRIPT_URL,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "text/plain;charset=utf-8"
-                },
-
-                body:
-                    JSON.stringify(data)
-            }
-        );
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "HTTP Error " +
-            response.status
-        );
-
-    }
-
-
-    const text =
-        await response.text();
-
-
-    try {
-
-        return JSON.parse(text);
-
-    } catch (error) {
-
-        console.error(
-            "Invalid JSON:",
-            text
-        );
-
-        throw new Error(
-            "Invalid server response."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
+/* =========================================================
    LOGIN MESSAGE
-===================================================== */
+========================================================= */
 
-function showLoginMessage(
-    message,
-    type
-) {
+function showLoginMessage(message, type) {
 
     const element =
-        document.getElementById(
-            "loginMessage"
-        );
-
+        document.getElementById("loginMessage");
 
     if (!element) return;
 
 
-    element.style.display =
-        "block";
+    element.style.display = "block";
 
+    element.innerHTML = message;
 
-    element.textContent =
-        message;
+    element.style.padding = "12px";
 
+    element.style.marginTop = "15px";
 
-    element.style.padding =
-        "12px";
-
-
-    element.style.marginTop =
-        "15px";
-
-
-    element.style.borderRadius =
-        "10px";
+    element.style.borderRadius = "10px";
 
 
     if (type === "success") {
 
-        element.style.background =
-            "#e8f5e9";
+        element.style.background = "#e8f5e9";
 
-        element.style.color =
-            "#2e7d32";
+        element.style.color = "#2e7d32";
 
         element.style.border =
             "1px solid #c8e6c9";
@@ -354,11 +308,9 @@ function showLoginMessage(
 
     else if (type === "loading") {
 
-        element.style.background =
-            "#e3f2fd";
+        element.style.background = "#e3f2fd";
 
-        element.style.color =
-            "#1565c0";
+        element.style.color = "#1565c0";
 
         element.style.border =
             "1px solid #bbdefb";
@@ -367,11 +319,9 @@ function showLoginMessage(
 
     else {
 
-        element.style.background =
-            "#ffebee";
+        element.style.background = "#ffebee";
 
-        element.style.color =
-            "#c62828";
+        element.style.color = "#c62828";
 
         element.style.border =
             "1px solid #ffcdd2";
@@ -381,9 +331,68 @@ function showLoginMessage(
 }
 
 
-/* =====================================================
-   SESSION CHECK
-===================================================== */
+/* =========================================================
+   SHOW DASHBOARD
+========================================================= */
+
+function showDashboard(retailerId) {
+
+    const loginSection =
+        document.getElementById("loginSection");
+
+    const dashboard =
+        document.getElementById("dashboardSection");
+
+
+    if (loginSection) {
+
+        loginSection.style.display = "none";
+
+    }
+
+
+    if (dashboard) {
+
+        dashboard.style.display = "block";
+
+    }
+
+
+    const nameElement =
+        document.getElementById(
+            "loggedRetailerName"
+        );
+
+
+    if (nameElement) {
+
+        nameElement.textContent =
+            localStorage.getItem(
+                "rajkumarRetailerName"
+            ) || retailerId;
+
+    }
+
+
+    const idElement =
+        document.getElementById(
+            "loggedRetailerId"
+        );
+
+
+    if (idElement) {
+
+        idElement.textContent =
+            retailerId;
+
+    }
+
+}
+
+
+/* =========================================================
+   CHECK RETAILER SESSION
+========================================================= */
 
 function checkRetailerSession() {
 
@@ -391,7 +400,6 @@ function checkRetailerSession() {
         sessionStorage.getItem(
             "retailerLoggedIn"
         );
-
 
     const retailerId =
         sessionStorage.getItem(
@@ -408,69 +416,16 @@ function checkRetailerSession() {
             retailerId
         );
 
-    }
-
-}
-
-
-/* =====================================================
-   SHOW DASHBOARD
-===================================================== */
-
-function showDashboard(
-    retailerId
-) {
-
-    const loginSection =
-        document.getElementById(
-            "loginSection"
-        );
-
-
-    const dashboard =
-        document.getElementById(
-            "dashboardSection"
-        );
-
-
-    if (loginSection) {
-
-        loginSection.style.display =
-            "none";
-
-    }
-
-
-    if (dashboard) {
-
-        dashboard.style.display =
-            "block";
-
-    }
-
-
-    const retailerName =
-        document.getElementById(
-            "loggedRetailerName"
-        );
-
-
-    if (retailerName) {
-
-        retailerName.textContent =
-            localStorage.getItem(
-                "rajkumarRetailerName"
-            ) ||
-            retailerId;
+        loadRetailerApplications();
 
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 function retailerLogout() {
 
@@ -486,14 +441,21 @@ function retailerLogout() {
     const keys = [
 
         "rajkumarRole",
+
         "rajkumarRetailerId",
+
         "rajkumarRetailerName",
+
         "rajkumarRetailerMobile",
+
         "rajkumarRetailerUsername",
 
         "retailerId",
+
         "retailerName",
+
         "retailerMobile",
+
         "retailerUsername"
 
     ];
@@ -501,9 +463,7 @@ function retailerLogout() {
 
     keys.forEach(function (key) {
 
-        localStorage.removeItem(
-            key
-        );
+        localStorage.removeItem(key);
 
     });
 
@@ -514,22 +474,21 @@ function retailerLogout() {
 }
 
 
-/* =====================================================
+/* =========================================================
    SERVICE AMOUNT
-===================================================== */
+========================================================= */
 
 function setupServiceAmount() {
 
-    const serviceSelect =
+    const select =
         document.getElementById(
             "serviceSelect"
         );
 
+    if (!select) return;
 
-    if (!serviceSelect) return;
 
-
-    serviceSelect.addEventListener(
+    select.addEventListener(
         "change",
         updateServiceAmount
     );
@@ -540,9 +499,9 @@ function setupServiceAmount() {
 }
 
 
-/* =====================================================
+/* =========================================================
    UPDATE SERVICE AMOUNT
-===================================================== */
+========================================================= */
 
 function updateServiceAmount() {
 
@@ -551,12 +510,10 @@ function updateServiceAmount() {
             "serviceSelect"
         );
 
-
-    const amount =
+    const serviceAmount =
         document.getElementById(
             "serviceAmount"
         );
-
 
     const paymentAmount =
         document.getElementById(
@@ -573,7 +530,7 @@ function updateServiceAmount() {
         ];
 
 
-    let price = 0;
+    let amount = 0;
 
 
     if (
@@ -581,7 +538,7 @@ function updateServiceAmount() {
         option.dataset.amount
     ) {
 
-        price =
+        amount =
             Number(
                 option.dataset.amount
             );
@@ -589,10 +546,10 @@ function updateServiceAmount() {
     }
 
 
-    if (amount) {
+    if (serviceAmount) {
 
-        amount.textContent =
-            price;
+        serviceAmount.textContent =
+            amount;
 
     }
 
@@ -600,16 +557,16 @@ function updateServiceAmount() {
     if (paymentAmount) {
 
         paymentAmount.textContent =
-            price;
+            amount;
 
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    APPLICATION FORM
-===================================================== */
+========================================================= */
 
 function setupApplicationForm() {
 
@@ -618,32 +575,30 @@ function setupApplicationForm() {
             "applicationForm"
         );
 
-
     if (!form) return;
 
 
     form.addEventListener(
         "submit",
-        submitApplicationFromRetailer
+        submitApplication
     );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    SUBMIT APPLICATION
-===================================================== */
+========================================================= */
 
-async function submitApplicationFromRetailer(
-    event
-) {
+async function submitApplication(event) {
 
     event.preventDefault();
 
 
     const form =
-        event.target;
-
+        document.getElementById(
+            "applicationForm"
+        );
 
     const message =
         document.getElementById(
@@ -651,34 +606,23 @@ async function submitApplicationFromRetailer(
         );
 
 
-    const button =
-        form.querySelector(
-            "button[type='submit']"
-        );
-
-
     const retailerId =
-        sessionStorage.getItem(
-            "retailerId"
-        ) ||
         localStorage.getItem(
             "rajkumarRetailerId"
-        ) ||
-        "";
+        ) || "";
 
 
     const retailerMobile =
         localStorage.getItem(
             "rajkumarRetailerMobile"
-        ) ||
-        "";
+        ) || "";
 
 
     if (!retailerId) {
 
         showApplicationMessage(
             message,
-            "❌ Retailer session મળ્યું નથી. ફરી Login કરો.",
+            "❌ Retailer session expired. ફરી Login કરો.",
             "error"
         );
 
@@ -700,7 +644,7 @@ async function submitApplicationFromRetailer(
 
         showApplicationMessage(
             message,
-            "⚠️ પહેલા Service પસંદ કરો.",
+            "⚠️ Service પસંદ કરો.",
             "error"
         );
 
@@ -709,7 +653,7 @@ async function submitApplicationFromRetailer(
     }
 
 
-    const option =
+    const selected =
         serviceSelect.options[
             serviceSelect.selectedIndex
         ];
@@ -717,7 +661,7 @@ async function submitApplicationFromRetailer(
 
     const amount =
         Number(
-            option?.dataset?.amount || 0
+            selected.dataset.amount || 0
         );
 
 
@@ -725,7 +669,7 @@ async function submitApplicationFromRetailer(
 
         showApplicationMessage(
             message,
-            "⚠️ Service amount મળ્યો નથી.",
+            "⚠️ Service amount invalid છે.",
             "error"
         );
 
@@ -734,65 +678,11 @@ async function submitApplicationFromRetailer(
     }
 
 
-    /* ================================
-       REQUIRED FILES
-    ================================= */
-
-    const aadhaarInput =
-        document.getElementById(
-            "aadhaarFile"
+    const button =
+        form.querySelector(
+            "button[type='submit']"
         );
 
-
-    const rationcardInput =
-        document.getElementById(
-            "rationcardFile"
-        );
-
-
-    const paymentInput =
-        document.getElementById(
-            "paymentScreenshot"
-        );
-
-
-    if (
-        !aadhaarInput ||
-        !aadhaarInput.files ||
-        !aadhaarInput.files[0]
-    ) {
-
-        showApplicationMessage(
-            message,
-            "⚠️ Aadhaar PDF પસંદ કરો.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        !paymentInput ||
-        !paymentInput.files ||
-        !paymentInput.files[0]
-    ) {
-
-        showApplicationMessage(
-            message,
-            "⚠️ Payment Screenshot પસંદ કરો.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    /* ================================
-       BUTTON
-    ================================= */
 
     if (button) {
 
@@ -806,183 +696,55 @@ async function submitApplicationFromRetailer(
 
     showApplicationMessage(
         message,
-        "🔄 Application submit થઈ રહી છે... કૃપા કરીને રાહ જુઓ.",
+        "🔄 Application submit થઈ રહી છે...",
         "loading"
     );
 
 
     try {
 
-        const applicationId =
-            generateApplicationId();
-
-
-        /* ================================
-           FILE CONVERSION
-        ================================= */
-
-        const aadhaarFile =
-            await fileToBase64(
-                aadhaarInput.files[0]
+        const data =
+            await collectApplicationData(
+                form,
+                retailerId,
+                retailerMobile,
+                serviceSelect.value,
+                amount
             );
 
 
-        let rationcardFile = null;
+        const response =
+            await fetch(
+                SCRIPT_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body: JSON.stringify(data)
+                }
+            );
 
 
-        if (
-            rationcardInput &&
-            rationcardInput.files &&
-            rationcardInput.files[0]
-        ) {
+        if (!response.ok) {
 
-            rationcardFile =
-                await fileToBase64(
-                    rationcardInput.files[0]
-                );
+            throw new Error(
+                "HTTP Error " +
+                response.status
+            );
 
         }
 
 
-        const paymentScreenshot =
-            await fileToBase64(
-                paymentInput.files[0]
-            );
-
-
-        /* ================================
-           FORM DATA
-        ================================= */
-
-        const fd =
-            new FormData(form);
-
-
-        const payload = {
-
-            action:
-                "submitApplication",
-
-            applicationId:
-                applicationId,
-
-            retailerId:
-                retailerId,
-
-            retailerMobile:
-                retailerMobile,
-
-            service:
-                serviceSelect.value,
-
-            amount:
-                amount,
-
-            aadhaarName:
-                cleanValue(
-                    fd.get("aadhaarName")
-                ),
-
-            englishName:
-                cleanValue(
-                    fd.get("englishName")
-                ),
-
-            gujaratiName:
-                cleanValue(
-                    fd.get("gujaratiName")
-                ),
-
-            rationCardNo:
-                cleanValue(
-                    fd.get("rationCardNo")
-                ),
-
-            gender:
-                cleanValue(
-                    fd.get("gender")
-                ),
-
-            village:
-                cleanValue(
-                    fd.get("village")
-                ),
-
-            taluka:
-                cleanValue(
-                    fd.get("taluka")
-                ),
-
-            district:
-                cleanValue(
-                    fd.get("district")
-                ),
-
-            pincode:
-                cleanValue(
-                    fd.get("pincode")
-                ),
-
-            mobile:
-                cleanValue(
-                    fd.get("mobile")
-                ),
-
-            email:
-                cleanValue(
-                    fd.get("email")
-                ),
-
-            birthDate:
-                cleanValue(
-                    fd.get("birthDate")
-                ),
-
-            birthYear:
-                cleanValue(
-                    fd.get("birthYear")
-                ),
-
-            rationcardStatus:
-                cleanValue(
-                    fd.get("rationcardStatus")
-                ),
-
-            utrNumber:
-                cleanValue(
-                    fd.get("utrNumber")
-                ),
-
-            aadhaarFile:
-                aadhaarFile,
-
-            rationcardFile:
-                rationcardFile,
-
-            paymentScreenshot:
-                paymentScreenshot
-
-        };
-
-
-        console.log(
-            "Submitting Application:",
-            payload
-        );
-
-
-        /* ================================
-           SEND TO APPS SCRIPT
-        ================================= */
-
         const result =
-            await callAPI(
-                payload
-            );
+            await response.json();
 
 
         console.log(
-            "Submit Result:",
+            "Application Result:",
             result
         );
 
@@ -994,89 +756,51 @@ async function submitApplicationFromRetailer(
 
             showApplicationMessage(
                 message,
-                `
-                ✅ Application Successfully Submitted.<br><br>
 
-                <strong>Application ID:</strong>
-                ${escapeHTML(
-                    result.applicationId ||
-                    applicationId
-                )}
-                <br><br>
+                "✅ Application Submitted Successfully!<br>" +
+                "Application ID: <strong>" +
+                result.applicationId +
+                "</strong>",
 
-                <strong>Service:</strong>
-                ${escapeHTML(
-                    result.service ||
-                    option.textContent
-                )}
-                <br>
-
-                <strong>Amount:</strong>
-                ₹${result.amount || amount}
-                <br><br>
-
-                <strong>Payment Status:</strong>
-                ${escapeHTML(
-                    result.paymentStatus ||
-                    "Pending"
-                )}
-                <br>
-
-                <strong>Application Status:</strong>
-                ${escapeHTML(
-                    result.applicationStatus ||
-                    "Submitted"
-                )}
-                `,
                 "success"
             );
 
 
-            /* Clear form */
-
             form.reset();
-
 
             updateServiceAmount();
 
 
-            /* Keep retailer session */
-
-            setTimeout(function () {
-
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-
-            }, 100);
+            loadRetailerApplications();
 
 
-        } else {
-
-            throw new Error(
-                result?.message ||
-                "Application submit failed."
-            );
+            return;
 
         }
+
+
+        showApplicationMessage(
+            message,
+
+            result && result.message
+                ? "❌ " + result.message
+                : "❌ Application submit failed.",
+
+            "error"
+        );
 
 
     } catch (error) {
 
         console.error(
-            "APPLICATION ERROR:",
+            "Application Submit Error:",
             error
         );
 
 
         showApplicationMessage(
             message,
-            "❌ " +
-            (
-                error.message ||
-                "Application submit failed."
-            ),
+            "❌ Server connection failed.",
             "error"
         );
 
@@ -1096,87 +820,201 @@ async function submitApplicationFromRetailer(
 }
 
 
-/* =====================================================
-   FILE TO BASE64
-===================================================== */
+/* =========================================================
+   COLLECT APPLICATION DATA
+========================================================= */
 
-function fileToBase64(
-    file
+async function collectApplicationData(
+    form,
+    retailerId,
+    retailerMobile,
+    service,
+    amount
 ) {
 
+    const formData =
+        new FormData(form);
+
+
+    const data = {
+
+        action:
+            "submitApplication",
+
+        retailerId:
+            retailerId,
+
+        retailerMobile:
+            retailerMobile,
+
+        service:
+            service,
+
+        amount:
+            amount,
+
+        aadhaarName:
+            formData.get("aadhaarName") || "",
+
+        englishName:
+            formData.get("englishName") || "",
+
+        gujaratiName:
+            formData.get("gujaratiName") || "",
+
+        rationCardNo:
+            formData.get("rationCardNo") || "",
+
+        gender:
+            formData.get("gender") || "",
+
+        village:
+            formData.get("village") || "",
+
+        taluka:
+            formData.get("taluka") || "",
+
+        district:
+            formData.get("district") || "",
+
+        pincode:
+            formData.get("pincode") || "",
+
+        mobile:
+            formData.get("mobile") || "",
+
+        email:
+            formData.get("email") || "",
+
+        birthDate:
+            formData.get("birthDate") || "",
+
+        birthYear:
+            formData.get("birthYear") || "",
+
+        rationcardStatus:
+            formData.get("rationcardStatus") || "",
+
+        utrNumber:
+            formData.get("utrNumber") || ""
+
+    };
+
+
+    /* =====================================
+       FILES
+    ===================================== */
+
+    const aadhaarFile =
+        form.querySelector(
+            'input[name="aadhaarFile"]'
+        );
+
+    const rationcardFile =
+        form.querySelector(
+            'input[name="rationcardFile"]'
+        );
+
+    const paymentFile =
+        form.querySelector(
+            'input[name="paymentScreenshot"]'
+        );
+
+
+    if (aadhaarFile && aadhaarFile.files.length) {
+
+        data.aadhaarFile =
+            await fileToBase64(
+                aadhaarFile.files[0]
+            );
+
+    }
+
+
+    if (
+        rationcardFile &&
+        rationcardFile.files.length
+    ) {
+
+        data.rationcardFile =
+            await fileToBase64(
+                rationcardFile.files[0]
+            );
+
+    }
+
+
+    if (
+        paymentFile &&
+        paymentFile.files.length
+    ) {
+
+        data.paymentScreenshot =
+            await fileToBase64(
+                paymentFile.files[0]
+            );
+
+    }
+
+
+    return data;
+
+}
+
+
+/* =========================================================
+   FILE TO BASE64
+========================================================= */
+
+function fileToBase64(file) {
+
     return new Promise(
-        function (resolve, reject) {
-
-            if (!file) {
-
-                reject(
-                    new Error(
-                        "File not selected."
-                    )
-                );
-
-                return;
-
-            }
-
+        function(resolve, reject) {
 
             const reader =
                 new FileReader();
 
 
-            reader.onload =
-                function () {
+            reader.onload = function() {
 
-                    try {
-
-                        const result =
-                            reader.result;
+                const result =
+                    reader.result || "";
 
 
-                        const base64 =
-                            String(
-                                result
-                            ).split(",")[1];
+                const base64 =
+                    result.split(",")[1] || "";
 
 
-                        resolve({
+                resolve({
 
-                            name:
-                                file.name,
+                    name:
+                        file.name,
 
-                            mimeType:
-                                file.type ||
-                                "application/octet-stream",
+                    mimeType:
+                        file.type ||
+                        "application/octet-stream",
 
-                            data:
-                                base64
+                    data:
+                        base64
 
-                        });
+                });
 
-                    } catch (error) {
-
-                        reject(error);
-
-                    }
-
-                };
+            };
 
 
             reader.onerror =
-                function () {
+                function() {
 
                     reject(
                         new Error(
-                            "File read failed."
+                            "File reading failed."
                         )
                     );
 
                 };
 
 
-            reader.readAsDataURL(
-                file
-            );
+            reader.readAsDataURL(file);
 
         }
     );
@@ -1184,124 +1022,185 @@ function fileToBase64(
 }
 
 
-/* =====================================================
-   FILE VALIDATION
-===================================================== */
+/* =========================================================
+   LOAD RETAILER APPLICATIONS
+========================================================= */
 
-function setupFileValidation() {
+async function loadRetailerApplications() {
 
-    const inputs = [
-
-        "aadhaarFile",
-        "rationcardFile",
-        "paymentScreenshot"
-
-    ];
-
-
-    inputs.forEach(function (id) {
-
-        const input =
-            document.getElementById(id);
-
-
-        if (!input) return;
-
-
-        input.addEventListener(
-            "change",
-            function () {
-
-                const file =
-                    input.files &&
-                    input.files[0];
-
-
-                if (!file) return;
-
-
-                const maxSize =
-                    10 * 1024 * 1024;
-
-
-                if (
-                    file.size >
-                    maxSize
-                ) {
-
-                    alert(
-                        "File size 10 MB કરતાં વધારે ન હોવી જોઈએ."
-                    );
-
-
-                    input.value =
-                        "";
-
-                }
-
-            }
+    const retailerId =
+        localStorage.getItem(
+            "rajkumarRetailerId"
         );
 
-    });
+
+    if (!retailerId) return;
+
+
+    try {
+
+        const response =
+            await fetch(
+                SCRIPT_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body: JSON.stringify({
+
+                        action:
+                            "getRetailerApplications",
+
+                        retailerId:
+                            retailerId
+
+                    })
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " + response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Retailer Applications:",
+            result
+        );
+
+
+        if (
+            result &&
+            result.success === true
+        ) {
+
+            renderRetailerApplications(
+                result.applications || []
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Load Applications Error:",
+            error
+        );
+
+    }
 
 }
 
 
-/* =====================================================
-   GENERATE APPLICATION ID
-===================================================== */
+/* =========================================================
+   RENDER APPLICATIONS
+========================================================= */
 
-function generateApplicationId() {
+function renderRetailerApplications(
+    applications
+) {
 
-    const now =
-        new Date();
-
-
-    const year =
-        now.getFullYear();
-
-
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
+    const container =
+        document.getElementById(
+            "retailerApplications"
         );
 
 
-    const day =
-        String(
-            now.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
+    if (!container) return;
 
 
-    const random =
-        Math.floor(
-            10000 +
-            Math.random() *
-            90000
-        );
+    if (!applications.length) {
+
+        container.innerHTML =
+            "<p>No applications found.</p>";
+
+        return;
+
+    }
 
 
-    return (
-        "RKS-" +
-        year +
-        month +
-        day +
-        "-" +
-        random
+    let html = "";
+
+
+    applications.forEach(
+        function(item) {
+
+            html += `
+
+                <div class="application-card">
+
+                    <h3>
+                        ${escapeHtml(
+                            item.applicationId || ""
+                        )}
+                    </h3>
+
+                    <p>
+                        <strong>Service:</strong>
+                        ${escapeHtml(
+                            item.service || ""
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Amount:</strong>
+                        ₹${escapeHtml(
+                            String(item.amount || 0)
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        ${escapeHtml(
+                            item.date || ""
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Payment:</strong>
+                        ${escapeHtml(
+                            item.paymentStatus || "Pending"
+                        )}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${escapeHtml(
+                            item.applicationStatus || "Submitted"
+                        )}
+                    </p>
+
+                </div>
+
+            `;
+
+        }
     );
 
+
+    container.innerHTML =
+        html;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    APPLICATION MESSAGE
-===================================================== */
+========================================================= */
 
 function showApplicationMessage(
     element,
@@ -1315,25 +1214,17 @@ function showApplicationMessage(
     element.style.display =
         "block";
 
-
     element.innerHTML =
         message;
 
-
     element.style.padding =
-        "14px";
-
+        "12px";
 
     element.style.marginTop =
         "15px";
 
-
     element.style.borderRadius =
         "10px";
-
-
-    element.style.lineHeight =
-        "1.7";
 
 
     if (type === "success") {
@@ -1378,74 +1269,37 @@ function showApplicationMessage(
 }
 
 
-/* =====================================================
-   CLEAN VALUE
-===================================================== */
-
-function cleanValue(
-    value
-) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(
-        value
-    ).trim();
-
-}
-
-
-/* =====================================================
+/* =========================================================
    ESCAPE HTML
-===================================================== */
+========================================================= */
 
-function escapeHTML(
-    value
-) {
+function escapeHtml(value) {
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    return String(value || "")
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
-
-
-/* =====================================================
-   GLOBAL LOGOUT
-===================================================== */
-
-window.retailerLogout =
-    retailerLogout;
-
-
-/* =====================================================
-   END RETAILER.JS
-===================================================== */
