@@ -1,36 +1,12 @@
 /* =====================================================
    RAJKUMAR RATIONCARD SERVICES
-   MAIN WEBSITE CSS
-   CLEAN + MODERN + RESPONSIVE
+   GLOBAL PROFESSIONAL CSS
 ===================================================== */
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --primary: #1565c0;
-    --primary-dark: #0d47a1;
-    --secondary: #00a884;
-    --success: #2e7d32;
-    --danger: #d32f2f;
-    --warning: #f9a825;
-
-    --dark: #172033;
-    --text: #344054;
-    --muted: #667085;
-
-    --white: #ffffff;
-    --light: #f5f8fc;
-    --border: #e4e9f0;
-
-    --shadow: 0 10px 35px rgba(20, 40, 80, 0.08);
-    --shadow-hover: 0 18px 45px rgba(20, 40, 80, 0.14);
-
-    --radius: 18px;
-    --transition: 0.25s ease;
 }
 
 html {
@@ -38,14 +14,9 @@ html {
 }
 
 body {
-    font-family:
-        "Noto Sans Gujarati",
-        "Noto Sans",
-        Arial,
-        sans-serif;
-
-    background: var(--light);
-    color: var(--text);
+    font-family: "Noto Sans Gujarati", "Segoe UI", Arial, sans-serif;
+    background: #f4f7fb;
+    color: #172033;
     line-height: 1.6;
 }
 
@@ -65,439 +36,151 @@ button {
     cursor: pointer;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
-
-header,
-.navbar {
-    width: 100%;
-    background: rgba(255,255,255,0.96);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 3px 18px rgba(0,0,0,0.04);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+img {
+    max-width: 100%;
+    display: block;
 }
 
-.navbar {
-    min-height: 72px;
+/* HEADER */
+
+header {
+    width: 100%;
+}
+
+.navbar,
+.main-header {
+    background: linear-gradient(135deg, #123c8c, #1769aa);
+    color: #fff;
+    min-height: 70px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 6%;
+    padding: 12px 5%;
+    box-shadow: 0 4px 20px rgba(0,0,0,.12);
 }
 
 .logo,
 .brand,
-.nav-logo {
-    font-size: 21px;
-    font-weight: 900;
-    color: var(--primary);
-    letter-spacing: .3px;
+.site-logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: .4px;
 }
 
-.logo span,
-.brand span {
-    color: var(--secondary);
-}
-
-.nav-links {
+nav {
     display: flex;
     align-items: center;
-    gap: 8px;
-    list-style: none;
+    gap: 22px;
 }
 
-.nav-links a {
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-weight: 700;
-    color: var(--dark);
-    transition: var(--transition);
+nav a {
+    color: #fff;
+    font-weight: 600;
+    transition: .25s;
 }
 
-.nav-links a:hover {
-    background: #edf5ff;
-    color: var(--primary);
+nav a:hover {
+    color: #ffd54f;
 }
 
-/* =====================================================
-   HERO
-===================================================== */
-
-.hero {
-    min-height: 500px;
-    padding: 80px 6%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #eef6ff,
-            #ffffff 48%,
-            #ecfbf7
-        );
-}
-
-.hero-content {
-    max-width: 850px;
-}
-
-.hero h1 {
-    font-size: clamp(32px, 5vw, 60px);
-    line-height: 1.15;
-    color: var(--dark);
-    font-weight: 900;
-    margin-bottom: 18px;
-}
-
-.hero h1 span {
-    color: var(--primary);
-}
-
-.hero p {
-    max-width: 720px;
-    margin: auto;
-    color: var(--muted);
-    font-size: 18px;
-}
-
-.hero-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
-    margin-top: 30px;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
+/* BUTTONS */
 
 .btn,
-button,
+.primary-btn,
 .login-button {
-    border: none;
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 48px;
-    padding: 12px 24px;
+    border: 0;
     border-radius: 12px;
-    font-weight: 800;
-    transition: var(--transition);
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 8px 20px rgba(21,101,192,.2);
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-}
-
-.btn-secondary {
-    background: var(--secondary);
-    color: white;
-}
-
-.btn-secondary:hover {
-    transform: translateY(-2px);
-}
-
-/* =====================================================
-   SECTIONS
-===================================================== */
-
-section {
-    padding: 70px 6%;
-}
-
-.section-title {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.section-title h2 {
-    font-size: 34px;
-    color: var(--dark);
-    font-weight: 900;
-}
-
-.section-title p {
-    color: var(--muted);
-    margin-top: 8px;
-}
-
-/* =====================================================
-   SERVICE GRID
-===================================================== */
-
-.services-grid {
-    max-width: 1200px;
-    margin: auto;
-
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
-
-    gap: 20px;
-}
-
-.service-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 26px 20px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.service-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-hover);
-    border-color: #b8d5f7;
-}
-
-.service-icon {
-    width: 62px;
-    height: 62px;
-    margin: 0 auto 16px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 16px;
-    background: #edf5ff;
-    font-size: 30px;
-}
-
-.service-card h3 {
-    color: var(--dark);
-    font-size: 18px;
-    margin-bottom: 8px;
-}
-
-.service-card p {
-    color: var(--muted);
-    font-size: 14px;
-}
-
-/* =====================================================
-   STATS
-===================================================== */
-
-.stats {
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(180px, 1fr));
-    gap: 18px;
-    max-width: 1100px;
-    margin: auto;
-}
-
-.stat-card {
-    background: white;
-    padding: 25px;
-    border-radius: var(--radius);
-    text-align: center;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-}
-
-.stat-card h3 {
-    color: var(--primary);
-    font-size: 32px;
-    font-weight: 900;
-}
-
-.stat-card p {
-    color: var(--muted);
+    padding: 12px 22px;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    color: #fff;
     font-weight: 700;
+    box-shadow: 0 6px 16px rgba(13,71,161,.20);
+    transition: .25s;
 }
 
-/* =====================================================
-   FORMS
-===================================================== */
-
-.form-group {
-    margin-bottom: 17px;
+.btn:hover,
+.primary-btn:hover,
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(13,71,161,.28);
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 7px;
-    color: var(--dark);
-    font-weight: 750;
+.secondary-btn {
+    background: #fff;
+    color: #1565c0;
+    border: 1px solid #d5dfef;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea,
+/* CONTAINER */
+
+.container,
+.page-container {
+    width: min(1180px, 92%);
+    margin: auto;
+}
+
+/* CARDS */
+
+.card,
+.service-card,
+.info-card {
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #e6ebf3;
+    box-shadow: 0 10px 30px rgba(21,40,80,.07);
+}
+
+/* FORMS */
+
 input,
 select,
 textarea {
     width: 100%;
-    min-height: 46px;
-
-    padding: 11px 13px;
-
-    border: 1px solid var(--border);
-    border-radius: 11px;
-
-    background: white;
-    color: var(--dark);
-
+    padding: 12px 14px;
+    border: 1px solid #d8e0ec;
+    border-radius: 10px;
+    background: #fff;
+    color: #172033;
     outline: none;
-    transition: var(--transition);
+    transition: .2s;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus,
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(21,101,192,.09);
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25,118,210,.10);
 }
 
-/* =====================================================
-   FOOTER
-===================================================== */
+/* FOOTER */
 
 footer {
-    background: #111827;
-    color: white;
-    padding: 45px 6% 25px;
+    margin-top: 50px;
+    padding: 30px 5%;
+    background: #102a56;
+    color: #fff;
     text-align: center;
 }
 
-footer p {
-    color: #b8c1d1;
-    margin: 6px 0;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.footer-links a:hover {
-    color: #80b8ff;
-}
-
-/* =====================================================
-   WHATSAPP
-===================================================== */
-
-.whatsapp-button,
-.whatsapp-float {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-
-    width: 58px;
-    height: 58px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-    background: #25d366;
-    color: white;
-
-    font-size: 28px;
-    z-index: 2000;
-
-    box-shadow: 0 8px 25px rgba(0,0,0,.2);
-}
-
-.whatsapp-button:hover,
-.whatsapp-float:hover {
-    transform: scale(1.08);
-}
-
-/* =====================================================
-   MOBILE MENU
-===================================================== */
-
-.menu-toggle {
-    display: none;
-    border: none;
-    background: transparent;
-    font-size: 28px;
-    color: var(--dark);
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+/* MOBILE */
 
 @media (max-width: 768px) {
 
-    .navbar {
-        padding: 0 4%;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 72px;
-        left: 0;
-        width: 100%;
-
+    .navbar,
+    .main-header {
         flex-direction: column;
-        align-items: stretch;
-
-        background: white;
-        padding: 12px;
-
-        box-shadow: var(--shadow);
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .nav-links a {
+        gap: 12px;
         text-align: center;
     }
 
-    section {
-        padding: 50px 4%;
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
     }
 
-    .hero {
-        padding: 60px 5%;
-        min-height: 440px;
-    }
-
-    .hero p {
-        font-size: 16px;
-    }
-
-    .section-title h2 {
-        font-size: 28px;
+    .container,
+    .page-container {
+        width: 94%;
     }
 }
