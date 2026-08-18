@@ -2,9 +2,12 @@
 <html lang="gu">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="RAJKUMAR RATIONCARD SERVICES - Ration Card Name Add, Name Remove, Correction અને અન્ય Ration Card Online Services.">
+
+    <meta name="theme-color" content="#0b3d91">
 
     <title>RAJKUMAR RATIONCARD SERVICES</title>
 
@@ -13,192 +16,563 @@
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-    <header class="main-header">
+<header class="main-header">
 
-        <div class="logo-area">
+    <div class="header-inner">
 
-            <div class="logo-box">
-                R
+        <a href="index.html" class="brand">
+
+            <div class="brand-logo">
+                <span>R</span>
             </div>
 
-            <div class="logo-text">
-                <h1>RAJKUMAR</h1>
-                <h2>RATIONCARD SERVICES</h2>
+            <div class="brand-text">
+                <strong>RAJKUMAR</strong>
+                <small>RATIONCARD SERVICES</small>
             </div>
 
-        </div>
-
-        <div class="header-mobile">
-            📞 9429193125
-        </div>
-
-    </header>
+        </a>
 
 
-    <!-- ================= BANNER ================= -->
+        <div class="header-contact">
 
-    <section class="hero-section">
-
-        <div class="hero-content">
-
-            <div class="hero-logo">
-                R
-            </div>
-
-            <h1>
-                RAJKUMAR
-                <span>RATIONCARD SERVICES</span>
-            </h1>
-
-            <p>
-                Ration Card Related Online Services
-            </p>
-
-            <div class="hero-phone">
+            <a href="tel:9429193125">
                 📞 9429193125
-            </div>
+            </a>
 
         </div>
 
-    </section>
+    </div>
+
+</header>
 
 
-    <!-- ================= MAIN MENU ================= -->
+<!-- =====================================================
+     HERO / BANNER
+===================================================== -->
 
-    <main class="main-container">
+<section class="hero-section">
 
-        <h2 class="section-title">
-            RATIONCARD SERVICES
-        </h2>
+    <div class="hero-decoration hero-decoration-one"></div>
+    <div class="hero-decoration hero-decoration-two"></div>
 
-        <div class="menu-grid">
+    <div class="hero-content">
 
-            <!-- Retailer Login -->
+        <div class="hero-logo">
+            <span>R</span>
+        </div>
+
+        <div class="hero-badge">
+            ONLINE RATION CARD SERVICES
+        </div>
+
+        <h1>
+            RAJKUMAR
+            <span>RATIONCARD SERVICES</span>
+        </h1>
+
+        <p>
+            Ration Card સંબંધિત તમામ Online Services
+            સરળતાથી અને વિશ્વાસપૂર્વક
+        </p>
+
+        <div class="hero-buttons">
 
             <a href="retailer.html"
-               class="menu-card retailer-card">
-
-                <div class="menu-icon">
-                    👨‍💼
-                </div>
-
-                <h3>Retailer Login</h3>
-
-                <p>
-                    Retailer માટે Login
-                </p>
-
+               class="hero-btn primary-btn">
+                👨‍💼 Retailer Login
             </a>
 
-
-            <!-- Admin Login -->
-
-            <a href="admin.html"
-               class="menu-card admin-card">
-
-                <div class="menu-icon">
-                    🔐
-                </div>
-
-                <h3>Admin Login</h3>
-
-                <p>
-                    Admin Dashboard
-                </p>
-
+            <a href="track.html"
+               class="hero-btn secondary-btn">
+                🔎 Application Track
             </a>
-
-
-            <!-- Application Track -->
-
-            <div class="menu-card track-card"
-                 onclick="openTrackBox()">
-
-                <div class="menu-icon">
-                    🔎
-                </div>
-
-                <h3>Application Track</h3>
-
-                <p>
-                    Application Status Check
-                </p>
-
-            </div>
 
         </div>
 
+        <a href="tel:9429193125"
+           class="hero-phone">
+            📞 9429193125
+        </a>
 
-        <!-- ================= TRACK BOX ================= -->
+    </div>
 
-        <div id="trackBox"
-             class="track-box hidden">
+</section>
 
-            <button class="close-btn"
-                    onclick="closeTrackBox()">
-                ✕
-            </button>
+
+<!-- =====================================================
+     QUICK MENU
+===================================================== -->
+
+<section class="quick-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span>RAJKUMAR SERVICES</span>
 
             <h2>
-                Application Track
+                જરૂરી વિકલ્પ પસંદ કરો
             </h2>
 
             <p>
-                તમારી Application ID નાખો
+                Ration Card Service માટે નીચેના વિકલ્પનો ઉપયોગ કરો.
             </p>
 
-            <input
-                type="text"
-                id="trackApplicationId"
-                placeholder="Application ID">
+        </div>
 
-            <button
-                class="track-button"
-                onclick="trackApplication()">
 
-                Track Application
+        <div class="quick-grid">
 
-            </button>
+            <!-- Retailer -->
 
-            <div id="trackResult"></div>
+            <a href="retailer.html"
+               class="quick-card retailer-card">
+
+                <div class="quick-icon">
+                    👨‍💼
+                </div>
+
+                <h3>
+                    Retailer Login
+                </h3>
+
+                <p>
+                    Retailer દ્વારા Application Submit કરવા માટે
+                </p>
+
+                <span class="card-link">
+                    Login કરો →
+                </span>
+
+            </a>
+
+
+            <!-- Admin -->
+
+            <a href="admin.html"
+               class="quick-card admin-card">
+
+                <div class="quick-icon">
+                    🔐
+                </div>
+
+                <h3>
+                    Admin Login
+                </h3>
+
+                <p>
+                    Application, Payment અને Retailer Management
+                </p>
+
+                <span class="card-link">
+                    Admin Panel →
+                </span>
+
+            </a>
+
+
+            <!-- Track -->
+
+            <a href="track.html"
+               class="quick-card track-card">
+
+                <div class="quick-icon">
+                    🔎
+                </div>
+
+                <h3>
+                    Application Track
+                </h3>
+
+                <p>
+                    Application ID દ્વારા Status જુઓ
+                </p>
+
+                <span class="card-link">
+                    Track કરો →
+                </span>
+
+            </a>
+
+
+            <!-- WhatsApp -->
+
+            <a href="https://wa.me/919429193125"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="quick-card whatsapp-card">
+
+                <div class="quick-icon">
+                    💬
+                </div>
+
+                <h3>
+                    WhatsApp Chat
+                </h3>
+
+                <p>
+                    કોઈપણ માહિતી માટે WhatsApp પર સંપર્ક કરો
+                </p>
+
+                <span class="card-link">
+                    Chat કરો →
+                </span>
+
+            </a>
 
         </div>
 
-    </main>
+    </div>
+
+</section>
 
 
-    <!-- ================= FOOTER ================= -->
+<!-- =====================================================
+     SERVICES
+===================================================== -->
 
-    <footer class="main-footer">
+<section class="services-section">
 
-        <div class="footer-logo">
-            R
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span>OUR SERVICES</span>
+
+            <h2>
+                RATIONCARD SERVICES
+            </h2>
+
+            <p>
+                અમારી મુખ્ય Ration Card Services
+            </p>
+
         </div>
 
-        <h3>
-            RAJKUMAR RATIONCARD SERVICES
-        </h3>
 
-        <p>
-            📞 9429193125
-        </p>
+        <div class="services-grid">
 
-        <p>
-            Ration Card Online Services
-        </p>
+            <div class="service-box">
+                <div class="service-number">01</div>
+                <h3>Name Add</h3>
+                <p>
+                    Ration Card સાથે અથવા વગર નામ ઉમેરવાની સેવા.
+                </p>
+            </div>
 
-        <div class="footer-copy">
-            © 2026 Rajkumar Rationcard Services
+
+            <div class="service-box">
+                <div class="service-number">02</div>
+                <h3>Name Remove</h3>
+                <p>
+                    Ration Card માંથી નામ દૂર કરવાની સેવા.
+                </p>
+            </div>
+
+
+            <div class="service-box">
+                <div class="service-number">03</div>
+                <h3>RATIONCARD Correction</h3>
+                <p>
+                    Ration Card માં જરૂરી સુધારા કરવાની સેવા.
+                </p>
+            </div>
+
+
+            <div class="service-box">
+                <div class="service-number">04</div>
+                <h3>Husband Name Service</h3>
+                <p>
+                    Aadhaar આધારિત પતિના Ration Card માં નામ ઉમેરવાની સેવા.
+                </p>
+            </div>
+
         </div>
 
-    </footer>
+    </div>
+
+</section>
 
 
-    <!-- ================= SCRIPT ================= -->
+<!-- =====================================================
+     ABOUT US
+===================================================== -->
 
-    <script src="script.js"></script>
+<section class="about-section" id="about">
+
+    <div class="container">
+
+        <div class="about-card">
+
+            <div class="about-icon">
+                🏠
+            </div>
+
+            <div class="about-content">
+
+                <span class="about-label">
+                    ABOUT US
+                </span>
+
+                <h2>
+                    RAJKUMAR RATIONCARD SERVICES
+                </h2>
+
+                <p>
+                    RAJKUMAR RATIONCARD SERVICES દ્વારા
+                    Ration Card સંબંધિત Online Services
+                    સરળ, ઝડપી અને વિશ્વાસપૂર્વક ઉપલબ્ધ કરાવવામાં આવે છે.
+                </p>
+
+                <p>
+                    Name Add, Name Remove, Ration Card Correction
+                    તથા અન્ય Ration Card Services માટે
+                    અમારી service નો ઉપયોગ કરી શકો છો.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CONTACT
+===================================================== -->
+
+<section class="contact-section" id="contact">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span>CONTACT US</span>
+
+            <h2>
+                અમારો સંપર્ક કરો
+            </h2>
+
+            <p>
+                Service અંગે માહિતી માટે અમારો સંપર્ક કરો.
+            </p>
+
+        </div>
+
+
+        <div class="contact-grid">
+
+            <!-- Phone -->
+
+            <a href="tel:9429193125"
+               class="contact-card">
+
+                <div class="contact-icon">
+                    📞
+                </div>
+
+                <div>
+                    <small>CALL US</small>
+                    <strong>9429193125</strong>
+                </div>
+
+            </a>
+
+
+            <!-- WhatsApp -->
+
+            <a href="https://wa.me/919429193125"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-card">
+
+                <div class="contact-icon">
+                    💬
+                </div>
+
+                <div>
+                    <small>WHATSAPP</small>
+                    <strong>Chat With Us</strong>
+                </div>
+
+            </a>
+
+
+            <!-- Track -->
+
+            <a href="track.html"
+               class="contact-card">
+
+                <div class="contact-icon">
+                    🔎
+                </div>
+
+                <div>
+                    <small>APPLICATION</small>
+                    <strong>Track Application</strong>
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FINAL CTA
+===================================================== -->
+
+<section class="cta-section">
+
+    <div class="container">
+
+        <div class="cta-content">
+
+            <span>
+                RAJKUMAR RATIONCARD SERVICES
+            </span>
+
+            <h2>
+                તમારી Ration Card Service સરળ બનાવો
+            </h2>
+
+            <p>
+                Retailer Login કરીને Application Submit કરો.
+            </p>
+
+            <div class="cta-buttons">
+
+                <a href="retailer.html"
+                   class="cta-primary">
+                    👨‍💼 Retailer Login
+                </a>
+
+                <a href="track.html"
+                   class="cta-secondary">
+                    🔎 Track Application
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="main-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+                R
+            </div>
+
+            <div>
+                <h3>
+                    RAJKUMAR
+                </h3>
+
+                <p>
+                    RATIONCARD SERVICES
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="#about">
+                About Us
+            </a>
+
+            <a href="#contact">
+                Contact Us
+            </a>
+
+            <a href="track.html">
+                Application Track
+            </a>
+
+            <a href="retailer.html">
+                Retailer Login
+            </a>
+
+            <a href="admin.html">
+                Admin Login
+            </a>
+
+        </div>
+
+
+        <div class="footer-contact">
+
+            <strong>Contact</strong>
+
+            <a href="tel:9429193125">
+                📞 9429193125
+            </a>
+
+            <a href="https://wa.me/919429193125"
+               target="_blank"
+               rel="noopener noreferrer">
+                💬 WhatsApp Chat
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        © 2026 RAJKUMAR RATIONCARD SERVICES.
+        All Rights Reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     FLOATING WHATSAPP
+===================================================== -->
+
+<a href="https://wa.me/919429193125"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="floating-whatsapp"
+   aria-label="WhatsApp Chat">
+
+    💬
+
+</a>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
