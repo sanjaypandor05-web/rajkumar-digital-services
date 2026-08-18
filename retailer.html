@@ -333,128 +333,169 @@
 
 
 <!-- =====================================================
-     PAYMENT QR
+     PAYMENT SECTION
 ===================================================== -->
 
-<div
-    class="application-box payment-box"
-    id="paymentSection">
+<div class="payment-section">
 
-    <h2>
-        💳 Payment
-    </h2>
+    <h3>💳 Payment</h3>
 
+    <div class="payment-amount-card">
+        <span>Payment Amount</span>
+        <strong>
+            ₹<span id="paymentAmount">0</span>
+        </strong>
+    </div>
 
-    <p class="payment-instruction">
+    <!-- QR CODE -->
+    <div id="qrPaymentBox" class="qr-payment-box">
 
-        Service select કરો. Payment માટે QR Code
-        automatically generate થશે.
+        <h4>📲 Scan & Pay</h4>
 
-    </p>
+        <p class="qr-help">
+            ઉપર આપેલી રકમનું UPI Payment કરો
+        </p>
 
-
-    <div class="payment-layout">
-
-
-        <!-- QR -->
-
-        <div class="qr-container">
-
-            <div
-                id="paymentQR"
-                class="payment-qr">
-
-                <div class="qr-placeholder">
-
-                    📱
-
-                    <br>
-
-                    Select Service
-
-                    <br>
-
-                    to Generate QR
-
-                </div>
-
-            </div>
-
+        <div id="qrLoading" class="qr-loading">
+            Service select કર્યા પછી QR તૈયાર થશે...
         </div>
 
+        <img
+            id="paymentQR"
+            src=""
+            alt="UPI Payment QR Code"
+            style="display:none;"
+            class="payment-qr"
+        >
 
-        <!-- PAYMENT DETAILS -->
+        <div class="upi-details">
 
-        <div class="payment-details">
-
-            <div class="payment-detail-row">
-
-                <span>
-                    UPI ID
-                </span>
-
-                <strong>
+            <div>
+                <span>UPI ID</span>
+                <strong id="upiIdText">
                     gujrat.nsfa@ybl
                 </strong>
-
             </div>
 
-
-            <div class="payment-detail-row">
-
-                <span>
-                    Name
-                </span>
-
-                <strong>
+            <div>
+                <span>Pay To</span>
+                <strong id="upiNameText">
                     RAJKUMAR RATIONCARD SERVICES
                 </strong>
-
             </div>
-
-
-            <div class="payment-detail-row">
-
-                <span>
-                    Amount
-                </span>
-
-                <strong class="payment-highlight">
-
-                    ₹<span id="qrAmount">0</span>
-
-                </strong>
-
-            </div>
-
-
-            <div
-                id="paymentStatus"
-                class="payment-status">
-
-                Select service to generate payment QR.
-
-            </div>
-
-
-            <a
-                id="upiPayButton"
-                href="#"
-                class="upi-pay-button"
-                style="display:none;">
-
-                📲 Open UPI Payment
-
-            </a>
 
         </div>
+
+        <button
+            type="button"
+            id="openUPIButton"
+            class="upi-pay-button"
+            style="display:none;">
+
+            📱 Open UPI Payment
+
+        </button>
+
+    </div>
+
+
+    <!-- UTR -->
+
+    <div class="form-group">
+
+        <label for="utrNumber">
+            UTR / Transaction Number *
+        </label>
+
+        <input
+            type="text"
+            id="utrNumber"
+            name="utrNumber"
+            placeholder="Payment કર્યા પછી UTR Number"
+            required
+        >
 
     </div>
 
 </div>
 
 
+<!-- =====================================================
+     DOCUMENT UPLOAD
+===================================================== -->
 
+<div class="documents-section">
+
+    <h3>📁 Required Documents</h3>
+
+    <!-- AADHAAR PDF -->
+
+    <div class="upload-card">
+
+        <label for="aadhaarFile">
+            📄 Aadhaar PDF *
+        </label>
+
+        <input
+            type="file"
+            id="aadhaarFile"
+            name="aadhaarFile"
+            accept=".pdf,application/pdf"
+            required
+        >
+
+        <small>
+            માત્ર PDF file upload કરો
+        </small>
+
+    </div>
+
+
+    <!-- RATIONCARD PDF -->
+
+    <div class="upload-card">
+
+        <label for="rationcardFile">
+            📄 Ration Card PDF
+        </label>
+
+        <input
+            type="file"
+            id="rationcardFile"
+            name="rationcardFile"
+            accept=".pdf,application/pdf"
+        >
+
+        <small>
+            Ration Card PDF upload કરો
+        </small>
+
+    </div>
+
+
+    <!-- PAYMENT SCREENSHOT -->
+
+    <div class="upload-card">
+
+        <label for="paymentScreenshot">
+            🧾 Payment Screenshot *
+        </label>
+
+        <input
+            type="file"
+            id="paymentScreenshot"
+            name="paymentScreenshot"
+            accept="image/*,.pdf"
+            required
+        >
+
+        <small>
+            Payment કર્યા પછી Screenshot upload કરો
+        </small>
+
+    </div>
+
+</div>
 <!-- =====================================================
      APPLICATION FORM
 ===================================================== -->
