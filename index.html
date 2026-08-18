@@ -1,373 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Welcome To Rajkumar Website</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RAJKUMAR RATIONCARD SERVICES</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
+    <!-- ================= HEADER ================= -->
 
-<header class="header">
+    <header class="main-header">
 
-    <div class="logo">
-        <span>🌐</span>
-        <h2>RAJKUMAR</h2>
-    </div>
+        <div class="logo-area">
 
-    <nav class="navbar">
-        <a href="#home">HOME</a>
-        <a href="#about">ABOUT US</a>
-        <a href="#services">SERVICES</a>
-        <a href="#service-list">SERVICE LIST</a>
-        <a href="#contact">CONTACT</a>
+            <div class="logo-box">
+                R
+            </div>
 
-        <a href="login.html" class="login-btn">
-            🔐 LOGIN
-        </a>
-    </nav>
+            <div class="logo-text">
+                <h1>RAJKUMAR</h1>
+                <h2>RATIONCARD SERVICES</h2>
+            </div>
 
-    <button class="menu-btn" onclick="toggleMenu()">
-        ☰
-    </button>
+        </div>
 
-</header>
+        <div class="header-mobile">
+            📞 9429193125
+        </div>
+
+    </header>
 
 
-<!-- ================= HOME ================= -->
+    <!-- ================= BANNER ================= -->
 
-<section id="home" class="hero">
+    <section class="hero-section">
 
-    <div class="hero-content">
+        <div class="hero-content">
 
-        <p class="welcome-small">
-            WELCOME TO
-        </p>
+            <div class="hero-logo">
+                R
+            </div>
 
-        <h1>
-            RAJKUMAR WEBSITE
-        </h1>
+            <h1>
+                RAJKUMAR
+                <span>RATIONCARD SERVICES</span>
+            </h1>
 
-        <p class="hero-text">
-            Online Services • Government Services • Digital Services
-        </p>
+            <p>
+                Ration Card Related Online Services
+            </p>
 
-        <div class="hero-buttons">
+            <div class="hero-phone">
+                📞 9429193125
+            </div>
 
-            <a href="#service-list" class="primary-btn">
-                VIEW SERVICES
+        </div>
+
+    </section>
+
+
+    <!-- ================= MAIN MENU ================= -->
+
+    <main class="main-container">
+
+        <h2 class="section-title">
+            RATIONCARD SERVICES
+        </h2>
+
+        <div class="menu-grid">
+
+            <!-- Retailer Login -->
+
+            <a href="retailer.html"
+               class="menu-card retailer-card">
+
+                <div class="menu-icon">
+                    👨‍💼
+                </div>
+
+                <h3>Retailer Login</h3>
+
+                <p>
+                    Retailer માટે Login
+                </p>
+
             </a>
 
-            <a href="login.html" class="secondary-btn">
-                🔐 LOGIN
+
+            <!-- Admin Login -->
+
+            <a href="admin.html"
+               class="menu-card admin-card">
+
+                <div class="menu-icon">
+                    🔐
+                </div>
+
+                <h3>Admin Login</h3>
+
+                <p>
+                    Admin Dashboard
+                </p>
+
             </a>
 
+
+            <!-- Application Track -->
+
+            <div class="menu-card track-card"
+                 onclick="openTrackBox()">
+
+                <div class="menu-icon">
+                    🔎
+                </div>
+
+                <h3>Application Track</h3>
+
+                <p>
+                    Application Status Check
+                </p>
+
+            </div>
+
         </div>
 
-    </div>
 
-</section>
+        <!-- ================= TRACK BOX ================= -->
 
+        <div id="trackBox"
+             class="track-box hidden">
 
-<!-- ================= ABOUT US ================= -->
+            <button class="close-btn"
+                    onclick="closeTrackBox()">
+                ✕
+            </button>
 
-<section id="about" class="section">
-
-    <div class="section-title">
-        <p>WHO WE ARE</p>
-        <h2>ABOUT US</h2>
-    </div>
-
-    <div class="about-box">
-
-        <div class="about-icon">
-            🏢
-        </div>
-
-        <div class="about-content">
-
-            <h3>Welcome To Rajkumar Website</h3>
+            <h2>
+                Application Track
+            </h2>
 
             <p>
-                Rajkumar Website પર વિવિધ Online Services અને Digital
-                Services સરળ અને ઝડપી રીતે ઉપલબ્ધ કરાવવામાં આવે છે.
+                તમારી Application ID નાખો
             </p>
 
-            <p>
-                અમારી website દ્વારા ગ્રાહકોને જરૂરી online services
-                માટે અરજી કરવાની અને application status track કરવાની
-                સુવિધા મળશે.
-            </p>
+            <input
+                type="text"
+                id="trackApplicationId"
+                placeholder="Application ID">
 
-            <p>
-                Retailer Login દ્વારા application submit કરી શકાશે અને
-                Admin દ્વારા payment verification તથા application status
-                manage કરવામાં આવશે.
-            </p>
+            <button
+                class="track-button"
+                onclick="trackApplication()">
+
+                Track Application
+
+            </button>
+
+            <div id="trackResult"></div>
 
         </div>
 
-    </div>
-
-</section>
+    </main>
 
 
-<!-- ================= SERVICES ================= -->
+    <!-- ================= FOOTER ================= -->
 
-<section id="services" class="section services-section">
+    <footer class="main-footer">
 
-    <div class="section-title">
-
-        <p>OUR SERVICES</p>
-
-        <h2>SERVICES</h2>
-
-    </div>
-
-
-    <div class="service-cards">
-
-        <div class="service-card">
-            <div class="service-icon">🪪</div>
-            <h3>Ration Card Services</h3>
-            <p>Ration Card સંબંધિત online services.</p>
+        <div class="footer-logo">
+            R
         </div>
 
+        <h3>
+            RAJKUMAR RATIONCARD SERVICES
+        </h3>
 
-        <div class="service-card">
-            <div class="service-icon">💳</div>
-            <h3>PAN Card Services</h3>
-            <p>PAN Card માટેની વિવિધ services.</p>
+        <p>
+            📞 9429193125
+        </p>
+
+        <p>
+            Ration Card Online Services
+        </p>
+
+        <div class="footer-copy">
+            © 2026 Rajkumar Rationcard Services
         </div>
 
+    </footer>
 
-        <div class="service-card">
-            <div class="service-icon">📱</div>
-            <h3>Recharge Services</h3>
-            <p>Mobile અને અન્ય recharge services.</p>
-        </div>
 
+    <!-- ================= SCRIPT ================= -->
 
-        <div class="service-card">
-            <div class="service-icon">🌾</div>
-            <h3>iKhedut Portal અરજી</h3>
-            <p>iKhedut Portal સંબંધિત applications.</p>
-        </div>
-
-
-        <div class="service-card">
-            <div class="service-icon">👨‍🌾</div>
-            <h3>PM Kisan Samman Nidhi</h3>
-            <p>PM Kisan સંબંધિત services.</p>
-        </div>
-
-
-        <div class="service-card">
-            <div class="service-icon">📲</div>
-            <h3>Aadhaar → Mobile Link Check</h3>
-            <p>Aadhaar અને Mobile linking check.</p>
-        </div>
-
-
-        <div class="service-card">
-            <div class="service-icon">🔗</div>
-            <h3>Aadhaar → PAN Link Check</h3>
-            <p>Aadhaar અને PAN linking check.</p>
-        </div>
-
-
-        <div class="service-card">
-            <div class="service-icon">📄</div>
-            <h3>RC PDF Download</h3>
-            <p>RC PDF download service.</p>
-        </div>
-
-
-        <div class="service-card">
-            <div class="service-icon">🚗</div>
-            <h3>DL PDF Download</h3>
-            <p>Driving Licence PDF download.</p>
-        </div>
-
-
-        <div class="service-card">
-            <div class="service-icon">📜</div>
-            <h3>LMS Certificate Apply</h3>
-            <p>LMS Certificate માટે application.</p>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= SERVICE LIST ================= -->
-
-<section id="service-list" class="section service-list-section">
-
-    <div class="section-title">
-
-        <p>AVAILABLE SERVICES</p>
-
-        <h2>SERVICE LIST</h2>
-
-    </div>
-
-
-    <div class="service-list">
-
-        <div class="service-list-item">
-            <span>01</span>
-            <strong>Ration Card Services</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>02</span>
-            <strong>PAN Card Services</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>03</span>
-            <strong>Recharge Services</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>04</span>
-            <strong>iKhedut Portal અરજી</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>05</span>
-            <strong>PM Kisan Samman Nidhi</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>06</span>
-            <strong>Aadhaar → Mobile Link Check</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>07</span>
-            <strong>Aadhaar → PAN Link Check</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>08</span>
-            <strong>RC PDF Download</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>09</span>
-            <strong>DL PDF Download</strong>
-        </div>
-
-        <div class="service-list-item">
-            <span>10</span>
-            <strong>LMS Certificate Apply</strong>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= CONTACT ================= -->
-
-<section id="contact" class="section contact-section">
-
-    <div class="section-title">
-
-        <p>GET IN TOUCH</p>
-
-        <h2>CONTACT</h2>
-
-    </div>
-
-
-    <div class="contact-box">
-
-        <div class="contact-item">
-
-            <div class="contact-icon">
-                📞
-            </div>
-
-            <div>
-                <h3>Mobile</h3>
-                <p>Contact us for online services</p>
-            </div>
-
-        </div>
-
-
-        <div class="contact-item">
-
-            <div class="contact-icon">
-                💬
-            </div>
-
-            <div>
-                <h3>WhatsApp</h3>
-                <p>Chat with us on WhatsApp</p>
-            </div>
-
-        </div>
-
-
-        <div class="contact-item">
-
-            <div class="contact-icon">
-                🌐
-            </div>
-
-            <div>
-                <h3>Online Services</h3>
-                <p>Fast & Easy Digital Services</p>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= WHATSAPP ================= -->
-
-<a
-    href="https://wa.me/919429193125"
-    target="_blank"
-    class="whatsapp-btn"
-    title="WhatsApp Chat"
->
-    <span>💬</span>
-    <b>WhatsApp Chat</b>
-</a>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer class="footer">
-
-    <h3>RAJKUMAR WEBSITE</h3>
-
-    <p>
-        Online Services • Government Services • Digital Services
-    </p>
-
-    <p class="copyright">
-        © 2026 Rajkumar Website. All Rights Reserved.
-    </p>
-
-</footer>
-
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
