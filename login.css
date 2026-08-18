@@ -1,22 +1,6 @@
 /* =====================================================
-   RAJKUMAR LOGIN PAGE
+   LOGIN PAGE
 ===================================================== */
-
-body {
-    min-height: 100vh;
-    background:
-        radial-gradient(
-            circle at top left,
-            #e6f2ff,
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            #e7faf5,
-            transparent 35%
-        ),
-        #f5f8fc;
-}
 
 .login-page {
     min-height: 100vh;
@@ -24,105 +8,82 @@ body {
     align-items: center;
     justify-content: center;
     padding: 25px;
+    background:
+        radial-gradient(circle at top left, #dbeafe, transparent 40%),
+        linear-gradient(135deg, #eef5ff, #f8fbff);
 }
 
-.login-container,
-.login-wrapper {
-    width: 100%;
-    max-width: 460px;
+.login-container {
+    width: min(440px, 100%);
 }
 
 .login-card {
-    background: rgba(255,255,255,.97);
-    border: 1px solid #e3e9f2;
+    background: rgba(255,255,255,.98);
     border-radius: 24px;
     padding: 35px;
-    box-shadow: 0 20px 60px rgba(25,55,95,.12);
+    border: 1px solid #e5ebf5;
+    box-shadow: 0 25px 70px rgba(20,50,100,.15);
 }
 
-.login-logo,
-.login-icon {
-    width: 72px;
-    height: 72px;
+.login-logo {
+    width: 78px;
+    height: 78px;
     margin: 0 auto 18px;
-
+    border-radius: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    border-radius: 20px;
-    background: #edf5ff;
-    color: #1565c0;
+    background: linear-gradient(135deg,#1565c0,#0d47a1);
+    color: #fff;
     font-size: 34px;
 }
 
 .login-card h1 {
     text-align: center;
-    color: #172033;
-    font-size: 28px;
-    font-weight: 900;
+    color: #102a56;
+    margin-bottom: 5px;
 }
 
 .login-card > p {
     text-align: center;
-    color: #667085;
-    margin: 7px 0 28px;
+    color: #718096;
+    margin-bottom: 25px;
 }
 
-.login-button {
+.login-group {
+    margin-bottom: 18px;
+}
+
+.login-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 700;
+    color: #26364f;
+}
+
+.login-submit {
     width: 100%;
-    min-height: 50px;
-
-    border-radius: 12px;
-    background: #1565c0;
-    color: white;
-
-    font-weight: 850;
-    font-size: 16px;
-
-    transition: .25s;
-}
-
-.login-button:hover {
-    background: #0d47a1;
-    transform: translateY(-2px);
-}
-
-.login-button:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-    transform: none;
+    margin-top: 8px;
 }
 
 .login-message {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
     text-align: center;
-    font-weight: 700;
 }
 
 .back-home {
     display: block;
-    margin-top: 22px;
     text-align: center;
+    margin-top: 20px;
     color: #1565c0;
     font-weight: 700;
 }
 
-.back-home:hover {
-    text-decoration: underline;
-}
-
 @media(max-width:500px) {
-
-    .login-page {
-        padding: 15px;
-    }
-
     .login-card {
         padding: 25px 20px;
         border-radius: 18px;
-    }
-
-    .login-card h1 {
-        font-size: 24px;
     }
 }
