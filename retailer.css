@@ -1,356 +1,335 @@
 /* =====================================================
    RAJKUMAR RETAILER PORTAL
+   PROFESSIONAL RESPONSIVE DESIGN
 ===================================================== */
 
 .retailer-page {
-    min-height: 100vh;
+    min-height:100vh;
     background:
-        linear-gradient(
-            135deg,
-            #f4f8ff,
-            #ffffff 50%,
-            #f0fbf8
-        );
+        radial-gradient(circle at top right,#e3f2fd 0,#f4f7fb 35%,#f4f7fb 100%);
 }
 
-/* =====================================================
-   TOP BAR
-===================================================== */
+/* TOP BAR */
 
 .retailer-topbar {
-    min-height: 72px;
-    padding: 12px 5%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background: rgba(255,255,255,.96);
-    border-bottom: 1px solid #e3e9f2;
-
-    box-shadow: 0 4px 18px rgba(0,0,0,.05);
-
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    min-height:72px;
+    padding:14px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(135deg,#0d47a1,#1976d2);
+    color:#fff;
+    box-shadow:0 5px 22px rgba(0,0,0,.15);
 }
 
 .retailer-brand {
-    color: #1565c0;
-    font-size: 20px;
-    font-weight: 900;
+    font-weight:900;
+    font-size:20px;
+    letter-spacing:.4px;
 }
 
 .retailer-phone {
-    color: #667085;
-    font-weight: 700;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.2);
+    padding:8px 15px;
+    border-radius:20px;
+    font-weight:700;
 }
 
-/* =====================================================
-   LOGIN
-===================================================== */
+/* LOGIN */
 
 .login-wrapper {
-    width: 100%;
-    max-width: 480px;
-    margin: 65px auto;
-    padding: 0 18px;
+    width:min(460px,94%);
+    margin:55px auto;
 }
 
-.retailer-page .login-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 24px;
-    padding: 35px;
-
-    box-shadow:
-        0 20px 55px
-        rgba(21,101,192,.10);
+.login-card {
+    background:#fff;
+    padding:35px;
+    border-radius:25px;
+    border:1px solid #e1e8f1;
+    box-shadow:0 20px 55px rgba(15,50,100,.12);
 }
 
-.retailer-page .login-icon {
-    width: 75px;
-    height: 75px;
-
-    margin: 0 auto 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 22px;
-    background: #edf5ff;
-
-    font-size: 34px;
+.login-icon {
+    width:75px;
+    height:75px;
+    margin:0 auto 15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#1976d2,#0d47a1);
+    border-radius:22px;
+    font-size:34px;
 }
 
-.retailer-page .login-card h1 {
-    text-align: center;
-    color: #172033;
-    font-size: 27px;
-    font-weight: 900;
+.login-card h1 {
+    text-align:center;
+    color:#102a56;
+    font-size:25px;
 }
 
-.retailer-page .login-card > p {
-    text-align: center;
-    color: #667085;
-    margin: 6px 0 25px;
+.login-card p {
+    text-align:center;
+    color:#718096;
+    margin:5px 0 25px;
 }
 
-/* =====================================================
-   DASHBOARD
-===================================================== */
+.form-group {
+    margin-bottom:17px;
+}
+
+.form-group label {
+    display:block;
+    margin-bottom:7px;
+    font-weight:700;
+    color:#293a55;
+}
+
+.login-button {
+    width:100%;
+    border:0;
+    padding:13px 20px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#1565c0,#0d47a1);
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.login-button:hover {
+    transform:translateY(-2px);
+    box-shadow:0 9px 25px rgba(13,71,161,.25);
+}
+
+.login-button:disabled {
+    opacity:.65;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.back-home {
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#1565c0;
+    font-weight:700;
+}
+
+/* DASHBOARD */
 
 #dashboardSection {
-    padding: 30px 4%;
+    width:min(1180px,94%);
+    margin:28px auto 50px;
 }
 
 .dashboard {
-    width: min(1250px, 100%);
-    margin: auto;
+    width:100%;
 }
 
-/* HEADER */
-
 .dashboard-header {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    padding: 23px 25px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 22px;
-
-    box-shadow: 0 8px 25px rgba(20,40,80,.06);
+    background:#fff;
+    border:1px solid #e1e8f1;
+    border-radius:20px;
+    padding:22px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(20,40,80,.07);
 }
 
 .dashboard-header h1 {
-    color: #172033;
-    font-size: 27px;
-    font-weight: 900;
+    color:#0d47a1;
+    margin-bottom:3px;
 }
 
 .dashboard-header p {
-    color: #667085;
-    margin-top: 4px;
+    color:#718096;
 }
-
-.dashboard-header strong {
-    color: #1565c0;
-}
-
-#loggedRetailerId {
-    color: #98a2b3;
-}
-
-/* LOGOUT */
 
 .logout-button {
-    border: none;
-    border-radius: 11px;
-
-    padding: 11px 19px;
-
-    background: #fff0f0;
-    color: #d32f2f;
-
-    font-weight: 850;
-
-    transition: .25s;
+    border:0;
+    padding:11px 20px;
+    border-radius:11px;
+    background:#ffebee;
+    color:#c62828;
+    font-weight:800;
+    cursor:pointer;
 }
 
 .logout-button:hover {
-    background: #d32f2f;
-    color: white;
+    background:#ffcdd2;
 }
 
-/* =====================================================
-   BOXES
-===================================================== */
+/* BOXES */
 
 .services-box,
 .application-box {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-
-    padding: 25px;
-    margin-bottom: 22px;
-
-    box-shadow: 0 8px 25px rgba(20,40,80,.05);
+    background:#fff;
+    border:1px solid #e1e8f1;
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(20,40,80,.06);
 }
 
 .services-box h2,
 .application-box h2 {
-    color: #172033;
-    font-size: 21px;
-    font-weight: 900;
-    margin-bottom: 17px;
+    color:#173b72;
+    margin-bottom:17px;
 }
 
 /* SERVICE */
 
 .service-select {
-    min-height: 52px;
-    border-radius: 12px;
-    border: 1px solid #dbe2ea;
-
-    padding: 12px 14px;
-
-    background: #fff;
-    color: #172033;
-    font-weight: 650;
-
-    width: 100%;
+    width:100%;
+    padding:14px;
+    border:1px solid #d4deeb;
+    border-radius:12px;
+    background:#fff;
+    font-weight:600;
 }
-
-.service-select:focus {
-    outline: none;
-    border-color: #1565c0;
-    box-shadow: 0 0 0 4px rgba(21,101,192,.08);
-}
-
-/* =====================================================
-   AMOUNT
-===================================================== */
 
 .amount-box {
-    margin-top: 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 17px 20px;
-
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #f1f7ff,
-            #f3fbf9
-        );
-
-    border: 1px solid #dbe8f5;
+    margin-top:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 18px;
+    background:linear-gradient(135deg,#f0f7ff,#f8fbff);
+    border:1px solid #d7e7f8;
+    border-radius:14px;
 }
 
 .amount-label {
-    color: #667085;
-    font-weight: 750;
+    color:#52637b;
+    font-weight:700;
 }
 
 .amount-value {
-    color: #1565c0;
-    font-size: 25px;
-    font-weight: 900;
+    color:#0d47a1;
+    font-size:23px;
+    font-weight:900;
 }
 
-/* =====================================================
-   APPLICATION GRID
-===================================================== */
+/* FORM */
 
-.application-box .form-grid {
-    display: grid;
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-    gap: 17px;
+.form-grid {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:17px;
 }
 
-/* =====================================================
-   SUBMIT
-===================================================== */
-
-.application-box .login-button {
-    width: 100%;
-    margin-top: 20px;
-
-    min-height: 52px;
-
-    background: #1565c0;
-    color: white;
-
-    border: none;
-    border-radius: 12px;
-
-    font-weight: 850;
-    font-size: 16px;
-
-    transition: .25s;
+.form-grid input,
+.form-grid select {
+    min-height:46px;
 }
 
-.application-box .login-button:hover {
-    background: #0d47a1;
-    transform: translateY(-2px);
+/* PAYMENT */
+
+.payment-section {
+    margin-top:25px;
+    padding:22px;
+    border-radius:18px;
+    background:#f6faff;
+    border:1px solid #d9e8f8;
 }
 
-/* =====================================================
-   MESSAGE
-===================================================== */
+.payment-section h3 {
+    color:#0d47a1;
+    margin-bottom:10px;
+}
 
+.qr-box {
+    text-align:center;
+    background:#fff;
+    padding:20px;
+    border-radius:16px;
+    border:1px solid #e2e8f0;
+    margin-bottom:20px;
+}
+
+.qr-box img {
+    width:220px;
+    height:220px;
+    object-fit:contain;
+    margin:10px auto;
+    border-radius:10px;
+}
+
+.upi-id {
+    font-weight:800;
+    color:#173b72;
+}
+
+.upload-box {
+    padding:16px;
+    border:2px dashed #c7d5e6;
+    border-radius:13px;
+    background:#fff;
+}
+
+.upload-box input[type="file"] {
+    padding:10px;
+}
+
+/* SUBMIT */
+
+#applicationSubmitButton {
+    margin-top:22px;
+}
+
+/* MESSAGES */
+
+#loginMessage,
 #applicationMessage {
-    font-weight: 750;
-    text-align: center;
+    line-height:1.5;
 }
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* MOBILE */
 
-@media(max-width:700px) {
+@media(max-width:800px) {
 
-    .retailer-topbar {
-        padding: 12px 4%;
-    }
-
-    .retailer-brand {
-        font-size: 16px;
-    }
-
-    .retailer-phone {
-        font-size: 13px;
-    }
-
-    .login-wrapper {
-        margin: 35px auto;
-    }
-
-    .retailer-page .login-card {
-        padding: 25px 20px;
-    }
-
-    #dashboardSection {
-        padding: 18px 3%;
+    .form-grid {
+        grid-template-columns:1fr;
     }
 
     .dashboard-header {
-        align-items: flex-start;
-        gap: 15px;
-        flex-direction: column;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
     }
 
-    .dashboard-header h1 {
-        font-size: 23px;
+    .logout-button {
+        width:100%;
+    }
+}
+
+@media(max-width:600px) {
+
+    .retailer-topbar {
+        flex-direction:column;
+        gap:8px;
+        text-align:center;
+    }
+
+    .login-card {
+        padding:25px 20px;
     }
 
     .services-box,
     .application-box {
-        padding: 18px;
-        border-radius: 16px;
-    }
-
-    .application-box .form-grid {
-        grid-template-columns: 1fr;
+        padding:18px;
     }
 
     .amount-box {
-        padding: 14px;
+        gap:10px;
     }
 
-    .amount-value {
-        font-size: 21px;
+    .qr-box img {
+        width:190px;
+        height:190px;
     }
 }
