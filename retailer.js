@@ -1,110 +1,436 @@
-/* =========================================================
+/* =====================================================
    RAJKUMAR RATIONCARD SERVICES
-   FINAL RETAILER JS
-   LOGIN REQUIRED
-========================================================= */
+   RETAILER.JS - FINAL VERSION
+===================================================== */
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbzVyarGuWcFfauDBpPmD4d6xUak9MmINfcUGAbz1JrxA6s-n3nQOBUQszQxFQKsz25Iow/exec";
 
 
-/* =========================================================
+/* =====================================================
    PAGE LOAD
-========================================================= */
+===================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    /*
-     * FIRST CHECK LOGIN
-     * Direct page open = LOGIN ONLY
-     */
-    enforceRetailerLogin();
-
     setupRetailerLogin();
+
     setupServiceAmount();
+
     setupApplicationForm();
-    setupLogout();
+
+    checkRetailerSession();
 
 });
 
 
-/* =========================================================
-   SECURITY GUARD
-========================================================= */
+/* =====================================================
+   RETAILER LOGIN
+===================================================== */
 
-function enforceRetailerLogin() {
+function setupRetailerLogin() {
 
-    const loggedIn =
-        sessionStorage.getItem("retailerLoggedIn");
+    const form =
+        document.getElementById("retailerLoginForm");
 
-    const retailerId =
-        sessionStorage.getItem("retailerId");
+    if (!form) return;
 
-    const loginSection =
-        document.getElementById("loginSection");
+    form.addEventListener("submit", async function (e) {
 
-    const dashboardSection =
-        document.getElementById("dashboardSection");
+        e.preventDefault();
 
+        const username =
+            document.getElementById("retailerId")?.value.trim();
 
-    /*
-     * NO VALID SESSION
-     */
+        const password =
+            document.getElementById("retailerPassword")?.value || "";
 
-    if (
-        loggedIn !== "true" ||
-        !retailerId
-    ) {
+        if (!username || !password) {
 
-        /*
-         * Always hide dashboard
-         */
+            showLoginMessage(
+                "⚠️ Retailer ID અને Password દાખલ કરો.",
+                "error"
+            );
 
-        if (dashboardSection) {
-            dashboardSection.style.display = "none";
+            return;
         }
 
-        /*
-         * Show login
-         */
+        const button =
+            form.querySelector("button[type='submit']");
 
-        if (loginSection) {
-            loginSection.style.display = "block";
+        if (button) {
+
+            button.disabled = true;
+            button.textContent = "LOGIN...";
+
         }
 
-        /*
-         * Clear old retailer data
-         */
+        showLoginMessage(
+            "🔄 Login ચેક થઈ રહ્યું છે...",
+            "loading"
+        );
 
-        clearRetailerSession();
+        try {
 
-        return false;
-    }
+            const response = await fetch(
+                SCRIPT_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body: JSON.stringify({
+
+                        action: "retailerLogin",
+
+                        username: username,
+
+                        password: password
+
+                    })
+                }
+            );
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " + response.status
+                );
+
+            }
+
+            const result =
+                await response.json();
+
+            console.log(
+                "Retailer Login:",
+                result
+            );
+
+            if (
+                result &&
+                result.success === true
+            ) {
+
+                const retailerId =
+                    result.retailerId || username;
+
+                const retailerName =
+                    result.retailerName || "Retailer";
+
+                const retailerMobile =
+                    result.mobile || "";
+
+                const retailerUsername =
+                    result.username || username;
 
 
-    /*
-     * VALID SESSION
-     */
+                /* =====================================
+                   CLEAR OLD SESSION FIRST
+                ===================================== */
 
-    if (loginSection) {
-        loginSection.style.display = "none";
-    }
+                clearRetailerSession();
 
-    if (dashboardSection) {
-        dashboardSection.style.display = "block";
-    }
 
-    showRetailerInfo(retailerId);
+                /* =====================================
+                   SAVE NEW SESSION
+                ===================================== */
 
-    return true;
+                localStorage.setItem(
+                    "rajkumarRole",
+                    "retailer"
+                );
+
+                localStorage.setItem(
+                    "rajkumarRetailerId",
+                    retailerId
+                );
+
+                localStorage.setItem(
+                    "rajkumarRetailerName",
+                    retailerName
+                );
+
+                localStorage.setItem(
+                    "rajkumarRetailerMobile",
+                    retailerMobile
+                );
+
+                localStorage.setItem(
+                    "rajkumarRetailerUsername",
+                    retailerUsername
+                );
+
+
+                /* Compatibility */
+
+                localStorage.setItem(
+                    "retailerId",
+                    retailerId
+                );
+
+                localStorage.setItem(
+                    "retailerName",
+                    retailerName
+                );
+
+                localStorage.setItem(
+                    "retailerMobile",
+                    retailerMobile
+                );
+
+                localStorage.setItem(
+                    "retailerUsername",
+                    retailerUsername
+                );
+
+
+                /* Session */
+
+                sessionStorage.setItem(
+                    "retailerLoggedIn",
+                    "true"
+                );
+
+                sessionStorage.setItem(
+                    "retailerId",
+                    retailerId
+                );
+
+
+                showLoginMessage(
+                    "✅ Login Successful. Dashboard ખૂલી રહ્યું છે...",
+                    "success"
+                );
+
+
+                setTimeout(function () {
+
+                    window.location.replace(
+                        "retailer.html"
+                    );
+
+                }, 500);
+
+                return;
+
+            }
+
+
+            showLoginMessage(
+                "❌ " +
+                (
+                    result?.message ||
+                    "Invalid Retailer ID અથવા Password."
+                ),
+                "error"
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Retailer Login Error:",
+                error
+            );
+
+            showLoginMessage(
+                "❌ Server connection failed. Apps Script URL ચેક કરો.",
+                "error"
+            );
+
+        }
+        finally {
+
+            if (button) {
+
+                button.disabled = false;
+
+                button.textContent = "LOGIN";
+
+            }
+
+        }
+
+    });
+
 }
 
 
-/* =========================================================
-   CLEAR SESSION
-========================================================= */
+/* =====================================================
+   CHECK RETAILER SESSION
+===================================================== */
+
+function checkRetailerSession() {
+
+    const loggedIn =
+        sessionStorage.getItem(
+            "retailerLoggedIn"
+        );
+
+    const retailerId =
+        sessionStorage.getItem(
+            "retailerId"
+        );
+
+    const role =
+        localStorage.getItem(
+            "rajkumarRole"
+        );
+
+
+    if (
+        loggedIn === "true" &&
+        retailerId &&
+        role === "retailer"
+    ) {
+
+        showDashboard(
+            retailerId
+        );
+
+    }
+    else {
+
+        showLogin();
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW DASHBOARD
+===================================================== */
+
+function showDashboard(retailerId) {
+
+    const loginSection =
+        document.getElementById(
+            "loginSection"
+        );
+
+    const dashboardSection =
+        document.getElementById(
+            "dashboardSection"
+        );
+
+
+    if (loginSection) {
+
+        loginSection.style.display =
+            "none";
+
+    }
+
+
+    if (dashboardSection) {
+
+        dashboardSection.style.display =
+            "block";
+
+    }
+
+
+    const nameElement =
+        document.getElementById(
+            "loggedRetailerName"
+        );
+
+
+    if (nameElement) {
+
+        nameElement.textContent =
+            localStorage.getItem(
+                "rajkumarRetailerName"
+            ) ||
+            retailerId ||
+            "Retailer";
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW LOGIN
+===================================================== */
+
+function showLogin() {
+
+    const loginSection =
+        document.getElementById(
+            "loginSection"
+        );
+
+    const dashboardSection =
+        document.getElementById(
+            "dashboardSection"
+        );
+
+
+    if (loginSection) {
+
+        loginSection.style.display =
+            "block";
+
+    }
+
+
+    if (dashboardSection) {
+
+        dashboardSection.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   FINAL LOGOUT
+===================================================== */
+
+function retailerLogout() {
+
+    console.log(
+        "Retailer logout started..."
+    );
+
+
+    /* Clear ALL retailer session data */
+
+    clearRetailerSession();
+
+
+    /* Show login immediately */
+
+    showLogin();
+
+
+    /* Go to login page */
+
+    setTimeout(function () {
+
+        window.location.replace(
+            "retailer.html"
+        );
+
+    }, 100);
+
+}
+
+
+/* =====================================================
+   CLEAR RETAILER SESSION
+===================================================== */
 
 function clearRetailerSession() {
+
+    /* SESSION STORAGE */
 
     sessionStorage.removeItem(
         "retailerLoggedIn"
@@ -114,287 +440,59 @@ function clearRetailerSession() {
         "retailerId"
     );
 
-    sessionStorage.removeItem(
+
+    /* LOCAL STORAGE - MAIN */
+
+    localStorage.removeItem(
+        "rajkumarRole"
+    );
+
+    localStorage.removeItem(
+        "rajkumarRetailerId"
+    );
+
+    localStorage.removeItem(
+        "rajkumarRetailerName"
+    );
+
+    localStorage.removeItem(
+        "rajkumarRetailerMobile"
+    );
+
+    localStorage.removeItem(
+        "rajkumarRetailerUsername"
+    );
+
+
+    /* LOCAL STORAGE - COMPATIBILITY */
+
+    localStorage.removeItem(
+        "retailerId"
+    );
+
+    localStorage.removeItem(
         "retailerName"
     );
 
-    sessionStorage.removeItem(
+    localStorage.removeItem(
         "retailerMobile"
     );
 
-}
+    localStorage.removeItem(
+        "retailerUsername"
+    );
 
 
-/* =========================================================
-   LOGIN
-========================================================= */
-
-function setupRetailerLogin() {
-
-    const form =
-        document.getElementById(
-            "retailerLoginForm"
-        );
-
-    if (!form) return;
-
-
-    form.addEventListener(
-        "submit",
-        async function (event) {
-
-            event.preventDefault();
-
-
-            const username =
-                document.getElementById(
-                    "retailerId"
-                ).value.trim();
-
-
-            const password =
-                document.getElementById(
-                    "retailerPassword"
-                ).value;
-
-
-            if (!username || !password) {
-
-                showLoginMessage(
-                    "⚠️ Retailer ID અને Password દાખલ કરો.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            const button =
-                document.getElementById(
-                    "retailerLoginButton"
-                );
-
-
-            if (button) {
-
-                button.disabled = true;
-
-                button.textContent =
-                    "LOGIN...";
-
-            }
-
-
-            showLoginMessage(
-                "🔄 Login ચેક થઈ રહ્યું છે...",
-                "loading"
-            );
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        SCRIPT_URL,
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "text/plain;charset=utf-8"
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    action:
-                                        "retailerLogin",
-
-                                    username:
-                                        username,
-
-                                    password:
-                                        password
-
-                                })
-                        }
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "HTTP " +
-                        response.status
-                    );
-
-                }
-
-
-                const result =
-                    await response.json();
-
-
-                console.log(
-                    "RETAILER LOGIN RESULT:",
-                    result
-                );
-
-
-                if (
-                    result &&
-                    result.success === true
-                ) {
-
-                    const retailerId =
-                        String(
-                            result.retailerId ||
-                            username
-                        ).trim();
-
-
-                    const retailerName =
-                        result.retailerName ||
-                        "Retailer";
-
-
-                    const retailerMobile =
-                        result.mobile ||
-                        "";
-
-
-                    /*
-                     * SAVE ONLY AFTER
-                     * SUCCESSFUL LOGIN
-                     */
-
-                    sessionStorage.setItem(
-                        "retailerLoggedIn",
-                        "true"
-                    );
-
-                    sessionStorage.setItem(
-                        "retailerId",
-                        retailerId
-                    );
-
-                    sessionStorage.setItem(
-                        "retailerName",
-                        retailerName
-                    );
-
-                    sessionStorage.setItem(
-                        "retailerMobile",
-                        retailerMobile
-                    );
-
-
-                    localStorage.setItem(
-                        "rajkumarRole",
-                        "retailer"
-                    );
-
-                    localStorage.setItem(
-                        "rajkumarRetailerId",
-                        retailerId
-                    );
-
-                    localStorage.setItem(
-                        "rajkumarRetailerName",
-                        retailerName
-                    );
-
-                    localStorage.setItem(
-                        "rajkumarRetailerMobile",
-                        retailerMobile
-                    );
-
-
-                    showLoginMessage(
-                        "✅ Login Successful.",
-                        "success"
-                    );
-
-
-                    /*
-                     * OPEN DASHBOARD
-                     * ON SAME PAGE
-                     */
-
-                    setTimeout(
-                        function () {
-
-                            enforceRetailerLogin();
-
-                        },
-                        300
-                    );
-
-
-                    return;
-                }
-
-
-                /*
-                 * INVALID LOGIN
-                 */
-
-                clearRetailerSession();
-
-
-                showLoginMessage(
-                    "❌ " +
-                    (
-                        result &&
-                        result.message
-                            ? result.message
-                            : "Invalid Retailer ID or Password."
-                    ),
-                    "error"
-                );
-
-
-            }
-            catch (error) {
-
-                console.error(
-                    "RETAILER LOGIN ERROR:",
-                    error
-                );
-
-
-                clearRetailerSession();
-
-
-                showLoginMessage(
-                    "❌ Server connection failed. Apps Script URL અથવા deployment ચેક કરો.",
-                    "error"
-                );
-
-            }
-            finally {
-
-                if (button) {
-
-                    button.disabled =
-                        false;
-
-                    button.textContent =
-                        "LOGIN";
-
-                }
-
-            }
-
-        }
+    console.log(
+        "Retailer session cleared."
     );
 
 }
 
 
-/* =========================================================
+/* =====================================================
    LOGIN MESSAGE
-========================================================= */
+===================================================== */
 
 function showLoginMessage(
     message,
@@ -405,7 +503,6 @@ function showLoginMessage(
         document.getElementById(
             "loginMessage"
         );
-
 
     if (!element) return;
 
@@ -466,115 +563,9 @@ function showLoginMessage(
 }
 
 
-/* =========================================================
-   SHOW RETAILER INFO
-========================================================= */
-
-function showRetailerInfo(
-    retailerId
-) {
-
-    const name =
-        sessionStorage.getItem(
-            "retailerName"
-        ) ||
-        "Retailer";
-
-
-    const nameElement =
-        document.getElementById(
-            "loggedRetailerName"
-        );
-
-
-    if (nameElement) {
-
-        nameElement.textContent =
-            name;
-
-    }
-
-
-    const idElement =
-        document.getElementById(
-            "loggedRetailerId"
-        );
-
-
-    if (idElement) {
-
-        idElement.textContent =
-            "Retailer ID: " +
-            retailerId;
-
-    }
-
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-function setupLogout() {
-
-    const button =
-        document.getElementById(
-            "logoutButton"
-        );
-
-
-    if (!button) return;
-
-
-    button.addEventListener(
-        "click",
-        retailerLogout
-    );
-
-}
-
-
-function retailerLogout() {
-
-    /*
-     * CLEAR EVERYTHING
-     */
-
-    clearRetailerSession();
-
-
-    localStorage.removeItem(
-        "rajkumarRole"
-    );
-
-    localStorage.removeItem(
-        "rajkumarRetailerId"
-    );
-
-    localStorage.removeItem(
-        "rajkumarRetailerName"
-    );
-
-    localStorage.removeItem(
-        "rajkumarRetailerMobile"
-    );
-
-
-    /*
-     * FORCE LOGIN PAGE
-     */
-
-    window.location.replace(
-        "retailer.html"
-    );
-
-}
-
-
-/* =========================================================
+/* =====================================================
    SERVICE AMOUNT
-========================================================= */
+===================================================== */
 
 function setupServiceAmount() {
 
@@ -582,7 +573,6 @@ function setupServiceAmount() {
         document.getElementById(
             "serviceSelect"
         );
-
 
     if (!select) return;
 
@@ -605,12 +595,10 @@ function updateServiceAmount() {
             "serviceSelect"
         );
 
-
-    const serviceAmount =
+    const amountElement =
         document.getElementById(
             "serviceAmount"
         );
-
 
     const paymentAmount =
         document.getElementById(
@@ -629,16 +617,13 @@ function updateServiceAmount() {
 
     const amount =
         Number(
-            option &&
-            option.dataset.amount
-                ? option.dataset.amount
-                : 0
+            option?.dataset?.amount || 0
         );
 
 
-    if (serviceAmount) {
+    if (amountElement) {
 
-        serviceAmount.textContent =
+        amountElement.textContent =
             amount;
 
     }
@@ -654,9 +639,9 @@ function updateServiceAmount() {
 }
 
 
-/* =========================================================
+/* =====================================================
    APPLICATION FORM
-========================================================= */
+===================================================== */
 
 function setupApplicationForm() {
 
@@ -665,36 +650,23 @@ function setupApplicationForm() {
             "applicationForm"
         );
 
-
     if (!form) return;
 
 
     form.addEventListener(
         "submit",
-        async function (event) {
+        function (e) {
 
-            event.preventDefault();
-
-
-            /*
-             * LOGIN CHECK
-             */
-
-            if (!enforceRetailerLogin()) {
-
-                showApplicationMessage(
-                    "❌ Please login first.",
-                    "error"
-                );
-
-                return;
-
-            }
-
+            e.preventDefault();
 
             const service =
                 document.getElementById(
                     "serviceSelect"
+                );
+
+            const message =
+                document.getElementById(
+                    "applicationMessage"
                 );
 
 
@@ -704,6 +676,7 @@ function setupApplicationForm() {
             ) {
 
                 showApplicationMessage(
+                    message,
                     "⚠️ પહેલા Service પસંદ કરો.",
                     "error"
                 );
@@ -713,17 +686,39 @@ function setupApplicationForm() {
             }
 
 
-            if (!form.checkValidity()) {
+            const option =
+                service.options[
+                    service.selectedIndex
+                ];
 
-                form.reportValidity();
+
+            const amount =
+                Number(
+                    option?.dataset?.amount || 0
+                );
+
+
+            if (amount <= 0) {
+
+                showApplicationMessage(
+                    message,
+                    "⚠️ Service amount મળ્યો નથી.",
+                    "error"
+                );
 
                 return;
 
             }
 
 
+            const applicationId =
+                generateApplicationId();
+
+
             showApplicationMessage(
-                "ℹ️ Application form ready છે.",
+                message,
+                "✅ Application ID: " +
+                applicationId,
                 "success"
             );
 
@@ -733,20 +728,60 @@ function setupApplicationForm() {
 }
 
 
-/* =========================================================
+/* =====================================================
+   APPLICATION ID
+===================================================== */
+
+function generateApplicationId() {
+
+    const now =
+        new Date();
+
+
+    const year =
+        now.getFullYear();
+
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2, "0");
+
+
+    const random =
+        Math.floor(
+            10000 +
+            Math.random() * 90000
+        );
+
+
+    return (
+        "RKS-" +
+        year +
+        month +
+        day +
+        "-" +
+        random
+    );
+
+}
+
+
+/* =====================================================
    APPLICATION MESSAGE
-========================================================= */
+===================================================== */
 
 function showApplicationMessage(
+    element,
     message,
     type
 ) {
-
-    const element =
-        document.getElementById(
-            "applicationMessage"
-        );
-
 
     if (!element) return;
 
@@ -795,33 +830,37 @@ function showApplicationMessage(
 }
 
 
-/* =========================================================
-   BROWSER BACK / PAGE SHOW PROTECTION
-========================================================= */
+/* =====================================================
+   PREVENT BACK BUTTON AFTER LOGOUT
+===================================================== */
 
 window.addEventListener(
     "pageshow",
     function () {
 
-        enforceRetailerLogin();
+        const loggedIn =
+            sessionStorage.getItem(
+                "retailerLoggedIn"
+            );
 
-    }
-);
+        const retailerId =
+            sessionStorage.getItem(
+                "retailerId"
+            );
 
+        const role =
+            localStorage.getItem(
+                "rajkumarRole"
+            );
 
-/* =========================================================
-   TAB VISIBILITY PROTECTION
-========================================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    function () {
 
         if (
-            !document.hidden
+            loggedIn !== "true" ||
+            !retailerId ||
+            role !== "retailer"
         ) {
 
-            enforceRetailerLogin();
+            showLogin();
 
         }
 
