@@ -3,188 +3,221 @@
    HOME PAGE JAVASCRIPT
 ===================================================== */
 
+"use strict";
 
-/* ================= TRACK BOX ================= */
 
-function openTrackBox() {
+/* =====================================================
+   DOM READY
+===================================================== */
 
-    const box = document.getElementById("trackBox");
+document.addEventListener("DOMContentLoaded", function () {
 
-    if (box) {
-        box.classList.remove("hidden");
+    initializeHomePage();
 
-        setTimeout(() => {
+});
 
-            const input =
-                document.getElementById("trackApplicationId");
 
-            if (input) {
-                input.focus();
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+function initializeHomePage() {
+
+    setupSmoothScroll();
+
+    setupCardAnimation();
+
+    setupPhoneLinks();
+
+    console.log(
+        "RAJKUMAR RATIONCARD SERVICES Home loaded successfully."
+    );
+
+}
+
+
+/* =====================================================
+   SMOOTH SCROLL
+===================================================== */
+
+function setupSmoothScroll() {
+
+    const links =
+        document.querySelectorAll(
+            'a[href^="#"]'
+        );
+
+    links.forEach(function (link) {
+
+        link.addEventListener(
+            "click",
+            function (event) {
+
+                const targetId =
+                    link.getAttribute("href");
+
+                if (
+                    !targetId ||
+                    targetId === "#"
+                ) {
+                    return;
+                }
+
+                const target =
+                    document.querySelector(
+                        targetId
+                    );
+
+                if (!target) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
             }
+        );
 
-        }, 100);
-    }
+    });
+
 }
 
 
-/* ================= CLOSE TRACK BOX ================= */
+/* =====================================================
+   CARD ANIMATION
+===================================================== */
 
-function closeTrackBox() {
+function setupCardAnimation() {
 
-    const box = document.getElementById("trackBox");
+    const cards =
+        document.querySelectorAll(
+            ".quick-card, .service-box, .contact-card"
+        );
 
-    if (box) {
-        box.classList.add("hidden");
-    }
-
-    const result =
-        document.getElementById("trackResult");
-
-    if (result) {
-        result.innerHTML = "";
-    }
-}
-
-
-/* ================= APPLICATION TRACK ================= */
-
-function trackApplication() {
-
-    const input =
-        document.getElementById("trackApplicationId");
-
-    const result =
-        document.getElementById("trackResult");
-
-
-    if (!input || !result) {
+    if (!cards.length) {
         return;
     }
 
 
-    const applicationId =
-        input.value.trim();
+    if (
+        !("IntersectionObserver" in window)
+    ) {
 
-
-    /* Empty ID */
-
-    if (applicationId === "") {
-
-        result.innerHTML = `
-            <div class="track-error">
-                ⚠️ કૃપા કરીને Application ID નાખો.
-            </div>
-        `;
+        cards.forEach(function (card) {
+            card.classList.add("show-card");
+        });
 
         return;
+
     }
 
 
-    /* Temporary message */
+    const observer =
+        new IntersectionObserver(
+            function (entries) {
 
-    result.innerHTML = `
-        <div class="track-loading">
-            🔄 Application શોધી રહ્યા છીએ...
-        </div>
-    `;
+                entries.forEach(function (entry) {
+
+                    if (
+                        entry.isIntersecting
+                    ) {
+
+                        entry.target.classList.add(
+                            "show-card"
+                        );
+
+                        observer.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
 
 
-    /*
-       --------------------------------------------------
-       IMPORTANT
+    cards.forEach(function (card) {
 
-       પછી અહીં Google Apps Script Web App URL
-       નાખવામાં આવશે.
+        card.classList.add(
+            "animate-card"
+        );
 
-       Example:
+        observer.observe(card);
 
-       const GOOGLE_SCRIPT_URL =
-       "YOUR_GOOGLE_APPS_SCRIPT_URL";
+    });
 
-       ત્યારબાદ Google Sheetમાંથી
-       Application Status આવશે.
-       --------------------------------------------------
-    */
-
-
-    setTimeout(() => {
-
-        result.innerHTML = `
-            <div class="track-info">
-
-                <h3>Application Track</h3>
-
-                <p>
-                    Application ID:
-                    <strong>${escapeHtml(applicationId)}</strong>
-                </p>
-
-                <p>
-                    ℹ️ Tracking system Google Sheet સાથે
-                    connect થયા પછી અહીં તમારી
-                    Applicationનું સાચું Status દેખાશે.
-                </p>
-
-            </div>
-        `;
-
-    }, 700);
 }
 
 
-/* ================= HTML SECURITY ================= */
+/* =====================================================
+   PHONE LINKS
+===================================================== */
+
+function setupPhoneLinks() {
+
+    const phoneLinks =
+        document.querySelectorAll(
+            'a[href="tel:9429193125"]'
+        );
+
+    phoneLinks.forEach(function (link) {
+
+        link.addEventListener(
+            "click",
+            function () {
+
+                console.log(
+                    "Calling Rajkumar Rationcard Services."
+                );
+
+            }
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   SECURITY HELPER
+===================================================== */
 
 function escapeHtml(value) {
 
     return String(value)
 
-        .replace(/&/g, "&amp;")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-        .replace(/</g, "&lt;")
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-        .replace(/>/g, "&gt;")
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-        .replace(/"/g, "&quot;")
+        .replace(
+            /"/g,
+            "&quot;"
+        )
 
-        .replace(/'/g, "&#039;");
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
-
-
-/* ================= ENTER KEY ================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const input =
-            document.getElementById(
-                "trackApplicationId"
-            );
-
-
-        if (input) {
-
-            input.addEventListener(
-                "keydown",
-                function (event) {
-
-                    if (event.key === "Enter") {
-
-                        trackApplication();
-
-                    }
-
-                }
-            );
-
-        }
-
-    }
-);
-
-
-/* ================= PAGE READY ================= */
-
-console.log(
-    "RAJKUMAR RATIONCARD SERVICES loaded successfully."
-);
