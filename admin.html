@@ -8,210 +8,71 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Panel - Rajkumar Rationcard Services</title>
+    <meta name="robots" content="noindex,nofollow">
+
+    <title>Admin Dashboard - Rajkumar Rationcard Services</title>
 
     <link rel="stylesheet" href="style.css">
 
     <style>
 
-        /* =========================================
-           ADMIN PAGE
-        ========================================= */
+        /* =====================================================
+           ADMIN DASHBOARD
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
 
         .admin-page {
             min-height: 100vh;
             background: #f3f6fb;
         }
 
-        .admin-topbar {
 
-            background: #071f49;
+        /* ================= TOP BAR ================= */
+
+        .admin-topbar {
+            background: linear-gradient(
+                135deg,
+                #071f49,
+                #0d47a1
+            );
+
             color: white;
 
             padding: 15px 4%;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
+            gap: 15px;
+
             box-shadow:
-                0 3px 15px rgba(0,0,0,0.15);
+                0 4px 18px rgba(0,0,0,0.15);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
         }
 
         .admin-brand {
-
             font-size: 19px;
             font-weight: 900;
         }
 
         .admin-contact {
-
             font-size: 14px;
-        }
-
-
-        /* =========================================
-           ADMIN LOGIN
-        ========================================= */
-
-        .admin-login-wrapper {
-
-            width: 92%;
-            max-width: 430px;
-
-            margin: 70px auto;
-        }
-
-        .admin-login-card {
-
-            background: white;
-
-            padding: 35px 28px;
-
-            border-radius: 22px;
-
-            text-align: center;
-
-            box-shadow:
-                0 15px 40px rgba(0,0,0,0.12);
-        }
-
-        .admin-login-icon {
-
-            width: 78px;
-            height: 78px;
-
-            margin: 0 auto 18px;
-
-            border-radius: 22px;
-
-            background: #fff3e0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 38px;
-        }
-
-        .admin-login-card h1 {
-
-            color: #0d47a1;
-
-            font-size: 26px;
-
-            margin-bottom: 8px;
-        }
-
-        .admin-login-card p {
-
-            color: #777;
-
-            font-size: 14px;
-
-            margin-bottom: 25px;
-        }
-
-        .admin-form-group {
-
-            text-align: left;
-
-            margin-bottom: 17px;
-        }
-
-        .admin-form-group label {
-
-            display: block;
-
-            margin-bottom: 7px;
-
             font-weight: bold;
-
-            font-size: 14px;
-        }
-
-        .admin-form-group input {
-
-            width: 100%;
-
-            padding: 13px;
-
-            border-radius: 10px;
-
-            border: 1px solid #ccd5e0;
-
-            outline: none;
-
-            font-size: 15px;
-        }
-
-        .admin-form-group input:focus {
-
-            border-color: #1976d2;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(25,118,210,0.10);
-        }
-
-        .admin-login-button {
-
-            width: 100%;
-
-            padding: 14px;
-
-            border: none;
-
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #071f49,
-                    #0d47a1
-                );
-
-            color: white;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-        .admin-login-message {
-
-            margin-top: 15px;
-
-            padding: 12px;
-
-            border-radius: 10px;
-
-            display: none;
-
-            font-size: 14px;
-        }
-
-        .admin-home-link {
-
-            display: block;
-
-            margin-top: 20px;
-
-            text-decoration: none;
-
-            color: #0d47a1;
-
-            font-weight: bold;
-
-            font-size: 14px;
         }
 
 
-        /* =========================================
-           DASHBOARD
-        ========================================= */
+        /* ================= DASHBOARD ================= */
 
         .admin-dashboard {
 
@@ -221,6 +82,9 @@
 
             margin: 30px auto 60px;
         }
+
+
+        /* ================= DASHBOARD HEADER ================= */
 
         .admin-dashboard-header {
 
@@ -260,11 +124,14 @@
             font-size: 14px;
         }
 
+
+        /* ================= LOGOUT ================= */
+
         .admin-logout {
 
             border: none;
 
-            padding: 10px 17px;
+            padding: 11px 18px;
 
             border-radius: 9px;
 
@@ -275,12 +142,19 @@
             font-weight: bold;
 
             cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .admin-logout:hover {
+
+            background: #ffcdd2;
+
+            transform: translateY(-2px);
         }
 
 
-        /* =========================================
-           STATISTICS
-        ========================================= */
+        /* ================= STATISTICS ================= */
 
         .stats-grid {
 
@@ -317,7 +191,7 @@
 
         .stat-card h3 {
 
-            font-size: 26px;
+            font-size: 27px;
 
             color: #123;
 
@@ -348,9 +222,7 @@
         }
 
 
-        /* =========================================
-           ADMIN MENU
-        ========================================= */
+        /* ================= ADMIN MENU ================= */
 
         .admin-menu-grid {
 
@@ -380,6 +252,8 @@
             transition: 0.2s;
 
             text-align: center;
+
+            border: 1px solid #edf0f4;
         }
 
         .admin-menu-card:hover {
@@ -390,9 +264,17 @@
                 0 12px 30px rgba(0,0,0,0.12);
         }
 
+        .admin-menu-card.active {
+
+            border: 2px solid #1976d2;
+
+            background: #f7fbff;
+        }
+
         .admin-menu-icon {
 
             width: 55px;
+
             height: 55px;
 
             margin: 0 auto 12px;
@@ -404,6 +286,7 @@
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             font-size: 28px;
@@ -426,9 +309,7 @@
         }
 
 
-        /* =========================================
-           CONTENT PANEL
-        ========================================= */
+        /* ================= CONTENT PANEL ================= */
 
         .admin-panel {
 
@@ -450,7 +331,7 @@
 
             font-size: 21px;
 
-            margin-bottom: 18px;
+            margin-bottom: 8px;
         }
 
         .panel-description {
@@ -463,16 +344,14 @@
         }
 
 
-        /* =========================================
-           SEARCH
-        ========================================= */
+        /* ================= SEARCH ================= */
 
         .search-row {
 
             display: grid;
 
             grid-template-columns:
-                1fr 180px 160px;
+                1fr 190px 130px;
 
             gap: 10px;
 
@@ -495,6 +374,16 @@
             font-size: 14px;
         }
 
+        .search-row input:focus,
+        .search-row select:focus {
+
+            border-color: #1976d2;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(25,118,210,0.10);
+        }
+
         .search-button {
 
             border: none;
@@ -510,16 +399,21 @@
             cursor: pointer;
         }
 
+        .search-button:hover {
 
-        /* =========================================
-           APPLICATION TABLE
-        ========================================= */
+            background: #1565c0;
+        }
+
+
+        /* ================= TABLE ================= */
 
         .table-wrapper {
 
             width: 100%;
 
             overflow-x: auto;
+
+            border-radius: 10px;
         }
 
         .application-table {
@@ -528,7 +422,7 @@
 
             border-collapse: collapse;
 
-            min-width: 900px;
+            min-width: 1050px;
         }
 
         .application-table th {
@@ -556,6 +450,14 @@
 
             white-space: nowrap;
         }
+
+        .application-table tbody tr:hover {
+
+            background: #fafcff;
+        }
+
+
+        /* ================= STATUS ================= */
 
         .status {
 
@@ -598,7 +500,17 @@
             color: #00838f;
         }
 
-        .view-button {
+        .status-rejected {
+
+            background: #ffebee;
+
+            color: #c62828;
+        }
+
+
+        /* ================= ACTION BUTTONS ================= */
+
+        .action-button {
 
             border: none;
 
@@ -606,19 +518,38 @@
 
             border-radius: 7px;
 
-            background: #e3f2fd;
-
-            color: #0d47a1;
-
             font-weight: bold;
 
             cursor: pointer;
+
+            margin-right: 4px;
+
+            margin-bottom: 4px;
+        }
+
+        .view-button {
+
+            background: #e3f2fd;
+
+            color: #0d47a1;
+        }
+
+        .edit-button {
+
+            background: #fff3e0;
+
+            color: #e65100;
+        }
+
+        .delete-button {
+
+            background: #ffebee;
+
+            color: #c62828;
         }
 
 
-        /* =========================================
-           RETAILER CREATE
-        ========================================= */
+        /* ================= RETAILER FORM ================= */
 
         .retailer-form-grid {
 
@@ -659,6 +590,11 @@
             font-size: 14px;
         }
 
+        .retailer-field input:focus {
+
+            border-color: #1976d2;
+        }
+
         .create-retailer-button {
 
             margin-top: 18px;
@@ -679,18 +615,157 @@
         }
 
 
-        /* =========================================
-           HIDDEN
-        ========================================= */
+        /* ================= MESSAGE ================= */
 
-        .admin-hidden {
+        .admin-message {
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
             display: none;
+
+            font-size: 14px;
+        }
+
+        .admin-message.success {
+
+            display: block;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+        }
+
+        .admin-message.error {
+
+            display: block;
+
+            background: #ffebee;
+
+            color: #c62828;
+        }
+
+        .admin-message.loading {
+
+            display: block;
+
+            background: #e3f2fd;
+
+            color: #0d47a1;
         }
 
 
-        /* =========================================
-           MOBILE
-        ========================================= */
+        /* ================= HIDDEN ================= */
+
+        .admin-hidden {
+
+            display: none !important;
+        }
+
+
+        /* ================= MODAL ================= */
+
+        .admin-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,0.55);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 999;
+        }
+
+        .admin-modal.show {
+
+            display: flex;
+        }
+
+        .admin-modal-content {
+
+            width: 100%;
+
+            max-width: 650px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.25);
+
+            position: relative;
+        }
+
+        .admin-modal-close {
+
+            position: absolute;
+
+            top: 12px;
+
+            right: 12px;
+
+            width: 35px;
+
+            height: 35px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #f1f3f5;
+
+            cursor: pointer;
+
+            font-size: 17px;
+        }
+
+        .detail-row {
+
+            padding: 11px 0;
+
+            border-bottom: 1px solid #edf0f4;
+
+            display: grid;
+
+            grid-template-columns: 180px 1fr;
+
+            gap: 10px;
+        }
+
+        .detail-label {
+
+            font-weight: bold;
+
+            color: #555;
+        }
+
+        .detail-value {
+
+            color: #222;
+
+            word-break: break-word;
+        }
+
+
+        /* ================= MOBILE ================= */
 
         @media (max-width: 950px) {
 
@@ -698,16 +773,13 @@
 
                 grid-template-columns:
                     repeat(3, 1fr);
-
             }
 
             .admin-menu-grid {
 
                 grid-template-columns:
                     repeat(2, 1fr);
-
             }
-
         }
 
 
@@ -717,16 +789,14 @@
 
                 flex-direction: column;
 
-                gap: 5px;
-
                 text-align: center;
-
             }
 
-            .admin-login-wrapper {
+            .admin-dashboard {
 
-                margin: 40px auto;
+                width: 94%;
 
+                margin-top: 20px;
             }
 
             .admin-dashboard-header {
@@ -734,43 +804,57 @@
                 flex-direction: column;
 
                 align-items: flex-start;
-
             }
 
             .stats-grid {
 
                 grid-template-columns:
                     repeat(2, 1fr);
-
             }
 
             .admin-menu-grid {
 
                 grid-template-columns:
                     1fr;
-
             }
 
             .search-row {
 
                 grid-template-columns:
                     1fr;
-
             }
 
             .retailer-form-grid {
 
                 grid-template-columns:
                     1fr;
-
             }
 
             .admin-panel {
 
                 padding: 18px;
-
             }
 
+            .detail-row {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+            .admin-brand {
+
+                font-size: 16px;
+            }
+        }
+
+
+        @media (max-width: 400px) {
+
+            .stats-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
         }
 
     </style>
@@ -781,9 +865,9 @@
 <body class="admin-page">
 
 
-<!-- =========================================
+<!-- =====================================================
      TOP BAR
-========================================= -->
+===================================================== -->
 
 <header class="admin-topbar">
 
@@ -798,98 +882,15 @@
 </header>
 
 
-<!-- =========================================
-     ADMIN LOGIN
-========================================= -->
-
-<section id="adminLoginSection"
-         class="admin-login-wrapper">
-
-    <div class="admin-login-card">
-
-        <div class="admin-login-icon">
-            🔐
-        </div>
-
-        <h1>
-            Admin Login
-        </h1>
-
-        <p>
-            Admin Panelમાં Login કરો
-        </p>
-
-
-        <form id="adminLoginForm">
-
-            <div class="admin-form-group">
-
-                <label>
-                    Admin ID
-                </label>
-
-                <input
-                    type="text"
-                    id="adminId"
-                    placeholder="Admin ID"
-                    required>
-
-            </div>
-
-
-            <div class="admin-form-group">
-
-                <label>
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="adminPassword"
-                    placeholder="Password"
-                    required>
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="admin-login-button">
-
-                🔐 Login
-
-            </button>
-
-        </form>
-
-
-        <div id="adminLoginMessage"
-             class="admin-login-message">
-        </div>
-
-
-        <a href="index.html"
-           class="admin-home-link">
-
-            ← Home Page પર પાછા જાઓ
-
-        </a>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================
+<!-- =====================================================
      ADMIN DASHBOARD
-========================================= -->
+===================================================== -->
 
 <section id="adminDashboardSection"
-         class="admin-dashboard"
-         style="display:none;">
+         class="admin-dashboard">
 
 
-    <!-- HEADER -->
+    <!-- ================= HEADER ================= -->
 
     <div class="admin-dashboard-header">
 
@@ -899,27 +900,27 @@
                 👑 Admin Dashboard
             </h1>
 
-            <p>
+            <p id="adminWelcomeText">
                 RAJKUMAR RATIONCARD SERVICES
             </p>
 
         </div>
 
-
         <button
+            type="button"
             class="admin-logout"
             onclick="adminLogout()">
 
-            Logout
+            🚪 Logout
 
         </button>
 
     </div>
 
 
-    <!-- =====================================
+    <!-- =================================================
          STATISTICS
-    ====================================== -->
+    ================================================== -->
 
     <div class="stats-grid">
 
@@ -1011,15 +1012,17 @@
     </div>
 
 
-    <!-- =====================================
+    <!-- =================================================
          ADMIN MENU
-    ====================================== -->
+    ================================================== -->
 
     <div class="admin-menu-grid">
 
 
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('applicationsPanel')">
+        <div
+            class="admin-menu-card active"
+            data-panel="applicationsPanel"
+            onclick="showAdminPanel('applicationsPanel')">
 
             <div class="admin-menu-icon">
                 📋
@@ -1036,8 +1039,10 @@
         </div>
 
 
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('retailerPanel')">
+        <div
+            class="admin-menu-card"
+            data-panel="retailerPanel"
+            onclick="showAdminPanel('retailerPanel')">
 
             <div class="admin-menu-icon">
                 👨‍💼
@@ -1054,8 +1059,10 @@
         </div>
 
 
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('paymentPanel')">
+        <div
+            class="admin-menu-card"
+            data-panel="paymentPanel"
+            onclick="showAdminPanel('paymentPanel')">
 
             <div class="admin-menu-icon">
                 💳
@@ -1072,8 +1079,10 @@
         </div>
 
 
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('settingsPanel')">
+        <div
+            class="admin-menu-card"
+            data-panel="settingsPanel"
+            onclick="showAdminPanel('settingsPanel')">
 
             <div class="admin-menu-icon">
                 ⚙️
@@ -1092,12 +1101,13 @@
     </div>
 
 
-    <!-- =====================================
-         APPLICATIONS
-    ====================================== -->
+    <!-- =================================================
+         APPLICATIONS PANEL
+    ================================================== -->
 
     <div id="applicationsPanel"
          class="admin-panel">
+
 
         <h2>
             📋 Applications
@@ -1115,6 +1125,7 @@
                 id="applicationSearch"
                 placeholder="Application ID / Name / Mobile">
 
+
             <select id="applicationStatusFilter">
 
                 <option value="">
@@ -1127,6 +1138,10 @@
 
                 <option value="Payment Received">
                     Payment Received
+                </option>
+
+                <option value="Payment Verified">
+                    Payment Verified
                 </option>
 
                 <option value="Processing">
@@ -1145,6 +1160,7 @@
 
 
             <button
+                type="button"
                 class="search-button"
                 onclick="searchApplications()">
 
@@ -1152,6 +1168,11 @@
 
             </button>
 
+        </div>
+
+
+        <div id="applicationMessage"
+             class="admin-message">
         </div>
 
 
@@ -1163,37 +1184,23 @@
 
                     <tr>
 
-                        <th>
-                            Application ID
-                        </th>
+                        <th>Application ID</th>
 
-                        <th>
-                            Retailer
-                        </th>
+                        <th>Retailer</th>
 
-                        <th>
-                            Applicant
-                        </th>
+                        <th>Applicant</th>
 
-                        <th>
-                            Service
-                        </th>
+                        <th>Mobile</th>
 
-                        <th>
-                            Amount
-                        </th>
+                        <th>Service</th>
 
-                        <th>
-                            Payment
-                        </th>
+                        <th>Amount</th>
 
-                        <th>
-                            Status
-                        </th>
+                        <th>Payment</th>
 
-                        <th>
-                            Action
-                        </th>
+                        <th>Status</th>
+
+                        <th>Action</th>
 
                     </tr>
 
@@ -1204,14 +1211,15 @@
 
                     <tr>
 
-                        <td colspan="8"
+                        <td
+                            colspan="9"
                             style="
                             text-align:center;
                             padding:30px;
                             color:#777;
                             ">
 
-                            હાલમાં કોઈ application નથી.
+                            Applications load થઈ રહી છે...
 
                         </td>
 
@@ -1226,12 +1234,13 @@
     </div>
 
 
-    <!-- =====================================
-         CREATE RETAILER
-    ====================================== -->
+    <!-- =================================================
+         CREATE RETAILER PANEL
+    ================================================== -->
 
     <div id="retailerPanel"
          class="admin-panel admin-hidden">
+
 
         <h2>
             👨‍💼 Create New Retailer
@@ -1243,6 +1252,7 @@
 
 
         <form id="createRetailerForm">
+
 
             <div class="retailer-form-grid">
 
@@ -1257,6 +1267,7 @@
                         type="text"
                         id="newRetailerName"
                         placeholder="Retailer Name"
+                        autocomplete="off"
                         required>
 
                 </div>
@@ -1273,6 +1284,8 @@
                         id="newRetailerMobile"
                         placeholder="Mobile Number"
                         maxlength="10"
+                        inputmode="numeric"
+                        autocomplete="off"
                         required>
 
                 </div>
@@ -1287,7 +1300,8 @@
                     <input
                         type="text"
                         id="newRetailerId"
-                        placeholder="Login ID"
+                        placeholder="Retailer ID"
+                        autocomplete="off"
                         required>
 
                 </div>
@@ -1303,6 +1317,7 @@
                         type="text"
                         id="newRetailerPassword"
                         placeholder="Password"
+                        autocomplete="new-password"
                         required>
 
                 </div>
@@ -1313,6 +1328,7 @@
 
             <button
                 type="submit"
+                id="createRetailerButton"
                 class="create-retailer-button">
 
                 ➕ Create Retailer
@@ -1320,8 +1336,9 @@
             </button>
 
 
-            <div id="retailerCreateMessage"
-                 style="margin-top:15px;">
+            <div
+                id="retailerCreateMessage"
+                class="admin-message">
             </div>
 
         </form>
@@ -1329,29 +1346,31 @@
     </div>
 
 
-    <!-- =====================================
+    <!-- =================================================
          PAYMENT PANEL
-    ====================================== -->
+    ================================================== -->
 
     <div id="paymentPanel"
          class="admin-panel admin-hidden">
+
 
         <h2>
             💳 Payment Status Management
         </h2>
 
         <p class="panel-description">
-            Retailer applicationsના payment status
-            અહીંથી manage કરી શકાશે.
+            Applicationનું payment status અહીંથી update કરો.
         </p>
 
 
         <div class="search-row">
 
+
             <input
                 type="text"
                 id="paymentApplicationId"
                 placeholder="Application ID">
+
 
             <select id="paymentStatusSelect">
 
@@ -1379,6 +1398,7 @@
 
 
             <button
+                type="button"
                 class="search-button"
                 onclick="updatePaymentStatus()">
 
@@ -1389,25 +1409,28 @@
         </div>
 
 
-        <div id="paymentMessage"></div>
+        <div
+            id="paymentMessage"
+            class="admin-message">
+        </div>
 
     </div>
 
 
-    <!-- =====================================
-         SETTINGS
-    ====================================== -->
+    <!-- =================================================
+         SETTINGS PANEL
+    ================================================== -->
 
     <div id="settingsPanel"
          class="admin-panel admin-hidden">
+
 
         <h2>
             ⚙️ Website Settings
         </h2>
 
         <p class="panel-description">
-            RAJKUMAR RATIONCARD SERVICES
-            Website Settings.
+            RAJKUMAR RATIONCARD SERVICES Website Settings.
         </p>
 
 
@@ -1441,8 +1464,38 @@
 
     </div>
 
-
 </section>
+
+
+<!-- =====================================================
+     APPLICATION DETAILS MODAL
+====================================================== -->
+
+<div
+    id="applicationModal"
+    class="admin-modal">
+
+    <div class="admin-modal-content">
+
+        <button
+            type="button"
+            class="admin-modal-close"
+            onclick="closeApplicationModal()">
+
+            ✕
+
+        </button>
+
+        <h2 style="color:#0d47a1;margin-bottom:20px;">
+            📋 Application Details
+        </h2>
+
+        <div id="applicationDetails">
+        </div>
+
+    </div>
+
+</div>
 
 
 <script src="admin.js"></script>
