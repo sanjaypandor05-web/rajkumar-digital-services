@@ -1,255 +1,128 @@
 /* =====================================================
-   RAJKUMAR WEBSITE
-   LOGIN PAGE JAVASCRIPT
+   RAJKUMAR LOGIN PAGE
 ===================================================== */
 
-
-/*
-    IMPORTANT
-
-    આ હાલ FRONTEND LOGIN UI છે.
-
-    Actual Username / Password Google Apps Script
-    backend સાથે પછી connect કરવામાં આવશે.
-
-    Security માટે actual password અહીં hard-code
-    કરવામાં આવશે નહીં.
-*/
-
-
-let selectedLoginType = "";
-
-
-/* ================= OPEN LOGIN ================= */
-
-function openLogin(type) {
-
-    selectedLoginType = type;
-
-    const loginBox =
-        document.getElementById("loginFormBox");
-
-    const loginType =
-        document.getElementById("loginType");
-
-    const title =
-        document.getElementById("loginFormTitle");
-
-    const subtitle =
-        document.getElementById("loginFormSubtitle");
-
-    const icon =
-        document.getElementById("selectedLoginIcon");
-
-    const username =
-        document.getElementById("username");
-
-    const message =
-        document.getElementById("loginMessage");
-
-
-    message.textContent = "";
-
-    message.className = "login-message";
-
-
-    loginType.value = type;
-
-
-    if (type === "retailer") {
-
-        icon.textContent = "👤";
-
-        title.textContent = "RETAILER LOGIN";
-
-        subtitle.textContent =
-            "Enter your Retailer ID and Password";
-
-        username.placeholder =
-            "Enter Retailer ID";
-
-    }
-
-
-    else if (type === "admin") {
-
-        icon.textContent = "👑";
-
-        title.textContent = "ADMIN LOGIN";
-
-        subtitle.textContent =
-            "Enter your Admin Username and Password";
-
-        username.placeholder =
-            "Enter Admin Username";
-
-    }
-
-
-    loginBox.style.display = "block";
-
-
-    loginBox.scrollIntoView({
-
-        behavior: "smooth",
-
-        block: "center"
-
-    });
-
-
-    setTimeout(function() {
-
-        username.focus();
-
-    }, 300);
-
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at top left,
+            #e6f2ff,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            #e7faf5,
+            transparent 35%
+        ),
+        #f5f8fc;
 }
 
-
-/* ================= CLOSE LOGIN ================= */
-
-function closeLogin() {
-
-    const loginBox =
-        document.getElementById("loginFormBox");
-
-    const form =
-        document.getElementById("loginForm");
-
-    const message =
-        document.getElementById("loginMessage");
-
-
-    loginBox.style.display = "none";
-
-    form.reset();
-
-    message.textContent = "";
-
-    message.className = "login-message";
-
-    selectedLoginType = "";
-
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
 }
 
-
-/* ================= PASSWORD SHOW/HIDE ================= */
-
-function togglePassword() {
-
-    const password =
-        document.getElementById("password");
-
-    const button =
-        document.querySelector(".show-password");
-
-
-    if (password.type === "password") {
-
-        password.type = "text";
-
-        button.textContent = "🙈";
-
-    }
-
-    else {
-
-        password.type = "password";
-
-        button.textContent = "👁";
-
-    }
-
+.login-container,
+.login-wrapper {
+    width: 100%;
+    max-width: 460px;
 }
 
-
-/* ================= LOGIN ================= */
-
-function handleLogin(event) {
-
-    event.preventDefault();
-
-
-    const username =
-        document.getElementById("username").value.trim();
-
-    const password =
-        document.getElementById("password").value;
-
-
-    const button =
-        document.getElementById("submitLoginBtn");
-
-    const message =
-        document.getElementById("loginMessage");
-
-
-    if (!selectedLoginType) {
-
-        showMessage(
-            "Please select Retailer or Admin Login.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    if (!username || !password) {
-
-        showMessage(
-            "Please enter Username and Password.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    /*
-        Backend connection will be added in the next step.
-
-        Currently we do NOT put any real username/password
-        in this JavaScript.
-    */
-
-
-    button.disabled = true;
-
-    button.textContent = "CHECKING...";
-
-
-    showMessage(
-        "Login system backend will be connected next.",
-        "error"
-    );
-
-
-    setTimeout(function() {
-
-        button.disabled = false;
-
-        button.textContent = "LOGIN";
-
-    }, 1200);
-
+.login-card {
+    background: rgba(255,255,255,.97);
+    border: 1px solid #e3e9f2;
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 20px 60px rgba(25,55,95,.12);
 }
 
+.login-logo,
+.login-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 18px;
 
-/* ================= MESSAGE ================= */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-function showMessage(text, type) {
+    border-radius: 20px;
+    background: #edf5ff;
+    color: #1565c0;
+    font-size: 34px;
+}
 
-    const message =
-        document.getElementById("loginMessage");
+.login-card h1 {
+    text-align: center;
+    color: #172033;
+    font-size: 28px;
+    font-weight: 900;
+}
 
+.login-card > p {
+    text-align: center;
+    color: #667085;
+    margin: 7px 0 28px;
+}
 
-    message.textContent = text;
+.login-button {
+    width: 100%;
+    min-height: 50px;
 
-    message.className =
-        "login-message " + type;
+    border-radius: 12px;
+    background: #1565c0;
+    color: white;
 
+    font-weight: 850;
+    font-size: 16px;
+
+    transition: .25s;
+}
+
+.login-button:hover {
+    background: #0d47a1;
+    transform: translateY(-2px);
+}
+
+.login-button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.login-message {
+    text-align: center;
+    font-weight: 700;
+}
+
+.back-home {
+    display: block;
+    margin-top: 22px;
+    text-align: center;
+    color: #1565c0;
+    font-weight: 700;
+}
+
+.back-home:hover {
+    text-decoration: underline;
+}
+
+@media(max-width:500px) {
+
+    .login-page {
+        padding: 15px;
+    }
+
+    .login-card {
+        padding: 25px 20px;
+        border-radius: 18px;
+    }
+
+    .login-card h1 {
+        font-size: 24px;
+    }
 }
