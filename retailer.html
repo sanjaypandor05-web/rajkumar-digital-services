@@ -8,398 +8,626 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Retailer Login - Rajkumar Rationcard Services</title>
+    <title>Retailer Dashboard - Rajkumar Rationcard Services</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="retailer.css">
 
-    <style>
+</head>
 
-        /* =========================================
-           RETAILER PAGE
-        ========================================= */
 
-        .retailer-page {
-            min-height: 100vh;
-            background: #f4f7fb;
-        }
+<body>
 
+<div class="retailer-page">
 
-        .retailer-topbar {
 
-            background: #062b65;
-            color: white;
+    <!-- =========================================
+         TOP BAR
+    ========================================== -->
 
-            padding: 15px 5%;
+    <header class="retailer-topbar">
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        <div class="retailer-brand">
+            👑 RAJKUMAR RATIONCARD SERVICES
+        </div>
 
-            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-        }
+        <div class="retailer-phone">
+            📞 9429193125
+        </div>
 
+    </header>
 
-        .retailer-brand {
 
-            font-size: 19px;
-            font-weight: 900;
-        }
+    <!-- =========================================
+         DASHBOARD
+    ========================================== -->
 
+    <main class="dashboard">
 
-        .retailer-phone {
 
-            font-size: 14px;
-        }
+        <!-- =====================================
+             DASHBOARD HEADER
+        ====================================== -->
 
+        <section class="dashboard-header">
 
-        /* LOGIN */
+            <div>
 
-        .login-wrapper {
+                <h1>
+                    👤 Retailer Dashboard
+                </h1>
 
-            width: 92%;
-            max-width: 450px;
+                <p>
+                    Welcome,
+                    <strong id="loggedRetailerName">
+                        Retailer
+                    </strong>
+                </p>
 
-            margin: 70px auto;
+                <p>
+                    Retailer ID:
+                    <strong id="loggedRetailerId">
+                        -
+                    </strong>
+                </p>
 
-        }
+            </div>
 
 
-        .login-card {
+            <button
+                type="button"
+                class="logout-button"
+                onclick="retailerLogout()">
 
-            background: white;
+                🚪 Logout
 
-            padding: 35px 28px;
+            </button>
 
-            border-radius: 22px;
+        </section>
 
-            box-shadow:
-                0 12px 35px rgba(0,0,0,0.12);
 
-            text-align: center;
-        }
 
+        <!-- =====================================
+             RETAILER INFORMATION
+        ====================================== -->
 
-        .login-icon {
+        <section class="services-box">
 
-            width: 75px;
-            height: 75px;
+            <h2>
+                👤 Retailer Information
+            </h2>
 
-            border-radius: 22px;
 
-            margin: 0 auto 18px;
+            <div class="form-grid">
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+                <div class="form-group">
 
-            font-size: 38px;
+                    <label>
+                        Retailer Name
+                    </label>
 
-            background: #e3f2fd;
-        }
+                    <input
+                        type="text"
+                        id="retailerNameDisplay"
+                        readonly>
 
+                </div>
 
-        .login-card h1 {
 
-            color: #0d47a1;
+                <div class="form-group">
 
-            font-size: 25px;
+                    <label>
+                        Retailer ID
+                    </label>
 
-            margin-bottom: 8px;
-        }
+                    <input
+                        type="text"
+                        id="retailerIdDisplay"
+                        readonly>
 
+                </div>
 
-        .login-card p {
 
-            color: #777;
+                <div class="form-group">
 
-            margin-bottom: 25px;
+                    <label>
+                        Mobile
+                    </label>
 
-            font-size: 14px;
-        }
+                    <input
+                        type="text"
+                        id="retailerMobileDisplay"
+                        readonly>
 
+                </div>
 
-        .form-group {
 
-            text-align: left;
+                <div class="form-group">
 
-            margin-bottom: 16px;
-        }
+                    <label>
+                        Username
+                    </label>
 
+                    <input
+                        type="text"
+                        id="retailerUsernameDisplay"
+                        readonly>
 
-        .form-group label {
+                </div>
 
-            display: block;
+            </div>
 
-            font-weight: bold;
+        </section>
 
-            font-size: 14px;
 
-            margin-bottom: 7px;
 
-            color: #333;
-        }
+        <!-- =====================================
+             SERVICES
+        ====================================== -->
 
+        <section class="services-box">
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+            <h2>
+                📋 Select Service
+            </h2>
 
-            width: 100%;
 
-            padding: 13px 14px;
+            <div class="form-group">
 
-            border: 1px solid #ccd5e0;
+                <label for="serviceSelect">
+                    Service
+                </label>
 
-            border-radius: 10px;
 
-            outline: none;
+                <select
+                    id="serviceSelect"
+                    class="service-select">
 
-            font-size: 15px;
+                    <option value="">
+                        -- Select Service --
+                    </option>
 
-            background: white;
-        }
+                    <option
+                        value="ADD_WITH_RC"
+                        data-amount="150">
 
+                        Name Add with RATIONCARD - ₹150
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+                    </option>
 
-            border-color: #1976d2;
+                    <option
+                        value="ADD_WITHOUT_RC"
+                        data-amount="350">
 
-            box-shadow:
-                0 0 0 3px rgba(25,118,210,0.10);
-        }
+                        Name Add without RATIONCARD - ₹350
 
+                    </option>
 
-        .login-button {
+                    <option
+                        value="REMOVE_WITH_RC"
+                        data-amount="150">
 
-            width: 100%;
+                        Name Remove with RATIONCARD - ₹150
 
-            border: none;
+                    </option>
 
-            padding: 14px;
+                    <option
+                        value="REMOVE_WITHOUT_RC"
+                        data-amount="350">
 
-            border-radius: 11px;
+                        Name Remove without RATIONCARD - ₹350
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #0d47a1,
-                    #1976d2
-                );
+                    </option>
 
-            color: white;
+                    <option
+                        value="CORRECTION_WITH_RC"
+                        data-amount="500">
 
-            font-size: 16px;
+                        RATIONCARD Correction - ₹500
 
-            font-weight: bold;
+                    </option>
 
-            cursor: pointer;
+                    <option
+                        value="CORRECTION_WITHOUT_RC"
+                        data-amount="700">
 
-            margin-top: 8px;
-        }
+                        RATIONCARD Correction without RATIONCARD - ₹700
 
+                    </option>
 
-        .back-home {
+                    <option
+                        value="ADD_HUSBAND_WITH_RC"
+                        data-amount="500">
 
-            display: block;
+                        પિતાના નામવાળા Aadhaarથી પતિના Rationcardમાં નામ - ₹500
 
-            margin-top: 20px;
+                    </option>
 
-            color: #0d47a1;
+                    <option
+                        value="ADD_HUSBAND_WITHOUT_RC"
+                        data-amount="800">
 
-            text-decoration: none;
+                        પિતાના નામવાળા Aadhaarથી Rationcard વગર નામ - ₹800
 
-            font-weight: bold;
+                    </option>
 
-            font-size: 14px;
-        }
+                </select>
 
+            </div>
 
-        /* =========================================
-           RETAILER DASHBOARD
-        ========================================= */
 
-        .dashboard {
+            <div class="amount-box">
 
-            width: 94%;
+                <span class="amount-label">
+                    Service Amount
+                </span>
 
-            max-width: 1150px;
+                <span class="amount-value">
+                    ₹<span id="serviceAmount">0</span>
+                </span>
 
-            margin: 30px auto 60px;
-        }
+            </div>
 
+        </section>
 
-        .dashboard-header {
 
-            background: white;
 
-            padding: 20px;
+        <!-- =====================================
+             APPLICATION FORM
+        ====================================== -->
 
-            border-radius: 18px;
+        <section class="application-box">
 
-            display: flex;
+            <h2>
+                📝 New Application
+            </h2>
 
-            justify-content: space-between;
 
-            align-items: center;
+            <form id="applicationForm">
 
-            gap: 15px;
 
-            box-shadow:
-                0 7px 25px rgba(0,0,0,0.08);
+                <div class="form-grid">
 
-            margin-bottom: 25px;
-        }
 
+                    <!-- Aadhaar Name -->
 
-        .dashboard-header h1 {
+                    <div class="form-group">
 
-            color: #0d47a1;
+                        <label>
+                            Aadhaar Name *
+                        </label>
 
-            font-size: 25px;
-        }
+                        <input
+                            type="text"
+                            name="aadhaarName"
+                            id="aadhaarName"
+                            required>
 
+                    </div>
 
-        .dashboard-header p {
 
-            color: #777;
+                    <!-- English Name -->
 
-            margin-top: 5px;
+                    <div class="form-group">
 
-            font-size: 14px;
-        }
+                        <label>
+                            English Name
+                        </label>
 
+                        <input
+                            type="text"
+                            name="englishName"
+                            id="englishName">
 
-        .logout-button {
+                    </div>
 
-            border: none;
 
-            background: #ffebee;
+                    <!-- Gujarati Name -->
 
-            color: #c62828;
+                    <div class="form-group">
 
-            padding: 10px 16px;
+                        <label>
+                            Gujarati Name
+                        </label>
 
-            border-radius: 9px;
+                        <input
+                            type="text"
+                            name="gujaratiName"
+                            id="gujaratiName">
 
-            font-weight: bold;
+                    </div>
 
-            cursor: pointer;
-        }
 
+                    <!-- Ration Card -->
 
-        /* SERVICES */
+                    <div class="form-group">
 
-        .services-box {
+                        <label>
+                            RATIONCARD Number
+                        </label>
 
-            background: white;
+                        <input
+                            type="text"
+                            name="rationCardNo"
+                            id="rationCardNo">
 
-            border-radius: 18px;
+                    </div>
 
-            padding: 25px;
 
-            box-shadow:
-                0 7px 25px rgba(0,0,0,0.08);
+                    <!-- Gender -->
 
-            margin-bottom: 25px;
-        }
+                    <div class="form-group">
 
+                        <label>
+                            Gender *
+                        </label>
 
-        .services-box h2 {
+                        <select
+                            name="gender"
+                            id="gender"
+                            required>
 
-            color: #0d47a1;
+                            <option value="">
+                                -- Select Gender --
+                            </option>
 
-            margin-bottom: 18px;
+                            <option value="Male">
+                                Male
+                            </option>
 
-            font-size: 21px;
-        }
+                            <option value="Female">
+                                Female
+                            </option>
 
+                            <option value="Other">
+                                Other
+                            </option>
 
-        .service-select {
+                        </select>
 
-            width: 100%;
+                    </div>
 
-            padding: 14px;
 
-            border-radius: 10px;
+                    <!-- Village -->
 
-            border: 1px solid #ccd5e0;
+                    <div class="form-group">
 
-            font-size: 15px;
+                        <label>
+                            Village *
+                        </label>
 
-            outline: none;
-        }
+                        <input
+                            type="text"
+                            name="village"
+                            id="village"
+                            required>
 
+                    </div>
 
-        .amount-box {
 
-            margin-top: 15px;
+                    <!-- Taluka -->
 
-            padding: 15px;
+                    <div class="form-group">
 
-            border-radius: 12px;
+                        <label>
+                            Taluka *
+                        </label>
 
-            background: #e8f5e9;
+                        <input
+                            type="text"
+                            name="taluka"
+                            id="taluka"
+                            required>
 
-            border: 1px solid #c8e6c9;
+                    </div>
 
-            display: flex;
 
-            justify-content: space-between;
+                    <!-- District -->
 
-            align-items: center;
-        }
+                    <div class="form-group">
 
+                        <label>
+                            District *
+                        </label>
 
-        .amount-label {
+                        <input
+                            type="text"
+                            name="district"
+                            id="district"
+                            required>
 
-            font-weight: bold;
+                    </div>
 
-            color: #2e7d32;
-        }
 
+                    <!-- Pincode -->
 
-        .amount-value {
+                    <div class="form-group">
 
-            font-size: 25px;
+                        <label>
+                            Pincode *
+                        </label>
 
-            font-weight: 900;
+                        <input
+                            type="text"
+                            name="pincode"
+                            id="pincode"
+                            maxlength="6"
+                            required>
 
-            color: #1b5e20;
-        }
+                    </div>
 
 
-        /* APPLICATION FORM */
+                    <!-- Mobile -->
 
-        .application-box {
+                    <div class="form-group">
 
-            background: white;
+                        <label>
+                            Mobile *
+                        </label>
 
-            border-radius: 18px;
+                        <input
+                            type="tel"
+                            name="mobile"
+                            id="mobile"
+                            maxlength="10"
+                            required>
 
-            padding: 25px;
+                    </div>
 
-            box-shadow:
-                0 7px 25px rgba(0,0,0,0.08);
-        }
 
+                    <!-- Email -->
 
-        .application-box h2 {
+                    <div class="form-group">
 
-            color: #0d47a1;
+                        <label>
+                            Email
+                        </label>
 
-            margin-bottom: 20px;
+                        <input
+                            type="email"
+                            name="email"
+                            id="email">
 
-            font-size: 21px;
-        }
+                    </div>
 
 
-        .form-grid {
+                    <!-- Birth Date -->
 
-            display: grid;
+                    <div class="form-group">
 
-            grid-template-columns:
-                repeat(2, 1fr);
+                        <label>
+                            Birth Date
+                        </label>
 
-            gap: 16
+                        <input
+                            type="date"
+                            name="birthDate"
+                            id="birthDate">
+
+                    </div>
+
+
+                    <!-- Birth Year -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Birth Year
+                        </label>
+
+                        <input
+                            type="number"
+                            name="birthYear"
+                            id="birthYear"
+                            min="1900"
+                            max="2100">
+
+                    </div>
+
+
+                    <!-- Rationcard Status -->
+
+                    <div class="form-group">
+
+                        <label>
+                            RATIONCARD Status
+                        </label>
+
+                        <select
+                            name="rationcardStatus"
+                            id="rationcardStatus">
+
+                            <option value="">
+                                -- Select --
+                            </option>
+
+                            <option value="Available">
+                                Available
+                            </option>
+
+                            <option value="Not Available">
+                                Not Available
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- UTR -->
+
+                    <div class="form-group">
+
+                        <label>
+                            UTR Number *
+                        </label>
+
+                        <input
+                            type="text"
+                            name="utrNumber"
+                            id="utrNumber"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Payment Amount -->
+
+                <div class="amount-box">
+
+                    <span class="amount-label">
+                        Payment Amount
+                    </span>
+
+                    <span class="amount-value">
+
+                        ₹<span id="paymentAmount">
+                            0
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <!-- Message -->
+
+                <div
+                    id="applicationMessage"
+                    style="
+                        display:none;
+                        margin-top:20px;
+                        padding:15px;
+                        border-radius:10px;
+                    ">
+                </div>
+
+
+                <!-- Submit -->
+
+                <button
+                    type="submit"
+                    class="login-button">
+
+                    📝 Submit Application
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script src="retailer.js"></script>
+
+</body>
+
+</html>
