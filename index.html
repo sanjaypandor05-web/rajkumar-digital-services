@@ -1,102 +1,1251 @@
 <!DOCTYPE html>
 <html lang="gu">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-          content="RAJKUMAR RATIONCARD SERVICES - Ration Card Name Add, Name Remove, Correction અને અન્ય Ration Card Online Services.">
-
-    <meta name="theme-color" content="#0b3d91">
+          content="RAJKUMAR RATIONCARD SERVICES - Ration Card સંબંધિત Online Services">
 
     <title>RAJKUMAR RATIONCARD SERVICES</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Noto Sans Gujarati",
+                         "Nirmala UI",
+                         Arial,
+                         sans-serif;
+
+            background: #f5f8fc;
+            color: #172033;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #061b41,
+                #0d47a1
+            );
+
+            color: white;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            box-shadow:
+                0 4px 18px rgba(0,0,0,0.18);
+        }
+
+        .navbar {
+            width: 94%;
+            max-width: 1200px;
+            margin: auto;
+
+            min-height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            background: white;
+            color: #0d47a1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .brand h1 {
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .brand span {
+            display: block;
+            font-size: 11px;
+            opacity: 0.85;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu a {
+            color: white;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .nav-admin {
+            background: #ff9800 !important;
+            color: #111 !important;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 500px;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(6,27,65,0.96),
+                    rgba(13,71,161,0.91)
+                );
+
+            color: white;
+        }
+
+        .hero-content {
+            width: 94%;
+            max-width: 1200px;
+            margin: auto;
+
+            padding: 70px 0;
+
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text .small-title {
+            color: #ffca28;
+            font-weight: 800;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .hero-text h2 {
+            font-size: clamp(32px, 5vw, 58px);
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            max-width: 650px;
+            color: #e6eefc;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 13px 20px;
+
+            border-radius: 11px;
+
+            font-weight: 800;
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-retailer {
+            background: white;
+            color: #0d47a1;
+        }
+
+        .btn-track {
+            background: #ff9800;
+            color: #111;
+        }
+
+        .hero-card {
+            background: rgba(255,255,255,0.12);
+
+            border: 1px solid
+                rgba(255,255,255,0.18);
+
+            border-radius: 25px;
+
+            padding: 35px;
+
+            text-align: center;
+
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-card-icon {
+            font-size: 65px;
+            margin-bottom: 12px;
+        }
+
+        .hero-card h3 {
+            font-size: 23px;
+            margin-bottom: 8px;
+        }
+
+        .hero-card p {
+            color: #e7efff;
+            font-size: 14px;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section {
+            width: 94%;
+            max-width: 1200px;
+            margin: auto;
+
+            padding: 65px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-title span {
+            color: #ff9800;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .section-title h2 {
+            color: #0d47a1;
+            font-size: 32px;
+            margin-top: 4px;
+        }
+
+        .section-title p {
+            color: #6d7480;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* =========================
+           QUICK OPTIONS
+        ========================= */
+
+        .options-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+        .option-card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 25px 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 28px rgba(0,0,0,0.07);
+
+            border: 1px solid #edf1f6;
+
+            transition: 0.25s;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 14px 35px rgba(0,0,0,0.12);
+        }
+
+        .option-icon {
+            width: 60px;
+            height: 60px;
+
+            margin: 0 auto 14px;
+
+            border-radius: 17px;
+
+            background: #e8f2ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 29px;
+        }
+
+        .option-card h3 {
+            color: #123;
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .option-card p {
+            color: #777;
+            font-size: 13px;
+            min-height: 42px;
+        }
+
+        .option-link {
+            display: inline-block;
+            margin-top: 12px;
+
+            color: #0d47a1;
+
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        /* =========================
+           SERVICES
+        ========================= */
+
+        .services-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+        .service-card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.07);
+
+            border-top: 4px solid #0d47a1;
+        }
+
+        .service-number {
+            color: #ff9800;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .service-card h3 {
+            margin: 7px 0;
+            color: #0d47a1;
+            font-size: 18px;
+        }
+
+        .service-card p {
+            color: #707780;
+            font-size: 13px;
+        }
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about-box {
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 8px 28px rgba(0,0,0,0.07);
+
+            text-align: center;
+        }
+
+        .about-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .about-box h2 {
+            color: #0d47a1;
+            margin-bottom: 12px;
+        }
+
+        .about-box p {
+            color: #666;
+            max-width: 850px;
+            margin: auto;
+            font-size: 15px;
+        }
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact-section {
+            background: #eef5ff;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .contact-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 7px 22px rgba(0,0,0,0.06);
+        }
+
+        .contact-card-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .contact-card h3 {
+            color: #0d47a1;
+            margin-bottom: 5px;
+        }
+
+        .contact-card p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .contact-card a {
+            display: inline-block;
+            margin-top: 10px;
+
+            color: #0d47a1;
+            font-weight: 900;
+        }
+
+        /* =========================
+           CTA
+        ========================= */
+
+        .cta {
+            background:
+                linear-gradient(
+                    135deg,
+                    #061b41,
+                    #0d47a1
+                );
+
+            color: white;
+
+            text-align: center;
+
+            padding: 60px 20px;
+        }
+
+        .cta h2 {
+            font-size: 31px;
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            color: #dce8ff;
+            margin-bottom: 22px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #06152f;
+            color: white;
+            padding: 35px 20px;
+        }
+
+        .footer-inner {
+            width: 94%;
+            max-width: 1200px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand h3 {
+            margin-bottom: 5px;
+        }
+
+        .footer-brand p {
+            color: #aebbd0;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .footer-links a {
+            color: #dce8ff;
+            font-size: 13px;
+        }
+
+        .copyright {
+            width: 94%;
+            max-width: 1200px;
+            margin: 25px auto 0;
+
+            padding-top: 18px;
+
+            border-top: 1px solid
+                rgba(255,255,255,0.12);
+
+            color: #9eabc0;
+
+            font-size: 12px;
+
+            text-align: center;
+        }
+
+        /* =========================
+           WHATSAPP
+        ========================= */
+
+        .whatsapp {
+            position: fixed;
+
+            right: 20px;
+            bottom: 20px;
+
+            width: 58px;
+            height: 58px;
+
+            border-radius: 50%;
+
+            background: #25d366;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.22);
+
+            z-index: 2000;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 950px) {
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text p {
+                margin: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .options-grid,
+            .services-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                min-height: 65px;
+            }
+
+            .brand h1 {
+                font-size: 15px;
+            }
+
+            .brand span {
+                font-size: 9px;
+            }
+
+            .hero {
+                min-height: auto;
+            }
+
+            .hero-content {
+                padding: 55px 0;
+            }
+
+            .hero-text h2 {
+                font-size: 34px;
+            }
+
+            .hero-text p {
+                font-size: 15px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .options-grid,
+            .services-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 45px 0;
+            }
+
+            .section-title h2 {
+                font-size: 27px;
+            }
+
+            .about-box {
+                padding: 25px 18px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-<!-- =====================================================
+
+<!-- =========================
      HEADER
-===================================================== -->
+========================= -->
 
-<header class="main-header">
+<header>
 
-    <div class="header-inner">
+    <div class="navbar">
 
-        <a href="index.html" class="brand">
+        <a href="index.html"
+           class="logo-area">
 
-            <div class="brand-logo">
-                <span>R</span>
+            <div class="logo">
+                R
             </div>
 
-            <div class="brand-text">
-                <strong>RAJKUMAR</strong>
-                <small>RATIONCARD SERVICES</small>
+            <div class="brand">
+
+                <h1>
+                    RAJKUMAR
+                </h1>
+
+                <span>
+                    RATIONCARD SERVICES
+                </span>
+
             </div>
 
         </a>
 
 
-        <div class="header-contact">
+        <nav class="nav-menu">
 
-            <a href="tel:9429193125">
-                📞 9429193125
+            <a href="index.html">
+                Home
             </a>
 
-        </div>
+            <a href="#about">
+                About Us
+            </a>
+
+            <a href="#services">
+                Services
+            </a>
+
+            <a href="#contact">
+                Contact
+            </a>
+
+            <a href="track.html">
+                🔎 Track
+            </a>
+
+            <a href="retailer.html">
+                👨‍💼 Retailer
+            </a>
+
+            <!-- ADMIN DIRECT LINK -->
+
+            <a href="admin.html"
+               class="nav-admin">
+
+                🔐 Admin
+
+            </a>
+
+        </nav>
 
     </div>
 
 </header>
 
 
-<!-- =====================================================
-     HERO / BANNER
-===================================================== -->
+<!-- =========================
+     HERO
+========================= -->
 
-<section class="hero-section">
-
-    <div class="hero-decoration hero-decoration-one"></div>
-    <div class="hero-decoration hero-decoration-two"></div>
+<section class="hero">
 
     <div class="hero-content">
 
-        <div class="hero-logo">
-            <span>R</span>
+        <div class="hero-text">
+
+            <div class="small-title">
+                RAJKUMAR RATIONCARD SERVICES
+            </div>
+
+            <h2>
+                ONLINE RATION CARD SERVICES
+            </h2>
+
+            <p>
+                Ration Card સંબંધિત તમામ Online Services
+                સરળતાથી, ઝડપથી અને વિશ્વાસપૂર્વક.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="retailer.html"
+                   class="btn btn-retailer">
+
+                    👨‍💼 Retailer Login
+
+                </a>
+
+
+                <a href="track.html"
+                   class="btn btn-track">
+
+                    🔎 Application Track
+
+                </a>
+
+            </div>
+
         </div>
 
-        <div class="hero-badge">
-            ONLINE RATION CARD SERVICES
+
+        <div class="hero-card">
+
+            <div class="hero-card-icon">
+                📋
+            </div>
+
+            <h3>
+                Ration Card Services
+            </h3>
+
+            <p>
+                Name Add, Name Remove,
+                Correction અને અન્ય Online Services
+            </p>
+
         </div>
 
-        <h1>
-            RAJKUMAR
-            <span>RATIONCARD SERVICES</span>
-        </h1>
+    </div>
+
+</section>
+
+
+<!-- =========================
+     QUICK OPTIONS
+========================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <span>
+            RAJKUMAR SERVICES
+        </span>
+
+        <h2>
+            જરૂરી વિકલ્પ પસંદ કરો
+        </h2>
 
         <p>
-            Ration Card સંબંધિત તમામ Online Services
-            સરળતાથી અને વિશ્વાસપૂર્વક
+            Ration Card Service માટે નીચેના વિકલ્પનો ઉપયોગ કરો.
         </p>
 
-        <div class="hero-buttons">
+    </div>
+
+
+    <div class="options-grid">
+
+
+        <div class="option-card">
+
+            <div class="option-icon">
+                👨‍💼
+            </div>
+
+            <h3>
+                Retailer Login
+            </h3>
+
+            <p>
+                Retailer દ્વારા Application Submit કરવા માટે
+            </p>
 
             <a href="retailer.html"
-               class="hero-btn primary-btn">
-                👨‍💼 Retailer Login
-            </a>
+               class="option-link">
 
-            <a href="track.html"
-               class="hero-btn secondary-btn">
-                🔎 Application Track
+                Login કરો →
+
             </a>
 
         </div>
 
-        <a href="tel:9429193125"
-           class="hero-phone">
-            📞 9429193125
+
+        <div class="option-card">
+
+            <div class="option-icon">
+                🔐
+            </div>
+
+            <h3>
+                Admin Login
+            </h3>
+
+            <p>
+                Application, Payment અને Retailer Management
+            </p>
+
+            <a href="admin.html"
+               class="option-link">
+
+                Admin Panel →
+
+            </a>
+
+        </div>
+
+
+        <div class="option-card">
+
+            <div class="option-icon">
+                🔎
+            </div>
+
+            <h3>
+                Application Track
+            </h3>
+
+            <p>
+                Application ID દ્વારા Status જુઓ
+            </p>
+
+            <a href="track.html"
+               class="option-link">
+
+                Track કરો →
+
+            </a>
+
+        </div>
+
+
+        <div class="option-card">
+
+            <div class="option-icon">
+                💬
+            </div>
+
+            <h3>
+                WhatsApp Chat
+            </h3>
+
+            <p>
+                કોઈપણ માહિતી માટે WhatsApp પર સંપર્ક કરો
+            </p>
+
+            <a href="https://wa.me/919429193125"
+               target="_blank"
+               rel="noopener"
+               class="option-link">
+
+                Chat કરો →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SERVICES
+========================= -->
+
+<section id="services"
+         class="section">
+
+    <div class="section-title">
+
+        <span>
+            OUR SERVICES
+        </span>
+
+        <h2>
+            RATIONCARD SERVICES
+        </h2>
+
+        <p>
+            અમારી મુખ્ય Ration Card Services
+        </p>
+
+    </div>
+
+
+    <div class="services-grid">
+
+
+        <div class="service-card">
+
+            <div class="service-number">
+                01
+            </div>
+
+            <h3>
+                Name Add
+            </h3>
+
+            <p>
+                Ration Card સાથે અથવા વગર
+                નામ ઉમેરવાની સેવા.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-number">
+                02
+            </div>
+
+            <h3>
+                Name Remove
+            </h3>
+
+            <p>
+                Ration Card માંથી
+                નામ દૂર કરવાની સેવા.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-number">
+                03
+            </div>
+
+            <h3>
+                RATIONCARD Correction
+            </h3>
+
+            <p>
+                Ration Card માં જરૂરી
+                સુધારા કરવાની સેવા.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-number">
+                04
+            </div>
+
+            <h3>
+                Husband Name Service
+            </h3>
+
+            <p>
+                Aadhaar આધારિત પતિના
+                Ration Card માં નામ ઉમેરવાની સેવા.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section id="about"
+         class="section">
+
+    <div class="about-box">
+
+        <div class="about-icon">
+            🏠
+        </div>
+
+        <h2>
+            RAJKUMAR RATIONCARD SERVICES
+        </h2>
+
+        <p>
+            RAJKUMAR RATIONCARD SERVICES દ્વારા
+            Ration Card સંબંધિત Online Services
+            સરળ, ઝડપી અને વિશ્વાસપૂર્વક ઉપલબ્ધ
+            કરાવવામાં આવે છે.
+            <br><br>
+            Name Add, Name Remove,
+            Ration Card Correction તથા અન્ય
+            Ration Card Services માટે અમારી
+            service નો ઉપયોગ કરી શકો છો.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CONTACT
+========================= -->
+
+<section id="contact"
+         class="section contact-section">
+
+    <div class="section-title">
+
+        <span>
+            CONTACT US
+        </span>
+
+        <h2>
+            અમારો સંપર્ક કરો
+        </h2>
+
+        <p>
+            Service અંગે માહિતી માટે અમારો સંપર્ક કરો.
+        </p>
+
+    </div>
+
+
+    <div class="contact-grid">
+
+
+        <div class="contact-card">
+
+            <div class="contact-card-icon">
+                📞
+            </div>
+
+            <h3>
+                Call Us
+            </h3>
+
+            <p>
+                9429193125
+            </p>
+
+            <a href="tel:9429193125">
+                Call Now →
+            </a>
+
+        </div>
+
+
+        <div class="contact-card">
+
+            <div class="contact-card-icon">
+                💬
+            </div>
+
+            <h3>
+                WhatsApp
+            </h3>
+
+            <p>
+                Chat With Us
+            </p>
+
+            <a href="https://wa.me/919429193125"
+               target="_blank"
+               rel="noopener">
+
+                WhatsApp →
+
+            </a>
+
+        </div>
+
+
+        <div class="contact-card">
+
+            <div class="contact-card-icon">
+                🔎
+            </div>
+
+            <h3>
+                Track Application
+            </h3>
+
+            <p>
+                Application Status જુઓ
+            </p>
+
+            <a href="track.html">
+                Track Now →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="cta">
+
+    <h2>
+        તમારી Ration Card Service સરળ બનાવો
+    </h2>
+
+    <p>
+        Retailer Login કરીને Application Submit કરો.
+    </p>
+
+
+    <div class="hero-buttons"
+         style="justify-content:center;">
+
+        <a href="retailer.html"
+           class="btn btn-retailer">
+
+            👨‍💼 Retailer Login
+
+        </a>
+
+
+        <a href="track.html"
+           class="btn btn-track">
+
+            🔎 Track Application
+
         </a>
 
     </div>
@@ -104,403 +1253,23 @@
 </section>
 
 
-<!-- =====================================================
-     QUICK MENU
-===================================================== -->
-
-<section class="quick-section">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <span>RAJKUMAR SERVICES</span>
-
-            <h2>
-                જરૂરી વિકલ્પ પસંદ કરો
-            </h2>
-
-            <p>
-                Ration Card Service માટે નીચેના વિકલ્પનો ઉપયોગ કરો.
-            </p>
-
-        </div>
-
-
-        <div class="quick-grid">
-
-            <!-- Retailer -->
-
-            <a href="retailer.html"
-               class="quick-card retailer-card">
-
-                <div class="quick-icon">
-                    👨‍💼
-                </div>
-
-                <h3>
-                    Retailer Login
-                </h3>
-
-                <p>
-                    Retailer દ્વારા Application Submit કરવા માટે
-                </p>
-
-                <span class="card-link">
-                    Login કરો →
-                </span>
-
-            </a>
-
-
-           <a href="./admin.html"
-   class="admin-login-link"
-   style="
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      text-decoration:none;
-      cursor:pointer;
-      pointer-events:auto;
-      position:relative;
-      z-index:100;
-   ">
-    🔐 Admin Login
-</a>
-                <h3>
-                    Admin Login
-                </h3>
-
-                <p>
-                    Application, Payment અને Retailer Management
-                </p>
-
-                <span class="card-link">
-                    Admin Panel →
-                </span>
-
-            </a>
-
-
-            <!-- Track -->
-
-            <a href="track.html"
-               class="quick-card track-card">
-
-                <div class="quick-icon">
-                    🔎
-                </div>
-
-                <h3>
-                    Application Track
-                </h3>
-
-                <p>
-                    Application ID દ્વારા Status જુઓ
-                </p>
-
-                <span class="card-link">
-                    Track કરો →
-                </span>
-
-            </a>
-
-
-            <!-- WhatsApp -->
-
-            <a href="https://wa.me/919429193125"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="quick-card whatsapp-card">
-
-                <div class="quick-icon">
-                    💬
-                </div>
-
-                <h3>
-                    WhatsApp Chat
-                </h3>
-
-                <p>
-                    કોઈપણ માહિતી માટે WhatsApp પર સંપર્ક કરો
-                </p>
-
-                <span class="card-link">
-                    Chat કરો →
-                </span>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SERVICES
-===================================================== -->
-
-<section class="services-section">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <span>OUR SERVICES</span>
-
-            <h2>
-                RATIONCARD SERVICES
-            </h2>
-
-            <p>
-                અમારી મુખ્ય Ration Card Services
-            </p>
-
-        </div>
-
-
-        <div class="services-grid">
-
-            <div class="service-box">
-                <div class="service-number">01</div>
-                <h3>Name Add</h3>
-                <p>
-                    Ration Card સાથે અથવા વગર નામ ઉમેરવાની સેવા.
-                </p>
-            </div>
-
-
-            <div class="service-box">
-                <div class="service-number">02</div>
-                <h3>Name Remove</h3>
-                <p>
-                    Ration Card માંથી નામ દૂર કરવાની સેવા.
-                </p>
-            </div>
-
-
-            <div class="service-box">
-                <div class="service-number">03</div>
-                <h3>RATIONCARD Correction</h3>
-                <p>
-                    Ration Card માં જરૂરી સુધારા કરવાની સેવા.
-                </p>
-            </div>
-
-
-            <div class="service-box">
-                <div class="service-number">04</div>
-                <h3>Husband Name Service</h3>
-                <p>
-                    Aadhaar આધારિત પતિના Ration Card માં નામ ઉમેરવાની સેવા.
-                </p>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     ABOUT US
-===================================================== -->
-
-<section class="about-section" id="about">
-
-    <div class="container">
-
-        <div class="about-card">
-
-            <div class="about-icon">
-                🏠
-            </div>
-
-            <div class="about-content">
-
-                <span class="about-label">
-                    ABOUT US
-                </span>
-
-                <h2>
-                    RAJKUMAR RATIONCARD SERVICES
-                </h2>
-
-                <p>
-                    RAJKUMAR RATIONCARD SERVICES દ્વારા
-                    Ration Card સંબંધિત Online Services
-                    સરળ, ઝડપી અને વિશ્વાસપૂર્વક ઉપલબ્ધ કરાવવામાં આવે છે.
-                </p>
-
-                <p>
-                    Name Add, Name Remove, Ration Card Correction
-                    તથા અન્ય Ration Card Services માટે
-                    અમારી service નો ઉપયોગ કરી શકો છો.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CONTACT
-===================================================== -->
-
-<section class="contact-section" id="contact">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <span>CONTACT US</span>
-
-            <h2>
-                અમારો સંપર્ક કરો
-            </h2>
-
-            <p>
-                Service અંગે માહિતી માટે અમારો સંપર્ક કરો.
-            </p>
-
-        </div>
-
-
-        <div class="contact-grid">
-
-            <!-- Phone -->
-
-            <a href="tel:9429193125"
-               class="contact-card">
-
-                <div class="contact-icon">
-                    📞
-                </div>
-
-                <div>
-                    <small>CALL US</small>
-                    <strong>9429193125</strong>
-                </div>
-
-            </a>
-
-
-            <!-- WhatsApp -->
-
-            <a href="https://wa.me/919429193125"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="contact-card">
-
-                <div class="contact-icon">
-                    💬
-                </div>
-
-                <div>
-                    <small>WHATSAPP</small>
-                    <strong>Chat With Us</strong>
-                </div>
-
-            </a>
-
-
-            <!-- Track -->
-
-            <a href="track.html"
-               class="contact-card">
-
-                <div class="contact-icon">
-                    🔎
-                </div>
-
-                <div>
-                    <small>APPLICATION</small>
-                    <strong>Track Application</strong>
-                </div>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     FINAL CTA
-===================================================== -->
-
-<section class="cta-section">
-
-    <div class="container">
-
-        <div class="cta-content">
-
-            <span>
-                RAJKUMAR RATIONCARD SERVICES
-            </span>
-
-            <h2>
-                તમારી Ration Card Service સરળ બનાવો
-            </h2>
-
-            <p>
-                Retailer Login કરીને Application Submit કરો.
-            </p>
-
-            <div class="cta-buttons">
-
-                <a href="retailer.html"
-                   class="cta-primary">
-                    👨‍💼 Retailer Login
-                </a>
-
-                <a href="track.html"
-                   class="cta-secondary">
-                    🔎 Track Application
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
+<!-- =========================
      FOOTER
-===================================================== -->
+========================= -->
 
-<footer class="main-footer">
+<footer>
 
     <div class="footer-inner">
 
         <div class="footer-brand">
 
-            <div class="footer-logo">
-                R
-            </div>
+            <h3>
+                RAJKUMAR
+            </h3>
 
-            <div>
-                <h3>
-                    RAJKUMAR
-                </h3>
-
-                <p>
-                    RATIONCARD SERVICES
-                </p>
-            </div>
+            <p>
+                RATIONCARD SERVICES
+            </p>
 
         </div>
 
@@ -533,27 +1302,10 @@
 
         </div>
 
-
-        <div class="footer-contact">
-
-            <strong>Contact</strong>
-
-            <a href="tel:9429193125">
-                📞 9429193125
-            </a>
-
-            <a href="https://wa.me/919429193125"
-               target="_blank"
-               rel="noopener noreferrer">
-                💬 WhatsApp Chat
-            </a>
-
-        </div>
-
     </div>
 
 
-    <div class="footer-bottom">
+    <div class="copyright">
 
         © 2026 RAJKUMAR RATIONCARD SERVICES.
         All Rights Reserved.
@@ -563,22 +1315,20 @@
 </footer>
 
 
-<!-- =====================================================
-     FLOATING WHATSAPP
-===================================================== -->
+<!-- =========================
+     WHATSAPP FLOATING BUTTON
+========================= -->
 
 <a href="https://wa.me/919429193125"
    target="_blank"
-   rel="noopener noreferrer"
-   class="floating-whatsapp"
-   aria-label="WhatsApp Chat">
+   rel="noopener"
+   class="whatsapp"
+   aria-label="WhatsApp">
 
     💬
 
 </a>
 
-
-<script src="script.js"></script>
 
 </body>
 </html>
