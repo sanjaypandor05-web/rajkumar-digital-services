@@ -1,6 +1,11 @@
 /* =====================================================
    RAJKUMAR RATIONCARD SERVICES
-   RETAILER.JS - FINAL LOGIN PROTECTION
+   FINAL RETAILER JAVASCRIPT
+===================================================== */
+
+
+/* =====================================================
+   GOOGLE APPS SCRIPT URL
 ===================================================== */
 
 const SCRIPT_URL =
@@ -8,52 +13,56 @@ const SCRIPT_URL =
 
 
 /* =====================================================
-   PAGE LOAD
+   START
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    /* FIRST: protect page */
-    checkRetailerSession();
+        /* Always check login FIRST */
+        protectRetailerPage();
 
-    setupRetailerLogin();
-    setupServiceAmount();
-    setupApplicationForm();
+        setupRetailerLogin();
 
-});
+        setupLogout();
+
+        setupServiceAmount();
+
+        setupApplicationForm();
+
+    }
+);
 
 
 /* =====================================================
-   SESSION CHECK
+   PAGE PROTECTION
 ===================================================== */
 
-function checkRetailerSession() {
+function protectRetailerPage() {
 
     const loggedIn =
-        sessionStorage.getItem("retailerLoggedIn");
+        sessionStorage.getItem(
+            "retailerLoggedIn"
+        );
 
     const retailerId =
-        sessionStorage.getItem("retailerId");
+        sessionStorage.getItem(
+            "retailerId"
+        );
 
-    const retailerName =
-        sessionStorage.getItem("retailerName");
 
     if (
         loggedIn === "true" &&
         retailerId
     ) {
 
-        showDashboard(
-            retailerId,
-            retailerName || retailerId
-        );
+        showDashboard();
 
-    } else {
+    }
+    else {
 
-        showLogin();
-
-        /* Clear old localStorage login */
-        clearOldRetailerStorage();
+        forceLogin();
 
     }
 
@@ -61,24 +70,41 @@ function checkRetailerSession() {
 
 
 /* =====================================================
-   SHOW LOGIN
+   FORCE LOGIN
 ===================================================== */
 
-function showLogin() {
+function forceLogin() {
 
     const loginSection =
-        document.getElementById("loginSection");
+        document.getElementById(
+            "loginSection"
+        );
 
     const dashboardSection =
-        document.getElementById("dashboardSection");
+        document.getElementById(
+            "dashboardSection"
+        );
+
 
     if (loginSection) {
-        loginSection.style.display = "block";
+
+        loginSection.style.display =
+            "block";
+
     }
 
+
     if (dashboardSection) {
-        dashboardSection.style.display = "none";
+
+        dashboardSection.style.display =
+            "none";
+
     }
+
+
+    /* Remove old permanent login */
+
+    clearOldLoginData();
 
 }
 
@@ -87,34 +113,74 @@ function showLogin() {
    SHOW DASHBOARD
 ===================================================== */
 
-function showDashboard(
-    retailerId,
-    retailerName
-) {
+function showDashboard() {
 
     const loginSection =
-        document.getElementById("loginSection");
+        document.getElementById(
+            "loginSection"
+        );
 
     const dashboardSection =
-        document.getElementById("dashboardSection");
+        document.getElementById(
+            "dashboardSection"
+        );
+
 
     if (loginSection) {
-        loginSection.style.display = "none";
+
+        loginSection.style.display =
+            "none";
+
     }
 
+
     if (dashboardSection) {
-        dashboardSection.style.display = "block";
+
+        dashboardSection.style.display =
+            "block";
+
     }
+
+
+    const retailerName =
+        sessionStorage.getItem(
+            "retailerName"
+        ) ||
+        "Retailer";
+
+
+    const retailerId =
+        sessionStorage.getItem(
+            "retailerId"
+        ) ||
+        "";
+
 
     const nameElement =
         document.getElementById(
             "loggedRetailerName"
         );
 
+
     if (nameElement) {
 
         nameElement.textContent =
-            retailerName || retailerId;
+            retailerName;
+
+    }
+
+
+    const idElement =
+        document.getElementById(
+            "loggedRetailerId"
+        );
+
+
+    if (idElement) {
+
+        idElement.textContent =
+            "Retailer ID: " +
+            retailerId;
 
     }
 
@@ -122,36 +188,45 @@ function showDashboard(
 
 
 /* =====================================================
-   LOGIN
+   RETAILER LOGIN
 ===================================================== */
 
 function setupRetailerLogin() {
 
-    const loginForm =
+    const form =
         document.getElementById(
             "retailerLoginForm"
         );
 
-    if (!loginForm) {
+
+    if (!form) {
         return;
     }
 
-    loginForm.addEventListener(
+
+    form.addEventListener(
         "submit",
         async function (event) {
 
             event.preventDefault();
 
+
             const retailerId =
                 document
-                    .getElementById("retailerId")
+                    .getElementById(
+                        "retailerId"
+                    )
                     .value
                     .trim();
 
+
             const password =
                 document
-                    .getElementById("retailerPassword")
+                    .getElementById(
+                        "retailerPassword"
+                    )
                     .value;
+
 
             if (
                 !retailerId ||
@@ -164,24 +239,32 @@ function setupRetailerLogin() {
                 );
 
                 return;
+
             }
 
+
             const button =
-                loginForm.querySelector(
-                    "button[type='submit']"
+                document.getElementById(
+                    "retailerLoginButton"
                 );
+
 
             if (button) {
 
-                button.disabled = true;
-                button.textContent = "LOGIN...";
+                button.disabled =
+                    true;
+
+                button.textContent =
+                    "LOGIN...";
 
             }
+
 
             showLoginMessage(
                 "🔄 Login ચેક થઈ રહ્યું છે...",
                 "loading"
             );
+
 
             try {
 
@@ -189,11 +272,14 @@ function setupRetailerLogin() {
                     await fetch(
                         SCRIPT_URL,
                         {
-                            method: "POST",
+                            method:
+                                "POST",
 
                             headers: {
+
                                 "Content-Type":
                                     "text/plain;charset=utf-8"
+
                             },
 
                             body:
@@ -209,26 +295,34 @@ function setupRetailerLogin() {
                                         password
 
                                 })
+
                         }
                     );
+
 
                 if (!response.ok) {
 
                     throw new Error(
-                        "HTTP " +
+                        "HTTP Error " +
                         response.status
                     );
 
                 }
 
+
                 const result =
                     await response.json();
 
+
                 console.log(
-                    "RETAILER LOGIN:",
+                    "RETAILER LOGIN RESULT:",
                     result
                 );
 
+
+                /* =====================================
+                   SUCCESS
+                ===================================== */
 
                 if (
                     result &&
@@ -236,20 +330,32 @@ function setupRetailerLogin() {
                 ) {
 
                     const id =
-                        result.retailerId ||
-                        retailerId;
+                        String(
+                            result.retailerId ||
+                            retailerId
+                        ).trim();
+
 
                     const name =
-                        result.retailerName ||
-                        id;
+                        String(
+                            result.retailerName ||
+                            id
+                        ).trim();
 
 
-                    /* =================================
-                       IMPORTANT:
-                       ONLY SESSION STORAGE
-                    ================================= */
+                    const username =
+                        String(
+                            result.username ||
+                            retailerId
+                        ).trim();
+
+
+                    /* Clear old session */
 
                     sessionStorage.clear();
+
+
+                    /* New session */
 
                     sessionStorage.setItem(
                         "retailerLoggedIn",
@@ -268,17 +374,18 @@ function setupRetailerLogin() {
 
                     sessionStorage.setItem(
                         "retailerUsername",
-                        result.username ||
-                        retailerId
+                        username
                     );
 
 
-                    /* Remove old permanent login */
-                    clearOldRetailerStorage();
+                    /* VERY IMPORTANT:
+                       Never save login in localStorage */
+
+                    clearOldLoginData();
 
 
                     showLoginMessage(
-                        "✅ Login Successful. Dashboard ખૂલી રહ્યું છે...",
+                        "✅ Login Successful...",
                         "success"
                     );
 
@@ -286,26 +393,40 @@ function setupRetailerLogin() {
                     setTimeout(
                         function () {
 
-                            window.location.replace(
-                                "retailer.html"
-                            );
+                            /*
+                             * Reload same page.
+                             * Session exists, so dashboard
+                             * will open.
+                             */
+
+                            window.location.reload();
 
                         },
                         500
                     );
+
 
                     return;
 
                 }
 
 
+                /* =====================================
+                   LOGIN FAILED
+                ===================================== */
+
                 showLoginMessage(
+
                     result &&
                     result.message
+
                         ? "❌ " +
                           result.message
+
                         : "❌ Invalid Retailer ID અથવા Password.",
+
                     "error"
+
                 );
 
             }
@@ -316,9 +437,13 @@ function setupRetailerLogin() {
                     error
                 );
 
+
                 showLoginMessage(
+
                     "❌ Server connection failed. Apps Script URL અથવા deployment ચેક કરો.",
+
                     "error"
+
                 );
 
             }
@@ -326,8 +451,11 @@ function setupRetailerLogin() {
 
                 if (button) {
 
-                    button.disabled = false;
-                    button.textContent = "LOGIN";
+                    button.disabled =
+                        false;
+
+                    button.textContent =
+                        "LOGIN";
 
                 }
 
@@ -340,77 +468,111 @@ function setupRetailerLogin() {
 
 
 /* =====================================================
-   LOGOUT - FINAL
+   LOGOUT
 ===================================================== */
 
-function retailerLogout() {
+function setupLogout() {
 
-    /* Remove ALL retailer session data */
-
-    sessionStorage.removeItem(
-        "retailerLoggedIn"
-    );
-
-    sessionStorage.removeItem(
-        "retailerId"
-    );
-
-    sessionStorage.removeItem(
-        "retailerName"
-    );
-
-    sessionStorage.removeItem(
-        "retailerUsername"
-    );
-
-    sessionStorage.removeItem(
-        "retailerMobile"
-    );
-
-    sessionStorage.clear();
+    const button =
+        document.getElementById(
+            "logoutButton"
+        );
 
 
-    /* Remove old localStorage data */
+    if (!button) {
+        return;
+    }
 
-    clearOldRetailerStorage();
 
+    button.addEventListener(
+        "click",
+        function () {
 
-    /* Prevent browser from restoring page */
+            retailerLogout();
 
-    window.location.replace(
-        "retailer.html"
+        }
     );
 
 }
 
 
 /* =====================================================
-   CLEAR OLD LOCAL STORAGE
+   FINAL LOGOUT
 ===================================================== */
 
-function clearOldRetailerStorage() {
+function retailerLogout() {
+
+    /* Delete session completely */
+
+    sessionStorage.clear();
+
+
+    /* Delete old permanent login */
+
+    clearOldLoginData();
+
+
+    /*
+     * Replace current history entry.
+     * User cannot simply return to dashboard.
+     */
+
+    window.location.replace(
+        "retailer.html?logout=1"
+    );
+
+}
+
+
+/* =====================================================
+   CLEAR OLD LOGIN DATA
+===================================================== */
+
+function clearOldLoginData() {
 
     const keys = [
 
         "rajkumarRole",
+
         "rajkumarRetailerId",
+
         "rajkumarRetailerName",
+
         "rajkumarRetailerMobile",
+
         "rajkumarRetailerUsername",
 
         "retailerId",
+
         "retailerName",
+
         "retailerMobile",
+
         "retailerUsername",
 
         "retailerLoggedIn"
 
     ];
 
+
     keys.forEach(
         function (key) {
 
-            localStorage.removeItem(key);
+            try {
+
+                localStorage.removeItem(
+                    key
+                );
+
+            }
+            catch (error) {
+
+                console.warn(
+                    "Storage cleanup error:",
+                    error
+                );
+
+            }
 
         }
     );
@@ -432,17 +594,30 @@ function showLoginMessage(
             "loginMessage"
         );
 
+
     if (!element) {
         return;
     }
 
-    element.style.display = "block";
 
-    element.innerHTML = message;
+    element.style.display =
+        "block";
 
-    element.style.padding = "12px";
-    element.style.marginTop = "15px";
-    element.style.borderRadius = "10px";
+
+    element.innerHTML =
+        message;
+
+
+    element.style.padding =
+        "12px";
+
+
+    element.style.marginTop =
+        "15px";
+
+
+    element.style.borderRadius =
+        "10px";
 
 
     if (type === "success") {
@@ -496,19 +671,26 @@ function setupServiceAmount() {
             "serviceSelect"
         );
 
+
     if (!select) {
         return;
     }
+
 
     select.addEventListener(
         "change",
         updateServiceAmount
     );
 
+
     updateServiceAmount();
 
 }
 
+
+/* =====================================================
+   UPDATE AMOUNT
+===================================================== */
 
 function updateServiceAmount() {
 
@@ -517,45 +699,59 @@ function updateServiceAmount() {
             "serviceSelect"
         );
 
-    const amount =
+
+    const amountElement =
         document.getElementById(
             "serviceAmount"
         );
 
-    const paymentAmount =
+
+    const paymentElement =
         document.getElementById(
             "paymentAmount"
         );
 
+
     if (!select) {
         return;
     }
+
 
     const option =
         select.options[
             select.selectedIndex
         ];
 
-    const servicePrice =
-        Number(
-            option &&
-            option.dataset.amount
-                ? option.dataset.amount
-                : 0
-        );
+
+    let amount = 0;
 
 
-    if (amount) {
+    if (
+        option &&
+        option.dataset &&
+        option.dataset.amount
+    ) {
 
-        amount.textContent =
-            servicePrice;
+        amount =
+            Number(
+                option.dataset.amount
+            );
 
     }
 
-    if (paymentAmount) {
 
-        paymentAmount.textContent =
-            servicePrice;
+    if (amountElement) {
+
+        amountElement.textContent =
+            amount;
+
+    }
+
+
+    if (paymentElement) {
+
+        paymentElement.textContent =
+            amount;
 
     }
 
@@ -573,9 +769,11 @@ function setupApplicationForm() {
             "applicationForm"
         );
 
+
     if (!form) {
         return;
     }
+
 
     form.addEventListener(
         "submit",
@@ -584,7 +782,7 @@ function setupApplicationForm() {
             event.preventDefault();
 
 
-            /* Login protection again */
+            /* Login protection */
 
             if (
                 sessionStorage.getItem(
@@ -592,19 +790,18 @@ function setupApplicationForm() {
                 ) !== "true"
             ) {
 
-                window.location.replace(
-                    "retailer.html"
-                );
+                forceLogin();
 
                 return;
 
             }
 
 
-            const select =
+            const service =
                 document.getElementById(
                     "serviceSelect"
                 );
+
 
             const message =
                 document.getElementById(
@@ -613,8 +810,8 @@ function setupApplicationForm() {
 
 
             if (
-                !select ||
-                !select.value
+                !service ||
+                !service.value
             ) {
 
                 showApplicationMessage(
@@ -629,14 +826,15 @@ function setupApplicationForm() {
 
 
             const option =
-                select.options[
-                    select.selectedIndex
+                service.options[
+                    service.selectedIndex
                 ];
 
 
             const amount =
                 Number(
-                    option.dataset.amount || 0
+                    option.dataset.amount ||
+                    0
                 );
 
 
@@ -659,7 +857,7 @@ function setupApplicationForm() {
 
             showApplicationMessage(
                 message,
-                "Application ID: " +
+                "✅ Application ID: " +
                 applicationId,
                 "success"
             );
@@ -679,24 +877,36 @@ function generateApplicationId() {
     const now =
         new Date();
 
+
     const year =
         now.getFullYear();
+
 
     const month =
         String(
             now.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const day =
         String(
             now.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const random =
         Math.floor(
             10000 +
-            Math.random() * 90000
+            Math.random() *
+            90000
         );
+
 
     return (
         "RKS-" +
@@ -724,17 +934,22 @@ function showApplicationMessage(
         return;
     }
 
+
     element.style.display =
         "block";
+
 
     element.innerHTML =
         message;
 
+
     element.style.padding =
         "12px";
 
+
     element.style.marginTop =
         "15px";
+
 
     element.style.borderRadius =
         "10px";
@@ -776,25 +991,23 @@ window.addEventListener(
     "pageshow",
     function () {
 
-        checkRetailerSession();
+        protectRetailerPage();
 
     }
 );
 
 
 /* =====================================================
-   TAB VISIBILITY PROTECTION
+   PAGE VISIBILITY PROTECTION
 ===================================================== */
 
 document.addEventListener(
     "visibilitychange",
     function () {
 
-        if (
-            !document.hidden
-        ) {
+        if (!document.hidden) {
 
-            checkRetailerSession();
+            protectRetailerPage();
 
         }
 
