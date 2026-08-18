@@ -8,9 +8,12 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Retailer Dashboard - Rajkumar Rationcard Services</title>
+    <meta name="robots" content="noindex">
+
+    <title>Retailer Login - Rajkumar Rationcard Services</title>
 
     <link rel="stylesheet" href="style.css">
+
     <link rel="stylesheet" href="retailer.css">
 
 </head>
@@ -18,165 +21,205 @@
 
 <body>
 
+
+<!-- =====================================================
+     RETAILER PAGE
+===================================================== -->
+
 <div class="retailer-page">
 
 
-    <!-- =========================================
+    <!-- =================================================
          TOP BAR
-    ========================================== -->
+    ================================================== -->
 
     <header class="retailer-topbar">
 
         <div class="retailer-brand">
-            👑 RAJKUMAR RATIONCARD SERVICES
+            RAJKUMAR RATIONCARD SERVICES
         </div>
 
         <div class="retailer-phone">
-            📞 9429193125
+            Retailer Portal
         </div>
 
     </header>
 
 
-    <!-- =========================================
-         DASHBOARD
-    ========================================== -->
 
-    <main class="dashboard">
+    <!-- =================================================
+         LOGIN SECTION
+    ================================================== -->
+
+    <section id="loginSection">
+
+        <div class="login-wrapper">
+
+            <div class="login-card">
 
 
-        <!-- =====================================
-             DASHBOARD HEADER
-        ====================================== -->
+                <!-- ICON -->
 
-        <section class="dashboard-header">
+                <div class="login-icon">
+                    👤
+                </div>
 
-            <div>
+
+                <!-- TITLE -->
 
                 <h1>
-                    👤 Retailer Dashboard
+                    RETAILER LOGIN
                 </h1>
 
-                <p>
-                    Welcome,
-                    <strong id="loggedRetailerName">
-                        Retailer
-                    </strong>
-                </p>
 
                 <p>
-                    Retailer ID:
-                    <strong id="loggedRetailerId">
-                        -
-                    </strong>
+                    Enter your Retailer ID and Password
                 </p>
+
+
+                <!-- LOGIN FORM -->
+
+                <form id="retailerLoginForm"
+                      autocomplete="off">
+
+
+                    <!-- RETAILER ID -->
+
+                    <div class="form-group">
+
+                        <label for="retailerId">
+                            Retailer ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="retailerId"
+                            name="retailerId"
+                            placeholder="Enter Retailer ID"
+                            autocomplete="off"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="retailerPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="retailerPassword"
+                            name="retailerPassword"
+                            placeholder="Enter Password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="login-button">
+
+                        LOGIN
+
+                    </button>
+
+
+                    <!-- LOGIN MESSAGE -->
+
+                    <div
+                        id="loginMessage"
+                        class="login-message"
+                        style="display:none;">
+                    </div>
+
+
+                </form>
+
+
+                <!-- BACK HOME ONLY -->
+
+                <a
+                    href="index.html"
+                    class="back-home">
+
+                    ← Back to Home
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RETAILER DASHBOARD SECTION
+         Initially Hidden
+    ================================================== -->
+
+    <section
+        id="dashboardSection"
+        style="display:none;">
+
+
+        <div class="dashboard">
+
+
+            <!-- DASHBOARD HEADER -->
+
+            <div class="dashboard-header">
+
+                <div>
+
+                    <h1>
+                        Retailer Dashboard
+                    </h1>
+
+                    <p>
+                        Welcome,
+                        <strong id="loggedRetailerName">
+                            Retailer
+                        </strong>
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="logout-button"
+                    onclick="retailerLogout()">
+
+                    Logout
+
+                </button>
 
             </div>
 
 
-            <button
-                type="button"
-                class="logout-button"
-                onclick="retailerLogout()">
 
-                🚪 Logout
+            <!-- =================================================
+                 SERVICES
+            ================================================== -->
 
-            </button>
+            <div class="services-box">
 
-        </section>
-
-
-
-        <!-- =====================================
-             RETAILER INFORMATION
-        ====================================== -->
-
-        <section class="services-box">
-
-            <h2>
-                👤 Retailer Information
-            </h2>
-
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>
-                        Retailer Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="retailerNameDisplay"
-                        readonly>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Retailer ID
-                    </label>
-
-                    <input
-                        type="text"
-                        id="retailerIdDisplay"
-                        readonly>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Mobile
-                    </label>
-
-                    <input
-                        type="text"
-                        id="retailerMobileDisplay"
-                        readonly>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Username
-                    </label>
-
-                    <input
-                        type="text"
-                        id="retailerUsernameDisplay"
-                        readonly>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =====================================
-             SERVICES
-        ====================================== -->
-
-        <section class="services-box">
-
-            <h2>
-                📋 Select Service
-            </h2>
-
-
-            <div class="form-group">
-
-                <label for="serviceSelect">
-                    Service
-                </label>
+                <h2>
+                    Select Service
+                </h2>
 
 
                 <select
@@ -253,380 +296,401 @@
 
                 </select>
 
-            </div>
 
-
-            <div class="amount-box">
-
-                <span class="amount-label">
-                    Service Amount
-                </span>
-
-                <span class="amount-value">
-                    ₹<span id="serviceAmount">0</span>
-                </span>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =====================================
-             APPLICATION FORM
-        ====================================== -->
-
-        <section class="application-box">
-
-            <h2>
-                📝 New Application
-            </h2>
-
-
-            <form id="applicationForm">
-
-
-                <div class="form-grid">
-
-
-                    <!-- Aadhaar Name -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Aadhaar Name *
-                        </label>
-
-                        <input
-                            type="text"
-                            name="aadhaarName"
-                            id="aadhaarName"
-                            required>
-
-                    </div>
-
-
-                    <!-- English Name -->
-
-                    <div class="form-group">
-
-                        <label>
-                            English Name
-                        </label>
-
-                        <input
-                            type="text"
-                            name="englishName"
-                            id="englishName">
-
-                    </div>
-
-
-                    <!-- Gujarati Name -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Gujarati Name
-                        </label>
-
-                        <input
-                            type="text"
-                            name="gujaratiName"
-                            id="gujaratiName">
-
-                    </div>
-
-
-                    <!-- Ration Card -->
-
-                    <div class="form-group">
-
-                        <label>
-                            RATIONCARD Number
-                        </label>
-
-                        <input
-                            type="text"
-                            name="rationCardNo"
-                            id="rationCardNo">
-
-                    </div>
-
-
-                    <!-- Gender -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Gender *
-                        </label>
-
-                        <select
-                            name="gender"
-                            id="gender"
-                            required>
-
-                            <option value="">
-                                -- Select Gender --
-                            </option>
-
-                            <option value="Male">
-                                Male
-                            </option>
-
-                            <option value="Female">
-                                Female
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- Village -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Village *
-                        </label>
-
-                        <input
-                            type="text"
-                            name="village"
-                            id="village"
-                            required>
-
-                    </div>
-
-
-                    <!-- Taluka -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Taluka *
-                        </label>
-
-                        <input
-                            type="text"
-                            name="taluka"
-                            id="taluka"
-                            required>
-
-                    </div>
-
-
-                    <!-- District -->
-
-                    <div class="form-group">
-
-                        <label>
-                            District *
-                        </label>
-
-                        <input
-                            type="text"
-                            name="district"
-                            id="district"
-                            required>
-
-                    </div>
-
-
-                    <!-- Pincode -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Pincode *
-                        </label>
-
-                        <input
-                            type="text"
-                            name="pincode"
-                            id="pincode"
-                            maxlength="6"
-                            required>
-
-                    </div>
-
-
-                    <!-- Mobile -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Mobile *
-                        </label>
-
-                        <input
-                            type="tel"
-                            name="mobile"
-                            id="mobile"
-                            maxlength="10"
-                            required>
-
-                    </div>
-
-
-                    <!-- Email -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Email
-                        </label>
-
-                        <input
-                            type="email"
-                            name="email"
-                            id="email">
-
-                    </div>
-
-
-                    <!-- Birth Date -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Birth Date
-                        </label>
-
-                        <input
-                            type="date"
-                            name="birthDate"
-                            id="birthDate">
-
-                    </div>
-
-
-                    <!-- Birth Year -->
-
-                    <div class="form-group">
-
-                        <label>
-                            Birth Year
-                        </label>
-
-                        <input
-                            type="number"
-                            name="birthYear"
-                            id="birthYear"
-                            min="1900"
-                            max="2100">
-
-                    </div>
-
-
-                    <!-- Rationcard Status -->
-
-                    <div class="form-group">
-
-                        <label>
-                            RATIONCARD Status
-                        </label>
-
-                        <select
-                            name="rationcardStatus"
-                            id="rationcardStatus">
-
-                            <option value="">
-                                -- Select --
-                            </option>
-
-                            <option value="Available">
-                                Available
-                            </option>
-
-                            <option value="Not Available">
-                                Not Available
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- UTR -->
-
-                    <div class="form-group">
-
-                        <label>
-                            UTR Number *
-                        </label>
-
-                        <input
-                            type="text"
-                            name="utrNumber"
-                            id="utrNumber"
-                            required>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Payment Amount -->
+                <!-- AMOUNT -->
 
                 <div class="amount-box">
 
                     <span class="amount-label">
-                        Payment Amount
+                        Service Amount
                     </span>
 
                     <span class="amount-value">
 
-                        ₹<span id="paymentAmount">
-                            0
-                        </span>
+                        ₹<span id="serviceAmount">0</span>
 
                     </span>
 
                 </div>
 
-
-                <!-- Message -->
-
-                <div
-                    id="applicationMessage"
-                    style="
-                        display:none;
-                        margin-top:20px;
-                        padding:15px;
-                        border-radius:10px;
-                    ">
-                </div>
+            </div>
 
 
-                <!-- Submit -->
 
-                <button
-                    type="submit"
-                    class="login-button">
+            <!-- =================================================
+                 APPLICATION FORM
+            ================================================== -->
 
-                    📝 Submit Application
+            <div class="application-box">
 
-                </button>
-
-
-            </form>
-
-        </section>
+                <h2>
+                    Application Form
+                </h2>
 
 
-    </main>
+                <form id="applicationForm">
+
+
+                    <div class="form-grid">
+
+
+                        <!-- AADHAAR NAME -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Aadhaar Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="aadhaarName"
+                                id="aadhaarName"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- ENGLISH NAME -->
+
+                        <div class="form-group">
+
+                            <label>
+                                English Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="englishName"
+                                id="englishName"
+                            >
+
+                        </div>
+
+
+                        <!-- GUJARATI NAME -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Gujarati Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="gujaratiName"
+                                id="gujaratiName"
+                            >
+
+                        </div>
+
+
+                        <!-- RATION CARD -->
+
+                        <div class="form-group">
+
+                            <label>
+                                RATIONCARD Number
+                            </label>
+
+                            <input
+                                type="text"
+                                name="rationCardNo"
+                                id="rationCardNo"
+                            >
+
+                        </div>
+
+
+                        <!-- GENDER -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Gender *
+                            </label>
+
+                            <select
+                                name="gender"
+                                id="gender"
+                                required>
+
+                                <option value="">
+                                    -- Select Gender --
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- VILLAGE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Village *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="village"
+                                id="village"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- TALUKA -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Taluka *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="taluka"
+                                id="taluka"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- DISTRICT -->
+
+                        <div class="form-group">
+
+                            <label>
+                                District *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="district"
+                                id="district"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- PINCODE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Pincode *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="pincode"
+                                id="pincode"
+                                maxlength="6"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- MOBILE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Mobile *
+                            </label>
+
+                            <input
+                                type="tel"
+                                name="mobile"
+                                id="mobile"
+                                maxlength="10"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                            >
+
+                        </div>
+
+
+                        <!-- BIRTH DATE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Birth Date
+                            </label>
+
+                            <input
+                                type="date"
+                                name="birthDate"
+                                id="birthDate"
+                            >
+
+                        </div>
+
+
+                        <!-- BIRTH YEAR -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Birth Year
+                            </label>
+
+                            <input
+                                type="number"
+                                name="birthYear"
+                                id="birthYear"
+                                min="1900"
+                                max="2100"
+                            >
+
+                        </div>
+
+
+                        <!-- RATION CARD STATUS -->
+
+                        <div class="form-group">
+
+                            <label>
+                                RATIONCARD Status
+                            </label>
+
+                            <select
+                                name="rationcardStatus"
+                                id="rationcardStatus">
+
+                                <option value="">
+                                    -- Select Status --
+                                </option>
+
+                                <option value="Available">
+                                    Available
+                                </option>
+
+                                <option value="Not Available">
+                                    Not Available
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- UTR -->
+
+                        <div class="form-group">
+
+                            <label>
+                                UTR Number *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="utrNumber"
+                                id="utrNumber"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- PAYMENT AMOUNT -->
+
+                    <div class="amount-box">
+
+                        <span class="amount-label">
+                            Payment Amount
+                        </span>
+
+                        <span class="amount-value">
+
+                            ₹<span id="paymentAmount">0</span>
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="login-button">
+
+                        Submit Application
+
+                    </button>
+
+
+                    <!-- APPLICATION MESSAGE -->
+
+                    <div
+                        id="applicationMessage"
+                        style="display:none;
+                               margin-top:15px;
+                               padding:12px;
+                               border-radius:10px;">
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
 
 </div>
 
 
+
+<!-- =====================================================
+     RETAILER JAVASCRIPT
+===================================================== -->
+
 <script src="retailer.js"></script>
+
 
 </body>
 
