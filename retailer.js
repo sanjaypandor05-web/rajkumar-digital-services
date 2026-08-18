@@ -1,28 +1,45 @@
-/* =====================================================
+/* =========================================================
    RAJKUMAR RATIONCARD SERVICES
-   FINAL RETAILER JAVASCRIPT
+   FINAL RETAILER.JS
 
-   LOGIN
-   DASHBOARD
-   SERVICE AMOUNT
-   PAYMENT QR
-   FILE UPLOAD
-   APPLICATION SUBMIT
-   LOGOUT
-===================================================== */
+   FEATURES:
+   - Retailer Login
+   - Session Protection
+   - Logout
+   - Service Selection
+   - Auto Amount
+   - Real UPI QR Generation
+   - Aadhaar PDF
+   - Rationcard PDF
+   - Payment Screenshot
+   - UTR
+   - Submit Application
+   - Google Apps Script Integration
+========================================================= */
 
 
-/* =====================================================
+/* =========================================================
    GOOGLE APPS SCRIPT URL
-===================================================== */
+========================================================= */
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbx_Jlr04g2fJl76vXnuq2-jS4P3PPrb-p3RkrE-YZ4MMeHgygQQSutjR05xvKTC9yhu/exec";
 
 
-/* =====================================================
+/* =========================================================
+   UPI CONFIG
+========================================================= */
+
+const UPI_ID =
+"gujrat.nsfa@ybl";
+
+const UPI_NAME =
+"RAJKUMAR RATIONCARD SERVICES";
+
+
+/* =========================================================
    START
-===================================================== */
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -38,17 +55,19 @@ document.addEventListener(
 
         setupServiceAmount();
 
+        setupApplicationForm();
+
         setupPaymentQR();
 
-        setupApplicationForm();
+        setupInputValidation();
 
     }
 );
 
 
-/* =====================================================
+/* =========================================================
    HIDE DASHBOARD
-===================================================== */
+========================================================= */
 
 function hideDashboard() {
 
@@ -81,9 +100,9 @@ function hideDashboard() {
 }
 
 
-/* =====================================================
-   CHECK LOGIN
-===================================================== */
+/* =========================================================
+   SESSION CHECK
+========================================================= */
 
 function isRetailerLoggedIn() {
 
@@ -99,21 +118,17 @@ function isRetailerLoggedIn() {
 
 
     return (
-
         loggedIn === "true" &&
-
         retailerId &&
-
         retailerId.trim() !== ""
-
     );
 
 }
 
 
-/* =====================================================
-   PAGE PROTECTION
-===================================================== */
+/* =========================================================
+   PROTECT PAGE
+========================================================= */
 
 function protectRetailerPage() {
 
@@ -133,9 +148,9 @@ function protectRetailerPage() {
 }
 
 
-/* =====================================================
+/* =========================================================
    FORCE LOGIN
-===================================================== */
+========================================================= */
 
 function forceLogin() {
 
@@ -146,9 +161,9 @@ function forceLogin() {
 }
 
 
-/* =====================================================
+/* =========================================================
    SHOW DASHBOARD
-===================================================== */
+========================================================= */
 
 function showDashboard() {
 
@@ -235,9 +250,9 @@ function showDashboard() {
 }
 
 
-/* =====================================================
+/* =========================================================
    RETAILER LOGIN
-===================================================== */
+========================================================= */
 
 function setupRetailerLogin() {
 
@@ -301,8 +316,7 @@ function setupRetailerLogin() {
 
             if (button) {
 
-                button.disabled =
-                    true;
+                button.disabled = true;
 
                 button.textContent =
                     "LOGIN...";
@@ -322,15 +336,11 @@ function setupRetailerLogin() {
                     await fetch(
                         SCRIPT_URL,
                         {
-
-                            method:
-                                "POST",
+                            method: "POST",
 
                             headers: {
-
                                 "Content-Type":
                                     "text/plain;charset=utf-8"
-
                             },
 
                             body:
@@ -346,7 +356,6 @@ function setupRetailerLogin() {
                                         password
 
                                 })
-
                         }
                     );
 
@@ -424,6 +433,20 @@ function setupRetailerLogin() {
                     );
 
 
+                    if (
+                        result.mobile
+                    ) {
+
+                        sessionStorage.setItem(
+                            "retailerMobile",
+                            String(
+                                result.mobile
+                            )
+                        );
+
+                    }
+
+
                     clearOldPermanentLogin();
 
 
@@ -497,9 +520,9 @@ function setupRetailerLogin() {
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 function setupLogout() {
 
@@ -530,9 +553,9 @@ function setupLogout() {
 }
 
 
-/* =====================================================
-   FINAL LOGOUT
-===================================================== */
+/* =========================================================
+   RETAILER LOGOUT
+========================================================= */
 
 function retailerLogout() {
 
@@ -577,9 +600,9 @@ function retailerLogout() {
 }
 
 
-/* =====================================================
-   CLEAR OLD LOGIN
-===================================================== */
+/* =========================================================
+   CLEAR OLD LOCAL STORAGE
+========================================================= */
 
 function clearOldPermanentLogin() {
 
@@ -633,9 +656,9 @@ function clearOldPermanentLogin() {
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGIN MESSAGE
-===================================================== */
+========================================================= */
 
 function showLoginMessage(
     message,
@@ -719,9 +742,9 @@ function showLoginMessage(
 }
 
 
-/* =====================================================
+/* =========================================================
    SERVICE AMOUNT
-===================================================== */
+========================================================= */
 
 function setupServiceAmount() {
 
@@ -746,8 +769,6 @@ function setupServiceAmount() {
 
             resetPaymentQR();
 
-            generatePaymentQR();
-
         }
     );
 
@@ -757,15 +778,27 @@ function setupServiceAmount() {
 }
 
 
-/* =====================================================
+/* =========================================================
    UPDATE SERVICE AMOUNT
-===================================================== */
+========================================================= */
 
 function updateServiceAmount() {
 
     const select =
         document.getElementById(
             "serviceSelect"
+        );
+
+
+    const amountElement =
+        document.getElementById(
+            "serviceAmount"
+        );
+
+
+    const paymentElement =
+        document.getElementById(
+            "paymentAmount"
         );
 
 
@@ -799,24 +832,6 @@ function updateServiceAmount() {
     }
 
 
-    const amountElement =
-        document.getElementById(
-            "serviceAmount"
-        );
-
-
-    const paymentElement =
-        document.getElementById(
-            "paymentAmount"
-        );
-
-
-    const qrAmount =
-        document.getElementById(
-            "qrAmount"
-        );
-
-
     if (amountElement) {
 
         amountElement.textContent =
@@ -833,482 +848,47 @@ function updateServiceAmount() {
     }
 
 
-    if (qrAmount) {
-
-        qrAmount.textContent =
-            amount;
-
-    }
-
-
     return amount;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    PAYMENT QR SETUP
-===================================================== */
+========================================================= */
 
 function setupPaymentQR() {
 
     const button =
         document.getElementById(
-            "generateQRButton"
+            "generateQrButton"
         );
 
 
-    if (button) {
+    if (!button) {
 
-        button.addEventListener(
-            "click",
-            generatePaymentQR
-        );
+        return;
 
     }
 
 
-    /*
-     * Service selected થાય એટલે
-     * QR automatically generate થશે.
-     */
+    button.addEventListener(
+        "click",
+        function () {
 
-    const select =
-        document.getElementById(
-            "serviceSelect"
-        );
+            generatePaymentQR();
 
-
-    if (
-        select &&
-        select.value
-    ) {
-
-        generatePaymentQR();
-
-    }
+        }
+    );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    GENERATE PAYMENT QR
-===================================================== */
+========================================================= */
 
-async function generatePaymentQR() {
-
-    const select =
-        document.getElementById(
-            "serviceSelect"
-        );
-
-
-    if (!select || !select.value) {
-
-        showApplicationMessageById(
-            "⚠️ પહેલા Service પસંદ કરો.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const option =
-        select.options[
-            select.selectedIndex
-        ];
-
-
-    const amount =
-        Number(
-            option.dataset.amount || 0
-        );
-
-
-    if (amount <= 0) {
-
-        showApplicationMessageById(
-            "⚠️ Service amount મળ્યો નથી.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const button =
-        document.getElementById(
-            "generateQRButton"
-        );
-
-
-    if (button) {
-
-        button.disabled =
-            true;
-
-        button.textContent =
-            "⏳ QR બનાવાઈ રહ્યું છે...";
-
-    }
-
-
-    try {
-
-        const applicationId =
-            createTemporaryApplicationId();
-
-
-        const response =
-            await fetch(
-                SCRIPT_URL,
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            action:
-                                "getUPIPayment",
-
-                            amount:
-                                amount,
-
-                            applicationId:
-                                applicationId
-
-                        })
-
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "HTTP " +
-                response.status
-            );
-
-        }
-
-
-        const result =
-            await response.json();
-
-
-        console.log(
-            "PAYMENT QR RESULT:",
-            result
-        );
-
-
-        if (
-            !result ||
-            result.success !== true ||
-            !result.upiLink
-        ) {
-
-            throw new Error(
-                result &&
-                result.message
-                    ? result.message
-                    : "UPI QR data મળ્યો નથી."
-            );
-
-        }
-
-
-        /*
-         * UPI LINK → QR IMAGE
-         *
-         * Google Chart API પર depend
-         * ન રહેવા માટે QR Server નો ઉપયોગ.
-         */
-
-        const qrUrl =
-            "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-            encodeURIComponent(
-                result.upiLink
-            );
-
-
-        const qrImage =
-            document.getElementById(
-                "paymentQR"
-            );
-
-
-        if (!qrImage) {
-
-            throw new Error(
-                "Payment QR image element not found."
-            );
-
-        }
-
-
-        qrImage.src =
-            qrUrl;
-
-
-        const qrSection =
-            document.getElementById(
-                "qrPaymentSection"
-            );
-
-
-        if (qrSection) {
-
-            qrSection.style.display =
-                "block";
-
-        }
-
-
-        const upiIdText =
-            document.getElementById(
-                "upiIdText"
-            );
-
-
-        if (upiIdText) {
-
-            upiIdText.textContent =
-                result.upiId ||
-                "gujrat.nsfa@ybl";
-
-        }
-
-
-        const upiNameText =
-            document.getElementById(
-                "upiNameText"
-            );
-
-
-        if (upiNameText) {
-
-            upiNameText.textContent =
-                result.name ||
-                "RAJKUMAR RATIONCARD SERVICES";
-
-        }
-
-
-        const qrAmount =
-            document.getElementById(
-                "qrAmount"
-            );
-
-
-        if (qrAmount) {
-
-            qrAmount.textContent =
-                amount;
-
-        }
-
-
-        /*
-         * QR successfully generated.
-         */
-
-        console.log(
-            "PAYMENT QR GENERATED:",
-            result.upiLink
-        );
-
-
-    }
-    catch (error) {
-
-        console.error(
-            "PAYMENT QR ERROR:",
-            error
-        );
-
-
-        showApplicationMessageById(
-
-            "❌ QR Generate થતું નથી. " +
-            error.message,
-
-            "error"
-
-        );
-
-    }
-    finally {
-
-        if (button) {
-
-            button.disabled =
-                false;
-
-            button.textContent =
-                "🔄 Generate Payment QR";
-
-        }
-
-    }
-
-}
-
-
-/* =====================================================
-   RESET QR
-===================================================== */
-
-function resetPaymentQR() {
-
-    const section =
-        document.getElementById(
-            "qrPaymentSection"
-        );
-
-
-    const image =
-        document.getElementById(
-            "paymentQR"
-        );
-
-
-    if (section) {
-
-        section.style.display =
-            "none";
-
-    }
-
-
-    if (image) {
-
-        image.removeAttribute(
-            "src"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   TEMPORARY APPLICATION ID
-===================================================== */
-
-function createTemporaryApplicationId() {
-
-    const now =
-        new Date();
-
-
-    const year =
-        now.getFullYear();
-
-
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            now.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const random =
-        Math.floor(
-            10000 +
-            Math.random() * 90000
-        );
-
-
-    return (
-        "PAY-" +
-        year +
-        month +
-        day +
-        "-" +
-        random
-    );
-
-}
-
-
-/* =====================================================
-   APPLICATION FORM
-===================================================== */
-
-function setupApplicationForm() {
-
-    const form =
-        document.getElementById(
-            "applicationForm"
-        );
-
-
-    if (!form) {
-
-        return;
-
-    }
-
-
-    form.addEventListener(
-        "submit",
-        submitApplication
-    );
-
-}
-
-
-/* =====================================================
-   SUBMIT APPLICATION
-===================================================== */
-
-async function submitApplication(
-    event
-) {
-
-    event.preventDefault();
-
-
-    if (
-        !isRetailerLoggedIn()
-    ) {
-
-        forceLogin();
-
-        showLoginMessage(
-            "❌ પહેલા Retailer Login કરો.",
-            "error"
-        );
-
-        return;
-
-    }
-
+function generatePaymentQR() {
 
     const serviceSelect =
         document.getElementById(
@@ -1316,22 +896,54 @@ async function submitApplication(
         );
 
 
-    const message =
+    const qrSection =
         document.getElementById(
-            "applicationMessage"
+            "qrSection"
         );
 
 
-    if (
-        !serviceSelect ||
-        !serviceSelect.value
-    ) {
+    const qrContainer =
+        document.getElementById(
+            "qrcode"
+        );
+
+
+    const qrAmount =
+        document.getElementById(
+            "qrAmount"
+        );
+
+
+    const upiDetails =
+        document.getElementById(
+            "upiDetails"
+        );
+
+
+    const openUpiButton =
+        document.getElementById(
+            "openUpiButton"
+        );
+
+
+    if (!serviceSelect) {
+
+        return;
+
+    }
+
+
+    if (!serviceSelect.value) {
 
         showApplicationMessage(
-            message,
+            document.getElementById(
+                "applicationMessage"
+            ),
             "⚠️ પહેલા Service પસંદ કરો.",
             "error"
         );
+
+        serviceSelect.focus();
 
         return;
 
@@ -1350,92 +962,15 @@ async function submitApplication(
         );
 
 
-    if (amount <= 0) {
-
-        showApplicationMessage(
-            message,
-            "⚠️ Service amount મળ્યો નથી.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    /*
-     * Required files
-     */
-
-    const aadhaarFile =
-        document.getElementById(
-            "aadhaarFile"
-        ).files[0];
-
-
-    const rationcardFile =
-        document.getElementById(
-            "rationcardFile"
-        ).files[0];
-
-
-    const paymentScreenshot =
-        document.getElementById(
-            "paymentScreenshot"
-        ).files[0];
-
-
-    if (!aadhaarFile) {
-
-        showApplicationMessage(
-            message,
-            "⚠️ Aadhaar PDF upload કરો.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    if (!paymentScreenshot) {
-
-        showApplicationMessage(
-            message,
-            "⚠️ Payment Screenshot upload કરો.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    /*
-     * Rationcard PDF service પ્રમાણે
-     */
-
-    const service =
-        serviceSelect.value;
-
-
-    const rationRequired =
-        (
-            service === "ADD_WITH_RC" ||
-            service === "REMOVE_WITH_RC" ||
-            service === "CORRECTION_WITH_RC" ||
-            service === "ADD_HUSBAND_WITH_RC"
-        );
-
-
     if (
-        rationRequired &&
-        !rationcardFile
+        amount <= 0
     ) {
 
         showApplicationMessage(
-            message,
-            "⚠️ આ Service માટે Rationcard PDF જરૂરી છે.",
+            document.getElementById(
+                "applicationMessage"
+            ),
+            "⚠️ Payment amount મળ્યો નથી.",
             "error"
         );
 
@@ -1444,51 +979,59 @@ async function submitApplication(
     }
 
 
-    /*
-     * UTR
-     */
+    /* ============================================
+       CREATE UPI LINK
+    ============================================ */
 
-    const utr =
-        document
-            .getElementById(
-                "utrNumber"
-            )
-            .value
-            .trim();
+    const upiLink =
+        "upi://pay" +
 
+        "?pa=" +
+        encodeURIComponent(
+            UPI_ID
+        ) +
 
-    if (!utr) {
+        "&pn=" +
+        encodeURIComponent(
+            UPI_NAME
+        ) +
 
-        showApplicationMessage(
-            message,
-            "⚠️ Payment પછી UTR Number નાખો.",
-            "error"
+        "&am=" +
+        encodeURIComponent(
+            amount.toFixed(2)
+        ) +
+
+        "&cu=INR" +
+
+        "&tn=" +
+        encodeURIComponent(
+            "Rationcard Service"
         );
 
-        return;
+
+    /* ============================================
+       CLEAR OLD QR
+    ============================================ */
+
+    if (qrContainer) {
+
+        qrContainer.innerHTML =
+            "";
 
     }
 
 
-    /*
-     * QR પહેલા generate થયો છે કે નહીં
-     */
-
-    const qr =
-        document.getElementById(
-            "paymentQR"
-        );
-
+    /* ============================================
+       CHECK QR LIBRARY
+    ============================================ */
 
     if (
-        !qr ||
-        !qr.src
+        typeof QRCode ===
+        "undefined"
     ) {
 
-        showApplicationMessage(
-            message,
-            "⚠️ પહેલા Payment QR Generate કરો.",
-            "error"
+        alert(
+            "QR Code library load થઈ નથી. Internet connection check કરો."
         );
 
         return;
@@ -1496,314 +1039,883 @@ async function submitApplication(
     }
 
 
-    const button =
-        document.getElementById(
-            "applicationSubmitButton"
-        );
-
-
-    if (button) {
-
-        button.disabled =
-            true;
-
-        button.textContent =
-            "⏳ Application Submit થઈ રહી છે...";
-
-    }
-
-
-    showApplicationMessage(
-        message,
-        "🔄 Documents upload અને application save થઈ રહી છે...",
-        "loading"
-    );
-
+    /* ============================================
+       GENERATE REAL QR
+    ============================================ */
 
     try {
 
-        /*
-         * Convert files to Base64
-         */
+        new QRCode(
+            qrContainer,
+            {
+                text:
+                    upiLink,
 
-        const aadhaarData =
-            await fileToBase64(
-                aadhaarFile
-            );
+                width:
+                    220,
 
+                height:
+                    220,
 
-        let rationcardData = null;
-
-
-        if (rationcardFile) {
-
-            rationcardData =
-                await fileToBase64(
-                    rationcardFile
-                );
-
-        }
-
-
-        const paymentScreenshotData =
-            await fileToBase64(
-                paymentScreenshot
-            );
-
-
-        /*
-         * Retailer information
-         */
-
-        const retailerId =
-            sessionStorage.getItem(
-                "retailerId"
-            ) ||
-            "";
-
-
-        const retailerName =
-            sessionStorage.getItem(
-                "retailerName"
-            ) ||
-            "";
-
-
-        /*
-         * Build application data
-         */
-
-        const data = {
-
-            action:
-                "submitApplication",
-
-            retailerId:
-                retailerId,
-
-            retailerName:
-                retailerName,
-
-            retailerMobile:
-                "",
-
-            service:
-                service,
-
-            aadhaarName:
-                getValue("aadhaarName"),
-
-            englishName:
-                getValue("englishName"),
-
-            gujaratiName:
-                getValue("gujaratiName"),
-
-            rationCardNo:
-                getValue("rationCardNo"),
-
-            gender:
-                getValue("gender"),
-
-            village:
-                getValue("village"),
-
-            taluka:
-                getValue("taluka"),
-
-            district:
-                getValue("district"),
-
-            pincode:
-                getValue("pincode"),
-
-            mobile:
-                getValue("mobile"),
-
-            email:
-                getValue("email"),
-
-            birthDate:
-                getValue("birthDate"),
-
-            birthYear:
-                getValue("birthYear"),
-
-            rationcardStatus:
-                getValue("rationcardStatus"),
-
-            utrNumber:
-                utr,
-
-            aadhaarFile:
-                aadhaarData,
-
-            rationcardFile:
-                rationcardData,
-
-            paymentScreenshot:
-                paymentScreenshotData
-
-        };
-
-
-        /*
-         * Send to Apps Script
-         */
-
-        const response =
-            await fetch(
-                SCRIPT_URL,
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
-
-                    },
-
-                    body:
-                        JSON.stringify(data)
-
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "HTTP Error " +
-                response.status
-            );
-
-        }
-
-
-        const result =
-            await response.json();
-
-
-        console.log(
-            "APPLICATION RESULT:",
-            result
+                correctLevel:
+                    QRCode.CorrectLevel.H
+            }
         );
-
-
-        if (
-            !result ||
-            result.success !== true
-        ) {
-
-            throw new Error(
-
-                result &&
-                result.message
-
-                    ? result.message
-
-                    : "Application submit failed."
-
-            );
-
-        }
-
-
-        /*
-         * SUCCESS
-         */
-
-        showApplicationMessage(
-
-            message,
-
-            "✅ Application Successfully Submitted.<br><br>" +
-
-            "<strong>Application ID:</strong> " +
-
-            result.applicationId +
-
-            "<br><br>" +
-
-            "Payment Status: Pending<br>" +
-
-            "Application Status: Submitted",
-
-            "success"
-
-        );
-
-
-        /*
-         * Reset form after successful submit
-         */
-
-        document
-            .getElementById(
-                "applicationForm"
-            )
-            .reset();
-
-
-        updateServiceAmount();
-
-        resetPaymentQR();
-
 
     }
     catch (error) {
 
         console.error(
-            "APPLICATION SUBMIT ERROR:",
+            "QR GENERATION ERROR:",
             error
         );
 
+        alert(
+            "QR Code generate કરવામાં error આવ્યો."
+        );
 
-        showApplicationMessage(
+        return;
 
-            message,
+    }
 
-            "❌ Application Submit Error:<br>" +
-            error.message,
 
-            "error"
+    /* ============================================
+       SHOW PAYMENT DATA
+    ============================================ */
 
+    if (qrAmount) {
+
+        qrAmount.textContent =
+            amount;
+
+    }
+
+
+    if (upiDetails) {
+
+        upiDetails.style.display =
+            "block";
+
+    }
+
+
+    if (qrSection) {
+
+        qrSection.style.display =
+            "block";
+
+    }
+
+
+    /* ============================================
+       OPEN UPI BUTTON
+    ============================================ */
+
+    if (openUpiButton) {
+
+        openUpiButton.href =
+            upiLink;
+
+        openUpiButton.style.display =
+            "inline-flex";
+
+    }
+
+
+    /* ============================================
+       BUTTON TEXT
+    ============================================ */
+
+    const button =
+        document.getElementById(
+            "generateQrButton"
+        );
+
+
+    if (button) {
+
+        button.textContent =
+            "🔄 Regenerate Payment QR";
+
+    }
+
+
+    /* ============================================
+       SCROLL TO QR
+    ============================================ */
+
+    setTimeout(
+        function () {
+
+            if (qrSection) {
+
+                qrSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+        },
+        100
+    );
+
+}
+
+
+/* =========================================================
+   RESET QR
+========================================================= */
+
+function resetPaymentQR() {
+
+    const qrSection =
+        document.getElementById(
+            "qrSection"
+        );
+
+
+    const qrContainer =
+        document.getElementById(
+            "qrcode"
+        );
+
+
+    const upiDetails =
+        document.getElementById(
+            "upiDetails"
+        );
+
+
+    const openUpiButton =
+        document.getElementById(
+            "openUpiButton"
+        );
+
+
+    const button =
+        document.getElementById(
+            "generateQrButton"
+        );
+
+
+    if (qrContainer) {
+
+        qrContainer.innerHTML =
+            "";
+
+    }
+
+
+    if (qrSection) {
+
+        qrSection.style.display =
+            "none";
+
+    }
+
+
+    if (upiDetails) {
+
+        upiDetails.style.display =
+            "none";
+
+    }
+
+
+    if (openUpiButton) {
+
+        openUpiButton.style.display =
+            "none";
+
+        openUpiButton.removeAttribute(
+            "href"
         );
 
     }
-    finally {
 
-        if (button) {
 
-            button.disabled =
-                false;
+    if (button) {
 
-            button.textContent =
-                "Submit Application";
-
-        }
+        button.textContent =
+            "💳 Generate Payment QR";
 
     }
 
 }
 
 
-/* =====================================================
-   FILE → BASE64
-===================================================== */
+/* =========================================================
+   APPLICATION FORM
+========================================================= */
 
-function fileToBase64(
-    file
-) {
+function setupApplicationForm() {
+
+    const form =
+        document.getElementById(
+            "applicationForm"
+        );
+
+
+    if (!form) {
+
+        return;
+
+    }
+
+
+    form.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            if (
+                !isRetailerLoggedIn()
+            ) {
+
+                forceLogin();
+
+                showLoginMessage(
+                    "❌ પહેલા Retailer Login કરો.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const serviceSelect =
+                document.getElementById(
+                    "serviceSelect"
+                );
+
+
+            const message =
+                document.getElementById(
+                    "applicationMessage"
+                );
+
+
+            if (
+                !serviceSelect ||
+                !serviceSelect.value
+            ) {
+
+                showApplicationMessage(
+                    message,
+                    "⚠️ પહેલા Service પસંદ કરો.",
+                    "error"
+                );
+
+                serviceSelect.focus();
+
+                return;
+
+            }
+
+
+            const option =
+                serviceSelect.options[
+                    serviceSelect.selectedIndex
+                ];
+
+
+            const amount =
+                Number(
+                    option.dataset.amount ||
+                    0
+                );
+
+
+            if (
+                amount <= 0
+            ) {
+
+                showApplicationMessage(
+                    message,
+                    "⚠️ Service amount મળ્યો નથી.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* ============================================
+               CHECK PAYMENT QR
+            ============================================ */
+
+            const qrSection =
+                document.getElementById(
+                    "qrSection"
+                );
+
+
+            if (
+                !qrSection ||
+                qrSection.style.display ===
+                    "none"
+            ) {
+
+                showApplicationMessage(
+                    message,
+                    "⚠️ પહેલા Generate Payment QR પર click કરો અને payment કરો.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* ============================================
+               CHECK UTR
+            ============================================ */
+
+            const utr =
+                document
+                    .getElementById(
+                        "utrNumber"
+                    )
+                    .value
+                    .trim();
+
+
+            if (!utr) {
+
+                showApplicationMessage(
+                    message,
+                    "⚠️ Payment UTR Number દાખલ કરો.",
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "utrNumber"
+                    )
+                    .focus();
+
+                return;
+
+            }
+
+
+            /* ============================================
+               CHECK AADHAAR
+            ============================================ */
+
+            const aadhaarInput =
+                document.getElementById(
+                    "aadhaarFile"
+                );
+
+
+            if (
+                !aadhaarInput ||
+                !aadhaarInput.files ||
+                !aadhaarInput.files[0]
+            ) {
+
+                showApplicationMessage(
+                    message,
+                    "⚠️ Aadhaar PDF upload કરો.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* ============================================
+               CHECK PAYMENT SCREENSHOT
+            ============================================ */
+
+            const paymentInput =
+                document.getElementById(
+                    "paymentScreenshot"
+                );
+
+
+            if (
+                !paymentInput ||
+                !paymentInput.files ||
+                !paymentInput.files[0]
+            ) {
+
+                showApplicationMessage(
+                    message,
+                    "⚠️ Payment Screenshot upload કરો.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* ============================================
+               OPTIONAL RATIONCARD
+            ============================================ */
+
+            const rationcardInput =
+                document.getElementById(
+                    "rationcardFile"
+                );
+
+
+            /* ============================================
+               BUTTON
+            ============================================ */
+
+            const submitButton =
+                document.getElementById(
+                    "applicationSubmitButton"
+                );
+
+
+            if (submitButton) {
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "⏳ Uploading & Submitting...";
+
+            }
+
+
+            showApplicationMessage(
+                message,
+                "⏳ Documents upload થઈ રહ્યા છે. કૃપા કરીને page બંધ ન કરો...",
+                "loading"
+            );
+
+
+            try {
+
+                /* ========================================
+                   FILE TO BASE64
+                ======================================== */
+
+                showApplicationMessage(
+                    message,
+                    "⏳ Aadhaar PDF વાંચી રહ્યા છીએ...",
+                    "loading"
+                );
+
+
+                const aadhaarFile =
+                    await fileToBase64(
+                        aadhaarInput.files[0]
+                    );
+
+
+                /* ========================================
+                   RATIONCARD FILE
+                ======================================== */
+
+                let rationcardFile =
+                    null;
+
+
+                if (
+                    rationcardInput &&
+                    rationcardInput.files &&
+                    rationcardInput.files[0]
+                ) {
+
+                    showApplicationMessage(
+                        message,
+                        "⏳ RATIONCARD PDF વાંચી રહ્યા છીએ...",
+                        "loading"
+                    );
+
+
+                    rationcardFile =
+                        await fileToBase64(
+                            rationcardInput.files[0]
+                        );
+
+                }
+
+
+                /* ========================================
+                   PAYMENT SCREENSHOT
+                ======================================== */
+
+                showApplicationMessage(
+                    message,
+                    "⏳ Payment Screenshot વાંચી રહ્યા છીએ...",
+                    "loading"
+                );
+
+
+                const paymentScreenshot =
+                    await fileToBase64(
+                        paymentInput.files[0]
+                    );
+
+
+                /* ========================================
+                   RETAILER DATA
+                ======================================== */
+
+                const retailerId =
+                    sessionStorage.getItem(
+                        "retailerId"
+                    ) ||
+                    "";
+
+
+                const retailerMobile =
+                    sessionStorage.getItem(
+                        "retailerMobile"
+                    ) ||
+                    "";
+
+
+                if (!retailerId) {
+
+                    throw new Error(
+                        "Retailer session expired. Please login again."
+                    );
+
+                }
+
+
+                /* ========================================
+                   FORM DATA
+                ======================================== */
+
+                const payload = {
+
+                    action:
+                        "submitApplication",
+
+
+                    retailerId:
+                        retailerId,
+
+
+                    retailerMobile:
+                        retailerMobile,
+
+
+                    service:
+                        serviceSelect.value,
+
+
+                    aadhaarName:
+                        getValue(
+                            "aadhaarName"
+                        ),
+
+
+                    englishName:
+                        getValue(
+                            "englishName"
+                        ),
+
+
+                    gujaratiName:
+                        getValue(
+                            "gujaratiName"
+                        ),
+
+
+                    rationCardNo:
+                        getValue(
+                            "rationCardNo"
+                        ),
+
+
+                    gender:
+                        getValue(
+                            "gender"
+                        ),
+
+
+                    village:
+                        getValue(
+                            "village"
+                        ),
+
+
+                    taluka:
+                        getValue(
+                            "taluka"
+                        ),
+
+
+                    district:
+                        getValue(
+                            "district"
+                        ),
+
+
+                    pincode:
+                        getValue(
+                            "pincode"
+                        ),
+
+
+                    mobile:
+                        getValue(
+                            "mobile"
+                        ),
+
+
+                    email:
+                        getValue(
+                            "email"
+                        ),
+
+
+                    birthDate:
+                        getValue(
+                            "birthDate"
+                        ),
+
+
+                    birthYear:
+                        getValue(
+                            "birthYear"
+                        ),
+
+
+                    rationcardStatus:
+                        getValue(
+                            "rationcardStatus"
+                        ),
+
+
+                    utrNumber:
+                        utr,
+
+
+                    aadhaarFile:
+                        aadhaarFile,
+
+
+                    rationcardFile:
+                        rationcardFile,
+
+
+                    paymentScreenshot:
+                        paymentScreenshot
+
+                };
+
+
+                /* ========================================
+                   SEND TO GOOGLE APPS SCRIPT
+                ======================================== */
+
+                showApplicationMessage(
+                    message,
+                    "⏳ Application Google Sheet અને Drive માં save થઈ રહી છે...",
+                    "loading"
+                );
+
+
+                const response =
+                    await fetch(
+                        SCRIPT_URL,
+                        {
+                            method:
+                                "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "text/plain;charset=utf-8"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    payload
+                                )
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "HTTP Error " +
+                        response.status
+                    );
+
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "SUBMIT APPLICATION RESULT:",
+                    result
+                );
+
+
+                /* ========================================
+                   SUCCESS
+                ======================================== */
+
+                if (
+                    result &&
+                    result.success === true
+                ) {
+
+                    showApplicationMessage(
+                        message,
+                        "✅ Application Successfully Submitted!<br><br>" +
+
+                        "<strong>Application ID:</strong> " +
+
+                        escapeHtml(
+                            result.applicationId ||
+                            ""
+                        ) +
+
+                        "<br><br>" +
+
+                        "<strong>Payment:</strong> ₹" +
+
+                        amount +
+
+                        "<br><br>" +
+
+                        "📄 Documents Google Drive માં save થઈ ગયા છે.",
+                        "success"
+                    );
+
+
+                    /* ====================================
+                       RESET FORM
+                    ==================================== */
+
+                    form.reset();
+
+
+                    updateServiceAmount();
+
+                    resetPaymentQR();
+
+
+                    /* ====================================
+                       SHOW ID CLEARLY
+                    ==================================== */
+
+                    if (
+                        result.applicationId
+                    ) {
+
+                        sessionStorage.setItem(
+                            "lastApplicationId",
+                            result.applicationId
+                        );
+
+                    }
+
+
+                    /* ====================================
+                       SCROLL MESSAGE
+                    ==================================== */
+
+                    message.scrollIntoView({
+                        behavior:
+                            "smooth",
+                        block:
+                            "center"
+                    });
+
+
+                    return;
+
+                }
+
+
+                throw new Error(
+
+                    result &&
+                    result.message
+
+                        ? result.message
+
+                        : "Application submit failed."
+
+                );
+
+            }
+            catch (error) {
+
+                console.error(
+                    "APPLICATION SUBMIT ERROR:",
+                    error
+                );
+
+
+                showApplicationMessage(
+                    message,
+                    "❌ " +
+                    escapeHtml(
+                        error.message ||
+                        "Application submit failed."
+                    ),
+                    "error"
+                );
+
+            }
+            finally {
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "🚀 Submit Application";
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FILE → BASE64
+========================================================= */
+
+function fileToBase64(file) {
 
     return new Promise(
         function (
             resolve,
             reject
         ) {
+
+            if (!file) {
+
+                reject(
+                    new Error(
+                        "File not selected."
+                    )
+                );
+
+                return;
+
+            }
+
 
             const reader =
                 new FileReader();
@@ -1812,28 +1924,50 @@ function fileToBase64(
             reader.onload =
                 function () {
 
-                    const result =
-                        reader.result;
+                    try {
+
+                        const result =
+                            String(
+                                reader.result
+                            );
 
 
-                    const base64 =
-                        result.split(
-                            ","
-                        )[1];
+                        const commaIndex =
+                            result.indexOf(
+                                ","
+                            );
 
 
-                    resolve({
+                        const base64 =
+                            commaIndex >= 0
 
-                        name:
-                            file.name,
+                                ? result.substring(
+                                    commaIndex + 1
+                                )
 
-                        mimeType:
-                            file.type,
+                                : result;
 
-                        data:
-                            base64
 
-                    });
+                        resolve({
+
+                            name:
+                                file.name,
+
+                            mimeType:
+                                file.type ||
+                                "application/octet-stream",
+
+                            data:
+                                base64
+
+                        });
+
+                    }
+                    catch (error) {
+
+                        reject(error);
+
+                    }
 
                 };
 
@@ -1843,8 +1977,7 @@ function fileToBase64(
 
                     reject(
                         new Error(
-                            "File read failed: " +
-                            file.name
+                            "File વાંચવામાં error આવ્યો."
                         )
                     );
 
@@ -1861,13 +1994,11 @@ function fileToBase64(
 }
 
 
-/* =====================================================
+/* =========================================================
    GET INPUT VALUE
-===================================================== */
+========================================================= */
 
-function getValue(
-    id
-) {
+function getValue(id) {
 
     const element =
         document.getElementById(
@@ -1889,9 +2020,104 @@ function getValue(
 }
 
 
-/* =====================================================
+/* =========================================================
+   INPUT VALIDATION
+========================================================= */
+
+function setupInputValidation() {
+
+    const pincode =
+        document.getElementById(
+            "pincode"
+        );
+
+
+    if (pincode) {
+
+        pincode.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                        .replace(
+                            /\D/g,
+                            ""
+                        )
+                        .slice(
+                            0,
+                            6
+                        );
+
+            }
+        );
+
+    }
+
+
+    const mobile =
+        document.getElementById(
+            "mobile"
+        );
+
+
+    if (mobile) {
+
+        mobile.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                        .replace(
+                            /\D/g,
+                            ""
+                        )
+                        .slice(
+                            0,
+                            10
+                        );
+
+            }
+        );
+
+    }
+
+
+    const birthYear =
+        document.getElementById(
+            "birthYear"
+        );
+
+
+    if (birthYear) {
+
+        birthYear.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                        .replace(
+                            /\D/g,
+                            ""
+                        )
+                        .slice(
+                            0,
+                            4
+                        );
+
+            }
+        );
+
+    }
+
+}
+
+
+/* =========================================================
    APPLICATION MESSAGE
-===================================================== */
+========================================================= */
 
 function showApplicationMessage(
     element,
@@ -1923,7 +2149,11 @@ function showApplicationMessage(
 
 
     element.style.borderRadius =
-        "10px";
+        "12px";
+
+
+    element.style.lineHeight =
+        "1.6";
 
 
     if (
@@ -1937,7 +2167,7 @@ function showApplicationMessage(
             "#2e7d32";
 
         element.style.border =
-            "1px solid #c8e6c9";
+            "1px solid #a5d6a7";
 
     }
     else if (
@@ -1951,7 +2181,7 @@ function showApplicationMessage(
             "#1565c0";
 
         element.style.border =
-            "1px solid #bbdefb";
+            "1px solid #90caf9";
 
     }
     else {
@@ -1963,40 +2193,49 @@ function showApplicationMessage(
             "#c62828";
 
         element.style.border =
-            "1px solid #ffcdd2";
+            "1px solid #ef9a9a";
 
     }
 
 }
 
 
-/* =====================================================
-   SHOW APPLICATION MESSAGE BY ID
-===================================================== */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-function showApplicationMessageById(
-    message,
-    type
-) {
+function escapeHtml(value) {
 
-    const element =
-        document.getElementById(
-            "applicationMessage"
-        );
-
-
-    showApplicationMessage(
-        element,
-        message,
-        type
+    return String(
+        value || ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
     );
 
 }
 
 
-/* =====================================================
-   BROWSER BACK/FORWARD
-===================================================== */
+/* =========================================================
+   BROWSER BACK/FORWARD PROTECTION
+========================================================= */
 
 window.addEventListener(
     "pageshow",
@@ -2008,19 +2247,38 @@ window.addEventListener(
 );
 
 
-/* =====================================================
-   PAGE VISIBILITY
-===================================================== */
+/* =========================================================
+   VISIBILITY PROTECTION
+========================================================= */
 
 document.addEventListener(
     "visibilitychange",
     function () {
 
-        if (!document.hidden) {
+        if (
+            !document.hidden
+        ) {
 
             protectRetailerPage();
 
         }
+
+    }
+);
+
+
+/* =========================================================
+   BEFORE UNLOAD
+========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    function () {
+
+        /*
+         * Valid session intentionally remains
+         * active on refresh.
+         */
 
     }
 );
