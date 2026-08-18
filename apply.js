@@ -12,7 +12,7 @@
  * const GOOGLE_SCRIPT_URL = "https://script.google.com/...";
  */
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9BpKuN0xukn1kcqPIndRkYDOxaBAmgsI_4laS2cPdPhUxGc8P2Fz_R69-uwcTSHNm0A/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5yfGMA2be2xYiGXltpyg5xmgF7qyveUenGJtlDttmIVym9Ndo_gYgAXmyarJ7WwBZLg/exec";
 
 
 /* UPI */
