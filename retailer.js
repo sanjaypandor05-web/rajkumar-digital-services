@@ -305,7 +305,7 @@ if (loginForm) {
             function () {
 
               window.location.href =
-                "retailer-dashboard.html";
+                "retailer.html";
 
             },
             700
