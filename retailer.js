@@ -1,36 +1,28 @@
 /************************************************************
  * RAJKUMAR RATIONCARD SERVICES
- * RETAILER CREATE - FINAL JS
+ * RETAILER LOGIN
  *
- * Works with Code.gs:
- * createRetailer
- * sendRetailerEmail
+ * IMPORTANT
+ * ----------------------------------------------------------
+ * Retailer Create is NOT available here.
+ * Retailer accounts are created only from Admin Panel.
  ************************************************************/
 
 
 // ==========================================================
-// GOOGLE APPS SCRIPT WEB APP URL
+// GOOGLE APPS SCRIPT API URL
 // ==========================================================
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzAQQPhHzepS9LyOASh1KpyFaXh9QPzbP7qV7bO-1urDyeKFpcnEEWhAL7MjnsW9BSaxA/exec";
+  "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 
 
 // ==========================================================
-// ELEMENTS
+// PAGE ELEMENTS
 // ==========================================================
 
-const form =
-  document.getElementById("retailerForm");
-
-const retailerNameInput =
-  document.getElementById("retailerName");
-
-const mobileInput =
-  document.getElementById("mobile");
-
-const emailInput =
-  document.getElementById("email");
+const loginForm =
+  document.getElementById("retailerLoginForm");
 
 const usernameInput =
   document.getElementById("username");
@@ -38,54 +30,28 @@ const usernameInput =
 const passwordInput =
   document.getElementById("password");
 
-const emailError =
-  document.getElementById("emailError");
-
-const createBtn =
-  document.getElementById("createBtn");
+const loginBtn =
+  document.getElementById("loginBtn");
 
 const messageBox =
   document.getElementById("message");
 
-
-// ==========================================================
-// CLEAN
-// ==========================================================
-
-function clean(value) {
-
-  return String(
-    value || ""
-  ).trim();
-
-}
-
-
-// ==========================================================
-// EMAIL VALIDATION
-// ==========================================================
-
-function isValidEmail(email) {
-
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    .test(
-      clean(email)
-    );
-
-}
+const togglePassword =
+  document.getElementById("togglePassword");
 
 
 // ==========================================================
 // SHOW MESSAGE
 // ==========================================================
 
-function showMessage(
-  message,
-  type
-) {
+function showMessage(message, type = "error") {
 
-  messageBox.textContent =
-    message;
+  if (!messageBox) {
+    alert(message);
+    return;
+  }
+
+  messageBox.textContent = message;
 
   messageBox.className =
     "message " + type;
@@ -99,6 +65,10 @@ function showMessage(
 
 function clearMessage() {
 
+  if (!messageBox) {
+    return;
+  }
+
   messageBox.textContent = "";
 
   messageBox.className =
@@ -108,531 +78,323 @@ function clearMessage() {
 
 
 // ==========================================================
-// EMAIL ERROR
+// PASSWORD SHOW / HIDE
 // ==========================================================
 
-function setEmailError(
-  show,
-  text
-) {
-
-  if (show) {
-
-    emailInput.classList.add(
-      "email-error"
-    );
-
-    emailError.textContent =
-      text ||
-      "Email address ફરજિયાત છે.";
-
-    emailError.classList.add(
-      "show"
-    );
-
-  } else {
-
-    emailInput.classList.remove(
-      "email-error"
-    );
-
-    emailError.classList.remove(
-      "show"
-    );
-
-  }
-
-}
-
-
-// ==========================================================
-// EMAIL LIVE VALIDATION
-// ==========================================================
-
-emailInput.addEventListener(
-  "input",
-  function() {
-
-    const email =
-      clean(
-        emailInput.value
-      );
-
-    if (!email) {
-
-      setEmailError(
-        true,
-        "Email address ફરજિયાત છે."
-      );
-
-      return;
-
-    }
-
-    if (!isValidEmail(email)) {
-
-      setEmailError(
-        true,
-        "સાચું Email Address દાખલ કરો."
-      );
-
-      return;
-
-    }
-
-    setEmailError(
-      false
-    );
-
-  }
-);
-
-
-// ==========================================================
-// MOBILE ONLY NUMBERS
-// ==========================================================
-
-mobileInput.addEventListener(
-  "input",
-  function() {
-
-    mobileInput.value =
-      mobileInput.value
-        .replace(
-          /\D/g,
-          ""
-        )
-        .slice(
-          0,
-          10
-        );
-
-  }
-);
-
-
-// ==========================================================
-// API REQUEST
-// ==========================================================
-
-async function apiRequest(
-  payload
-) {
-
-  const response =
-    await fetch(
-      API_URL,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body:
-          JSON.stringify(
-            payload
-          )
-      }
-    );
-
-
-  if (!response.ok) {
-
-    throw new Error(
-      "Server error: HTTP " +
-      response.status
-    );
-
-  }
-
-
-  const text =
-    await response.text();
-
-
-  let result;
-
-
-  try {
-
-    result =
-      JSON.parse(
-        text
-      );
-
-  } catch (error) {
-
-    throw new Error(
-      "Invalid server response."
-    );
-
-  }
-
-
-  return result;
-
-}
-
-
-// ==========================================================
-// FORM SUBMIT
-// ==========================================================
-
-form.addEventListener(
-  "submit",
-  async function(event) {
-
-    event.preventDefault();
-
-    clearMessage();
-
-
-    // ------------------------------------------------------
-    // GET VALUES
-    // ------------------------------------------------------
-
-    const retailerName =
-      clean(
-        retailerNameInput.value
-      );
-
-
-    const mobile =
-      clean(
-        mobileInput.value
-      );
-
-
-    const email =
-      clean(
-        emailInput.value
-      );
-
-
-    const username =
-      clean(
-        usernameInput.value
-      );
-
-
-    const password =
-      clean(
-        passwordInput.value
-      );
-
-
-    // ------------------------------------------------------
-    // RETAILER NAME
-    // ------------------------------------------------------
-
-    if (!retailerName) {
-
-      showMessage(
-        "Retailer Name દાખલ કરો.",
-        "error"
-      );
-
-      retailerNameInput.focus();
-
-      return;
-
-    }
-
-
-    // ------------------------------------------------------
-    // MOBILE
-    // ------------------------------------------------------
-
-    if (
-      mobile.length !== 10
-    ) {
-
-      showMessage(
-        "10 અંકનો Mobile Number દાખલ કરો.",
-        "error"
-      );
-
-      mobileInput.focus();
-
-      return;
-
-    }
-
-
-    // ------------------------------------------------------
-    // EMAIL REQUIRED
-    // ------------------------------------------------------
-
-    if (!email) {
-
-      setEmailError(
-        true,
-        "Email address ફરજિયાત છે."
-      );
-
-      showMessage(
-        "Retailer Email Address નાખવું ફરજિયાત છે.",
-        "error"
-      );
-
-      emailInput.focus();
-
-      return;
-
-    }
-
-
-    // ------------------------------------------------------
-    // EMAIL FORMAT
-    // ------------------------------------------------------
-
-    if (!isValidEmail(email)) {
-
-      setEmailError(
-        true,
-        "સાચું Email Address દાખલ કરો."
-      );
-
-      showMessage(
-        "સાચું Email Address દાખલ કરો.",
-        "error"
-      );
-
-      emailInput.focus();
-
-      return;
-
-    }
-
-
-    setEmailError(
-      false
-    );
-
-
-    // ------------------------------------------------------
-    // USERNAME
-    // ------------------------------------------------------
-
-    if (!username) {
-
-      showMessage(
-        "Username દાખલ કરો.",
-        "error"
-      );
-
-      usernameInput.focus();
-
-      return;
-
-    }
-
-
-    // ------------------------------------------------------
-    // PASSWORD
-    // ------------------------------------------------------
-
-    if (!password) {
-
-      showMessage(
-        "Password દાખલ કરો.",
-        "error"
-      );
-
-      passwordInput.focus();
-
-      return;
-
-    }
-
-
-    // ------------------------------------------------------
-    // API URL CHECK
-    // ------------------------------------------------------
-
-    if (
-      !API_URL ||
-      API_URL.indexOf(
-        "PASTE_YOUR"
-      ) >= 0
-    ) {
-
-      showMessage(
-        "Google Apps Script API URL retailer.js માં નાખો.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    // ------------------------------------------------------
-    // DISABLE BUTTON
-    // ------------------------------------------------------
-
-    createBtn.disabled =
-      true;
-
-    createBtn.textContent =
-      "⏳ Creating Retailer...";
-
-
-    try {
-
-      // ----------------------------------------------------
-      // CREATE RETAILER
-      // ----------------------------------------------------
-
-      const result =
-        await apiRequest({
-
-          action:
-            "createRetailer",
-
-          retailerName:
-            retailerName,
-
-          mobile:
-            mobile,
-
-          email:
-            email,
-
-          username:
-            username,
-
-          password:
-            password
-
-        });
-
-
-      // ----------------------------------------------------
-      // SUCCESS
-      // ----------------------------------------------------
+if (togglePassword) {
+
+  togglePassword.addEventListener(
+    "click",
+    function () {
 
       if (
-        result &&
-        result.success
+        passwordInput.type === "password"
       ) {
 
-        const retailerId =
-          clean(
-            result.retailerId
+        passwordInput.type =
+          "text";
+
+        togglePassword.textContent =
+          "🙈";
+
+      } else {
+
+        passwordInput.type =
+          "password";
+
+        togglePassword.textContent =
+          "👁";
+
+      }
+
+    }
+  );
+
+}
+
+
+// ==========================================================
+// LOGIN
+// ==========================================================
+
+if (loginForm) {
+
+  loginForm.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+      clearMessage();
+
+
+      const username =
+        usernameInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+
+      if (!username) {
+
+        showMessage(
+          "Please enter Retailer ID or Username."
+        );
+
+        usernameInput.focus();
+
+        return;
+
+      }
+
+
+      if (!password) {
+
+        showMessage(
+          "Please enter your password."
+        );
+
+        passwordInput.focus();
+
+        return;
+
+      }
+
+
+      if (
+        !API_URL ||
+        API_URL.includes(
+          "YOUR_GOOGLE_APPS_SCRIPT"
+        )
+      ) {
+
+        showMessage(
+          "Google Apps Script API URL is not configured."
+        );
+
+        return;
+
+      }
+
+
+      loginBtn.disabled =
+        true;
+
+      loginBtn.textContent =
+        "LOGINNING...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL,
+            {
+
+              method:
+                "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+              },
+
+              body:
+                JSON.stringify({
+
+                  action:
+                    "retailerLogin",
+
+                  username:
+                    username,
+
+                  password:
+                    password
+
+                })
+
+            }
           );
 
 
-        const emailSent =
-          result.emailSent === true;
+        const result =
+          await response.json();
 
 
-        if (emailSent) {
+        console.log(
+          "Retailer Login Response:",
+          result
+        );
+
+
+        if (
+          result &&
+          result.success === true
+        ) {
+
+          // ------------------------------------------------
+          // SAVE RETAILER LOGIN SESSION
+          // ------------------------------------------------
+
+          const retailerData = {
+
+            role:
+              "retailer",
+
+            retailerId:
+              result.retailerId || "",
+
+            retailerName:
+              result.retailerName || "",
+
+            mobile:
+              result.mobile || "",
+
+            email:
+              result.email || "",
+
+            username:
+              result.username || username,
+
+            status:
+              result.status || "Active",
+
+            loginTime:
+              new Date().toISOString()
+
+          };
+
+
+          localStorage.setItem(
+            "retailerSession",
+            JSON.stringify(
+              retailerData
+            )
+          );
+
+
+          localStorage.setItem(
+            "retailerId",
+            result.retailerId || ""
+          );
+
+
+          localStorage.setItem(
+            "retailerName",
+            result.retailerName || ""
+          );
+
+
+          localStorage.setItem(
+            "retailerUsername",
+            result.username || username
+          );
+
 
           showMessage(
-
-            "✅ Retailer successfully created!\n\n" +
-
-            "Retailer ID: " +
-            retailerId +
-            "\n\n" +
-
-            "📧 Login details successfully Email પર મોકલવામાં આવ્યા છે.\n\n" +
-
-            "Email: " +
-            email +
-            "\n\n" +
-
-            "Retailer ID, Username અને Password email માં ચેક કરો.",
-
+            "Retailer Login Successful. Redirecting...",
             "success"
-
           );
 
-        } else {
 
-          showMessage(
+          // ------------------------------------------------
+          // REDIRECT
+          // ------------------------------------------------
 
-            "✅ Retailer successfully created!\n\n" +
+          setTimeout(
+            function () {
 
-            "Retailer ID: " +
-            retailerId +
-            "\n\n" +
+              window.location.href =
+                "retailer-dashboard.html";
 
-            "⚠️ Retailer create થઈ ગયો છે, પરંતુ Email મોકલવામાં આવ્યો નથી.\n\n" +
-
-            "Reason: " +
-            clean(
-              result.emailMessage ||
-              "Unknown email error."
-            ),
-
-            "error"
-
+            },
+            700
           );
+
+
+          return;
 
         }
 
 
-        // Clear form after successful creation
-
-        form.reset();
-
-        setEmailError(
-          false
+        showMessage(
+          result && result.message
+            ? result.message
+            : "Invalid Retailer ID / Username or Password."
         );
 
 
-      } else {
+      } catch (error) {
+
+        console.error(
+          "Retailer Login Error:",
+          error
+        );
+
 
         showMessage(
-
-          "❌ Retailer create થઈ શક્યો નથી.\n\n" +
-
-          clean(
-            result &&
-            result.message
-              ? result.message
-              : "Unknown error."
-          ),
-
-          "error"
-
+          "Login failed. Please check your internet connection and API URL."
         );
+
+
+      } finally {
+
+        loginBtn.disabled =
+          false;
+
+        loginBtn.textContent =
+          "LOGIN";
 
       }
 
+    }
+  );
+
+}
+
+
+// ==========================================================
+// ENTER KEY SUPPORT
+// ==========================================================
+
+if (passwordInput) {
+
+  passwordInput.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        if (loginForm) {
+
+          loginForm.requestSubmit();
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+// ==========================================================
+// PREVENT BROWSER AUTO LOGIN
+// ==========================================================
+
+window.addEventListener(
+  "load",
+  function () {
+
+    try {
+
+      usernameInput.value = "";
+      passwordInput.value = "";
 
     } catch (error) {
-
-      console.error(
-        "Retailer Create Error:",
-        error
-      );
-
-
-      showMessage(
-
-        "❌ Server / API Error.\n\n" +
-
-        clean(
-          error.message
-        ),
-
-        "error"
-
-      );
-
-
-    } finally {
-
-      createBtn.disabled =
-        false;
-
-      createBtn.textContent =
-        "➕ CREATE RETAILER";
 
     }
 
