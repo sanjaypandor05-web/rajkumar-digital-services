@@ -2,11 +2,20 @@
 <html lang="gu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Panel - Rajkumar Rationcard Services</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>
+        Admin Panel - Rajkumar Rationcard Services
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
 
     <style>
         * {
@@ -15,7 +24,10 @@
 
         body {
             margin: 0;
-            font-family: "Noto Sans Gujarati", Arial, sans-serif;
+            font-family:
+                "Noto Sans Gujarati",
+                Arial,
+                sans-serif;
             background: #f3f6fb;
             color: #172033;
         }
@@ -33,13 +45,26 @@
         /* ================= TOP BAR ================= */
 
         .admin-topbar {
-            background: linear-gradient(135deg, #071f49, #0d47a1);
+            background:
+                linear-gradient(
+                    135deg,
+                    #071f49,
+                    #0d47a1
+                );
+
             color: #fff;
+
             padding: 15px 4%;
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
-            box-shadow: 0 4px 18px rgba(0,0,0,.15);
+
+            box-shadow:
+                0 4px 18px
+                rgba(0,0,0,.15);
         }
 
         .admin-brand {
@@ -61,71 +86,114 @@
 
         .admin-login-card {
             background: #fff;
+
             padding: 35px 28px;
+
             border-radius: 24px;
+
             text-align: center;
-            box-shadow: 0 15px 45px rgba(0,0,0,.12);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0,0,0,.12);
         }
 
         .admin-login-icon {
             width: 78px;
             height: 78px;
+
             margin: 0 auto 18px;
+
             border-radius: 22px;
+
             background: #fff3e0;
+
             display: flex;
+
             align-items: center;
             justify-content: center;
+
             font-size: 38px;
         }
 
         .admin-login-card h1 {
             color: #0d47a1;
+
             font-size: 27px;
-            margin: 0 0 7px;
+
+            margin:
+                0 0 7px;
         }
 
         .admin-login-card p {
             color: #777;
+
             font-size: 14px;
+
             margin-bottom: 25px;
         }
 
         .admin-form-group {
             text-align: left;
+
             margin-bottom: 17px;
         }
 
         .admin-form-group label {
             display: block;
+
             margin-bottom: 7px;
+
             font-weight: 700;
+
             font-size: 14px;
         }
 
         .admin-form-group input {
             width: 100%;
+
             padding: 13px;
+
             border-radius: 10px;
-            border: 1px solid #ccd5e0;
+
+            border:
+                1px solid #ccd5e0;
+
             outline: none;
+
             font-size: 15px;
         }
 
         .admin-form-group input:focus {
             border-color: #1976d2;
-            box-shadow: 0 0 0 3px rgba(25,118,210,.1);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(25,118,210,.1);
         }
 
         .admin-login-button {
             width: 100%;
+
             padding: 14px;
+
             border: 0;
+
             border-radius: 11px;
-            background: linear-gradient(135deg,#071f49,#0d47a1);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071f49,
+                    #0d47a1
+                );
+
             color: #fff;
+
             font-size: 16px;
+
             font-weight: 800;
+
             cursor: pointer;
         }
 
@@ -136,30 +204,43 @@
 
         .admin-login-message {
             display: none;
+
             margin-top: 15px;
+
             padding: 12px;
+
             border-radius: 10px;
+
             font-size: 14px;
         }
 
         .message-success {
             display: block;
+
             background: #e8f5e9;
+
             color: #2e7d32;
         }
 
         .message-error {
             display: block;
+
             background: #ffebee;
+
             color: #c62828;
         }
 
         .admin-home-link {
             display: block;
+
             margin-top: 20px;
+
             text-decoration: none;
+
             color: #0d47a1;
+
             font-weight: 700;
+
             font-size: 14px;
         }
 
@@ -167,91 +248,133 @@
 
         .admin-dashboard {
             width: 94%;
+
             max-width: 1300px;
-            margin: 30px auto 60px;
+
+            margin:
+                30px auto 60px;
         }
 
         .admin-dashboard-header {
             background: #fff;
+
             padding: 22px;
+
             border-radius: 18px;
+
             display: flex;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
+
             align-items: center;
+
             gap: 15px;
-            box-shadow: 0 7px 25px rgba(0,0,0,.07);
+
+            box-shadow:
+                0 7px 25px
+                rgba(0,0,0,.07);
+
             margin-bottom: 25px;
         }
 
         .admin-dashboard-header h1 {
             color: #0d47a1;
+
             font-size: 26px;
+
             margin: 0;
         }
 
         .admin-dashboard-header p {
             color: #777;
-            margin: 5px 0 0;
+
+            margin:
+                5px 0 0;
+
             font-size: 14px;
-        }
-
-        .admin-logout {
-            border: 0;
-            padding: 10px 17px;
-            border-radius: 9px;
-            background: #ffebee;
-            color: #c62828;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .admin-refresh {
-            border: 0;
-            padding: 10px 15px;
-            border-radius: 9px;
-            background: #e3f2fd;
-            color: #0d47a1;
-            font-weight: 800;
-            cursor: pointer;
         }
 
         .header-actions {
             display: flex;
+
             gap: 8px;
+
             align-items: center;
+        }
+
+        .admin-logout,
+        .admin-refresh {
+            border: 0;
+
+            padding:
+                10px 15px;
+
+            border-radius: 9px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .admin-logout {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .admin-refresh {
+            background: #e3f2fd;
+            color: #0d47a1;
         }
 
         /* ================= STATS ================= */
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(5,1fr);
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
             gap: 15px;
+
             margin-bottom: 25px;
         }
 
         .stat-card {
             background: #fff;
+
             border-radius: 16px;
+
             padding: 20px;
-            box-shadow: 0 7px 22px rgba(0,0,0,.07);
-            border-left: 5px solid #1976d2;
+
+            box-shadow:
+                0 7px 22px
+                rgba(0,0,0,.07);
+
+            border-left:
+                5px solid #1976d2;
         }
 
         .stat-icon {
             font-size: 25px;
+
             margin-bottom: 10px;
         }
 
         .stat-card h3 {
             font-size: 27px;
+
             color: #123;
-            margin: 0 0 5px;
+
+            margin:
+                0 0 5px;
         }
 
         .stat-card p {
             color: #777;
+
             font-size: 13px;
+
             margin: 0;
         }
 
@@ -275,47 +398,75 @@
 
         .admin-menu-grid {
             display: grid;
-            grid-template-columns: repeat(4,1fr);
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
             gap: 15px;
+
             margin-bottom: 25px;
         }
 
         .admin-menu-card {
             background: #fff;
+
             border-radius: 16px;
+
             padding: 20px;
+
             cursor: pointer;
-            box-shadow: 0 7px 22px rgba(0,0,0,.07);
+
+            box-shadow:
+                0 7px 22px
+                rgba(0,0,0,.07);
+
             transition: .2s;
+
             text-align: center;
         }
 
         .admin-menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,.12);
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(0,0,0,.12);
         }
 
         .admin-menu-icon {
             width: 55px;
             height: 55px;
-            margin: 0 auto 12px;
+
+            margin:
+                0 auto 12px;
+
             border-radius: 16px;
+
             background: #e3f2fd;
+
             display: flex;
+
             align-items: center;
             justify-content: center;
+
             font-size: 28px;
         }
 
         .admin-menu-card h3 {
             color: #123;
+
             font-size: 16px;
-            margin: 0 0 5px;
+
+            margin:
+                0 0 5px;
         }
 
         .admin-menu-card p {
             color: #777;
+
             font-size: 12px;
+
             margin: 0;
         }
 
@@ -323,21 +474,32 @@
 
         .admin-panel {
             background: #fff;
+
             border-radius: 18px;
+
             padding: 25px;
-            box-shadow: 0 7px 25px rgba(0,0,0,.07);
+
+            box-shadow:
+                0 7px 25px
+                rgba(0,0,0,.07);
+
             margin-bottom: 25px;
         }
 
         .admin-panel h2 {
             color: #0d47a1;
+
             font-size: 21px;
-            margin: 0 0 8px;
+
+            margin:
+                0 0 8px;
         }
 
         .panel-description {
             color: #777;
+
             font-size: 14px;
+
             margin-bottom: 18px;
         }
 
@@ -349,27 +511,42 @@
 
         .search-row {
             display: grid;
-            grid-template-columns: 1fr 210px 120px;
+
+            grid-template-columns:
+                1fr 210px 120px;
+
             gap: 10px;
+
             margin-bottom: 20px;
         }
 
         .search-row input,
         .search-row select {
             width: 100%;
+
             padding: 12px;
+
             border-radius: 9px;
-            border: 1px solid #ccd5e0;
+
+            border:
+                1px solid #ccd5e0;
+
             outline: none;
+
             font-size: 14px;
         }
 
         .search-button {
             border: 0;
+
             border-radius: 9px;
+
             background: #0d47a1;
+
             color: #fff;
+
             font-weight: 800;
+
             cursor: pointer;
         }
 
@@ -377,70 +554,59 @@
 
         .table-wrapper {
             width: 100%;
+
             overflow-x: auto;
         }
 
         .application-table {
             width: 100%;
-            border-collapse: collapse;
-            min-width: 1100px;
+
+            border-collapse:
+                collapse;
+
+            min-width:
+                1100px;
         }
 
         .application-table th {
             background: #eef4fb;
+
             color: #0d47a1;
+
             font-size: 13px;
+
             padding: 13px;
+
             text-align: left;
-            white-space: nowrap;
+
+            white-space:
+                nowrap;
         }
 
         .application-table td {
             padding: 12px;
-            border-bottom: 1px solid #edf0f4;
+
+            border-bottom:
+                1px solid #edf0f4;
+
             font-size: 13px;
-            white-space: nowrap;
-        }
 
-        .status {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .status-pending {
-            background: #fff3e0;
-            color: #e65100;
-        }
-
-        .status-paid {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .status-processing {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-
-        .status-completed {
-            background: #e0f7fa;
-            color: #00838f;
-        }
-
-        .status-rejected {
-            background: #ffebee;
-            color: #c62828;
+            white-space:
+                nowrap;
         }
 
         .action-button {
             border: 0;
-            padding: 7px 10px;
+
+            padding:
+                7px 10px;
+
             border-radius: 7px;
+
             font-weight: 800;
+
             cursor: pointer;
+
             margin-right: 4px;
         }
 
@@ -454,49 +620,119 @@
             color: #e65100;
         }
 
-        /* ================= FORMS ================= */
+        /* ================= RETAILER FORM ================= */
 
         .retailer-form-grid {
             display: grid;
-            grid-template-columns: repeat(2,1fr);
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
             gap: 15px;
         }
 
         .retailer-field {
             display: flex;
+
             flex-direction: column;
         }
 
         .retailer-field label {
             font-weight: 700;
+
             font-size: 13px;
+
             margin-bottom: 6px;
         }
 
-        .retailer-field input,
-        .retailer-field select {
+        .retailer-field input {
             padding: 12px;
+
             border-radius: 9px;
-            border: 1px solid #ccd5e0;
+
+            border:
+                1px solid #ccd5e0;
+
             outline: none;
+
             font-size: 14px;
+        }
+
+        .retailer-field input:focus {
+            border-color:
+                #1976d2;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(25,118,210,.1);
+        }
+
+        /* EMAIL REQUIRED */
+
+        #newRetailerEmail {
+            border:
+                2px solid #dc3545;
+        }
+
+        #newRetailerEmail:focus {
+            border-color:
+                #dc3545;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(220,53,69,.12);
+        }
+
+        .email-required {
+            color: #dc3545;
+
+            font-size: 12px;
+
+            margin-top: 5px;
+
+            font-weight: 700;
+        }
+
+        /* RETAILER ID AUTO */
+
+        #newRetailerId {
+            background: #f1f3f5;
+
+            color: #555;
+
+            font-weight: 700;
         }
 
         .create-retailer-button {
             margin-top: 18px;
-            padding: 13px 20px;
+
+            padding:
+                13px 20px;
+
             border: 0;
+
             border-radius: 9px;
+
             background: #2e7d32;
+
             color: #fff;
+
             font-weight: 800;
+
             cursor: pointer;
+        }
+
+        .create-retailer-button:hover {
+            background: #256b29;
         }
 
         .panel-message {
             margin-top: 15px;
+
             padding: 11px;
+
             border-radius: 9px;
+
             display: none;
         }
 
@@ -504,12 +740,20 @@
 
         .admin-modal {
             position: fixed;
+
             inset: 0;
-            background: rgba(0,0,0,.55);
+
+            background:
+                rgba(0,0,0,.55);
+
             display: none;
+
             align-items: center;
+
             justify-content: center;
+
             padding: 15px;
+
             z-index: 9999;
         }
 
@@ -519,79 +763,115 @@
 
         .admin-modal-box {
             background: #fff;
+
             width: 100%;
+
             max-width: 700px;
+
             max-height: 90vh;
+
             overflow-y: auto;
+
             border-radius: 18px;
+
             padding: 25px;
         }
 
         .modal-header {
             display: flex;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
+
             align-items: center;
+
             gap: 10px;
+
             margin-bottom: 20px;
         }
 
         .modal-header h2 {
             margin: 0;
+
             color: #0d47a1;
+
             font-size: 20px;
         }
 
         .modal-close {
             border: 0;
+
             background: #ffebee;
+
             color: #c62828;
+
             border-radius: 8px;
+
             width: 36px;
+
             height: 36px;
+
             cursor: pointer;
+
             font-size: 18px;
         }
 
         .detail-grid {
             display: grid;
-            grid-template-columns: repeat(2,1fr);
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
             gap: 10px;
         }
 
         .detail-box {
             background: #f7f9fc;
+
             padding: 11px;
+
             border-radius: 9px;
         }
 
         .detail-box strong {
             display: block;
+
             color: #555;
+
             font-size: 12px;
+
             margin-bottom: 4px;
         }
 
         .detail-box span {
             font-size: 14px;
-            word-break: break-word;
+
+            word-break:
+                break-word;
         }
 
         /* ================= MOBILE ================= */
 
         @media (max-width: 1000px) {
+
             .stats-grid {
-                grid-template-columns: repeat(3,1fr);
+                grid-template-columns:
+                    repeat(3, 1fr);
             }
 
             .admin-menu-grid {
-                grid-template-columns: repeat(2,1fr);
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
         }
 
         @media (max-width: 650px) {
+
             .admin-topbar {
                 flex-direction: column;
+
                 gap: 5px;
+
                 text-align: center;
             }
 
@@ -601,7 +881,9 @@
 
             .admin-dashboard-header {
                 flex-direction: column;
-                align-items: flex-start;
+
+                align-items:
+                    flex-start;
             }
 
             .header-actions {
@@ -613,19 +895,23 @@
             }
 
             .stats-grid {
-                grid-template-columns: repeat(2,1fr);
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
 
             .admin-menu-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
 
             .search-row {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
 
             .retailer-form-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
 
             .admin-panel {
@@ -633,7 +919,8 @@
             }
 
             .detail-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
         }
     </style>
@@ -642,6 +929,7 @@
 <body class="admin-page">
 
 <header class="admin-topbar">
+
     <div class="admin-brand">
         👑 RAJKUMAR RATIONCARD SERVICES
     </div>
@@ -649,25 +937,43 @@
     <div class="admin-contact">
         📞 9429193125
     </div>
+
 </header>
 
 
-<!-- ================= LOGIN ================= -->
+<!-- =====================================================
+     ADMIN LOGIN
+===================================================== -->
 
-<section id="adminLoginSection" class="admin-login-wrapper">
+<section
+    id="adminLoginSection"
+    class="admin-login-wrapper"
+>
 
     <div class="admin-login-card">
 
-        <div class="admin-login-icon">🔐</div>
+        <div class="admin-login-icon">
+            🔐
+        </div>
 
-        <h1>Admin Login</h1>
+        <h1>
+            Admin Login
+        </h1>
 
-        <p>RAJKUMAR RATIONCARD SERVICES Admin Panel</p>
+        <p>
+            RAJKUMAR RATIONCARD SERVICES Admin Panel
+        </p>
 
-        <form id="adminLoginForm" autocomplete="off">
+        <form
+            id="adminLoginForm"
+            autocomplete="off"
+        >
 
             <div class="admin-form-group">
-                <label for="adminId">Admin ID</label>
+
+                <label for="adminId">
+                    Admin ID
+                </label>
 
                 <input
                     type="text"
@@ -677,11 +983,17 @@
                     autocomplete="off"
                     autocapitalize="none"
                     spellcheck="false"
-                    required>
+                    required
+                >
+
             </div>
 
+
             <div class="admin-form-group">
-                <label for="adminPassword">Password</label>
+
+                <label for="adminPassword">
+                    Password
+                </label>
 
                 <input
                     type="password"
@@ -689,180 +1001,324 @@
                     name="admin_password"
                     placeholder="Password"
                     autocomplete="new-password"
-                    required>
+                    required
+                >
+
             </div>
+
 
             <button
                 type="submit"
                 id="adminLoginButton"
-                class="admin-login-button">
-
+                class="admin-login-button"
+            >
                 🔐 Login
-
             </button>
 
         </form>
 
-        <div id="adminLoginMessage"
-             class="admin-login-message"></div>
 
-        <a href="index.html" class="admin-home-link">
+        <div
+            id="adminLoginMessage"
+            class="admin-login-message"
+        ></div>
+
+
+        <a
+            href="index.html"
+            class="admin-home-link"
+        >
             ← Home Page પર પાછા જાઓ
         </a>
 
     </div>
+
 </section>
 
 
-<!-- ================= DASHBOARD ================= -->
+<!-- =====================================================
+     ADMIN DASHBOARD
+===================================================== -->
 
 <section
     id="adminDashboardSection"
-    class="admin-dashboard admin-hidden">
+    class="admin-dashboard admin-hidden"
+>
 
     <div class="admin-dashboard-header">
 
         <div>
-            <h1>👑 Admin Dashboard</h1>
+
+            <h1>
+                👑 Admin Dashboard
+            </h1>
 
             <p>
                 RAJKUMAR RATIONCARD SERVICES
             </p>
+
         </div>
+
 
         <div class="header-actions">
 
             <button
+                type="button"
                 class="admin-refresh"
-                onclick="loadDashboard()">
-
+                onclick="loadDashboard()"
+            >
                 🔄 Refresh
-
             </button>
 
             <button
+                type="button"
                 class="admin-logout"
-                onclick="adminLogout()">
-
+                onclick="adminLogout()"
+            >
                 Logout
-
             </button>
 
         </div>
+
     </div>
 
 
-    <!-- ================= STATS ================= -->
+    <!-- =================================================
+         STATS
+    ================================================== -->
 
     <div class="stats-grid">
 
         <div class="stat-card">
-            <div class="stat-icon">📋</div>
-            <h3 id="totalApplications">0</h3>
-            <p>Total Applications</p>
+
+            <div class="stat-icon">
+                📋
+            </div>
+
+            <h3 id="totalApplications">
+                0
+            </h3>
+
+            <p>
+                Total Applications
+            </p>
+
         </div>
+
 
         <div class="stat-card stat-pending">
-            <div class="stat-icon">⏳</div>
-            <h3 id="pendingApplications">0</h3>
-            <p>Pending</p>
+
+            <div class="stat-icon">
+                ⏳
+            </div>
+
+            <h3 id="pendingApplications">
+                0
+            </h3>
+
+            <p>
+                Pending
+            </p>
+
         </div>
+
 
         <div class="stat-card stat-paid">
-            <div class="stat-icon">💰</div>
-            <h3 id="paidApplications">0</h3>
-            <p>Payment Received</p>
+
+            <div class="stat-icon">
+                💰
+            </div>
+
+            <h3 id="paidApplications">
+                0
+            </h3>
+
+            <p>
+                Payment Received
+            </p>
+
         </div>
+
 
         <div class="stat-card stat-processing">
-            <div class="stat-icon">⚙️</div>
-            <h3 id="processingApplications">0</h3>
-            <p>Processing</p>
+
+            <div class="stat-icon">
+                ⚙️
+            </div>
+
+            <h3 id="processingApplications">
+                0
+            </h3>
+
+            <p>
+                Processing
+            </p>
+
         </div>
 
+
         <div class="stat-card stat-completed">
-            <div class="stat-icon">✅</div>
-            <h3 id="completedApplications">0</h3>
-            <p>Completed</p>
+
+            <div class="stat-icon">
+                ✅
+            </div>
+
+            <h3 id="completedApplications">
+                0
+            </h3>
+
+            <p>
+                Completed
+            </p>
+
         </div>
 
     </div>
 
 
-    <!-- ================= MENU ================= -->
+    <!-- =================================================
+         MENU
+    ================================================== -->
 
     <div class="admin-menu-grid">
 
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('applicationsPanel')">
 
-            <div class="admin-menu-icon">📋</div>
+        <div
+            class="admin-menu-card"
+            onclick="
+                showAdminPanel(
+                    'applicationsPanel'
+                )
+            "
+        >
 
-            <h3>Applications</h3>
+            <div class="admin-menu-icon">
+                📋
+            </div>
 
-            <p>બધી Applications</p>
+            <h3>
+                Applications
+            </h3>
 
-        </div>
-
-
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('retailerPanel')">
-
-            <div class="admin-menu-icon">👨‍💼</div>
-
-            <h3>Create Retailer</h3>
-
-            <p>New Retailer બનાવો</p>
-
-        </div>
-
-
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('paymentPanel')">
-
-            <div class="admin-menu-icon">💳</div>
-
-            <h3>Payment Status</h3>
-
-            <p>Payment Management</p>
+            <p>
+                બધી Applications
+            </p>
 
         </div>
 
 
-        <div class="admin-menu-card"
-             onclick="showAdminPanel('settingsPanel')">
+        <div
+            class="admin-menu-card"
+            onclick="
+                showAdminPanel(
+                    'retailerPanel'
+                )
+            "
+        >
 
-            <div class="admin-menu-icon">⚙️</div>
+            <div class="admin-menu-icon">
+                👨‍💼
+            </div>
 
-            <h3>Settings</h3>
+            <h3>
+                Create Retailer
+            </h3>
 
-            <p>Website Settings</p>
+            <p>
+                New Retailer બનાવો
+            </p>
+
+        </div>
+
+
+        <div
+            class="admin-menu-card"
+            onclick="
+                showAdminPanel(
+                    'paymentPanel'
+                )
+            "
+        >
+
+            <div class="admin-menu-icon">
+                💳
+            </div>
+
+            <h3>
+                Payment Status
+            </h3>
+
+            <p>
+                Payment Management
+            </p>
+
+        </div>
+
+
+        <div
+            class="admin-menu-card"
+            onclick="
+                showAdminPanel(
+                    'settingsPanel'
+                )
+            "
+        >
+
+            <div class="admin-menu-icon">
+                ⚙️
+            </div>
+
+            <h3>
+                Settings
+            </h3>
+
+            <p>
+                Website Settings
+            </p>
 
         </div>
 
     </div>
 
 
-    <!-- ================= APPLICATIONS ================= -->
+    <!-- =================================================
+         APPLICATIONS
+    ================================================== -->
 
-    <div id="applicationsPanel" class="admin-panel">
+    <div
+        id="applicationsPanel"
+        class="admin-panel"
+    >
 
-        <h2>📋 Applications</h2>
+        <h2>
+            📋 Applications
+        </h2>
 
         <p class="panel-description">
             Retailer દ્વારા આવેલી applications અહીં દેખાશે.
         </p>
+
 
         <div class="search-row">
 
             <input
                 type="text"
                 id="applicationSearch"
-                placeholder="Application ID / Name / Mobile">
+                placeholder="Application ID / Name / Mobile"
+            >
 
-            <select id="applicationStatusFilter">
 
-                <option value="">બધા Status</option>
+            <select
+                id="applicationStatusFilter"
+            >
+
+                <option value="">
+                    બધા Status
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
 
                 <option value="Submitted">
                     Submitted
@@ -882,12 +1338,13 @@
 
             </select>
 
+
             <button
+                type="button"
                 class="search-button"
-                onclick="searchApplications()">
-
+                onclick="searchApplications()"
+            >
                 🔎 Search
-
             </button>
 
         </div>
@@ -898,26 +1355,67 @@
             <table class="application-table">
 
                 <thead>
+
                     <tr>
-                        <th>Application ID</th>
-                        <th>Retailer</th>
-                        <th>Applicant</th>
-                        <th>Mobile</th>
-                        <th>Service</th>
-                        <th>Amount</th>
-                        <th>Payment</th>
-                        <th>Status</th>
-                        <th>Action</th>
+
+                        <th>
+                            Application ID
+                        </th>
+
+                        <th>
+                            Retailer
+                        </th>
+
+                        <th>
+                            Applicant
+                        </th>
+
+                        <th>
+                            Mobile
+                        </th>
+
+                        <th>
+                            Service
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
                     </tr>
+
                 </thead>
 
-                <tbody id="applicationsTableBody">
+
+                <tbody
+                    id="applicationsTableBody"
+                >
 
                     <tr>
-                        <td colspan="9"
-                            style="text-align:center;padding:30px;color:#777;">
+
+                        <td
+                            colspan="9"
+                            style="
+                                text-align:center;
+                                padding:30px;
+                                color:#777;
+                            "
+                        >
                             Applications loading...
                         </td>
+
                     </tr>
 
                 </tbody>
@@ -929,116 +1427,231 @@
     </div>
 
 
-    <!-- ================= RETAILER ================= -->
+    <!-- =================================================
+         CREATE RETAILER
+    ================================================== -->
 
-    <div id="retailerPanel"
-         class="admin-panel admin-hidden">
+    <div
+        id="retailerPanel"
+        class="admin-panel admin-hidden"
+    >
 
-        <h2>👨‍💼 Create New Retailer</h2>
+        <h2>
+            👨‍💼 Create New Retailer
+        </h2>
 
         <p class="panel-description">
-            અહીંથી નવા retailerનું Login બનાવી શકાશે.
+            અહીંથી નવા retailerનું Login બનાવો.
+            Login details Email પર મોકલવામાં આવશે.
         </p>
 
-        <form id="createRetailerForm" autocomplete="off">
+
+        <form
+            id="createRetailerForm"
+            autocomplete="off"
+        >
 
             <div class="retailer-form-grid">
 
+
+                <!-- RETAILER NAME -->
+
                 <div class="retailer-field">
-                    <label>Retailer Name</label>
+
+                    <label for="newRetailerName">
+                        Retailer Name *
+                    </label>
 
                     <input
                         type="text"
                         id="newRetailerName"
-                        required>
+                        name="retailer_name"
+                        placeholder="Retailer Name"
+                        autocomplete="off"
+                        required
+                    >
+
                 </div>
 
+
+                <!-- MOBILE -->
+
                 <div class="retailer-field">
-                    <label>Mobile Number</label>
+
+                    <label for="newRetailerMobile">
+                        Mobile Number *
+                    </label>
 
                     <input
                         type="tel"
                         id="newRetailerMobile"
+                        name="retailer_mobile"
+                        placeholder="10 Digit Mobile Number"
                         maxlength="10"
-                        required>
+                        inputmode="numeric"
+                        autocomplete="off"
+                        required
+                    >
+
                 </div>
 
+
+                <!-- EMAIL -->
+
                 <div class="retailer-field">
-                    <label>Email</label>
+
+                    <label
+                        for="newRetailerEmail"
+                    >
+                        Email *
+                    </label>
 
                     <input
                         type="email"
-                        id="newRetailerEmail">
+                        id="newRetailerEmail"
+                        name="retailer_email"
+                        placeholder="example@gmail.com"
+                        autocomplete="off"
+                        spellcheck="false"
+                        required
+                    >
+
+                    <div class="email-required">
+                        🔴 Email ફરજિયાત છે —
+                        Login Details અહીં મોકલાશે.
+                    </div>
+
                 </div>
 
+
+                <!-- RETAILER ID -->
+
                 <div class="retailer-field">
-                    <label>Retailer ID</label>
+
+                    <label for="newRetailerId">
+                        Retailer ID
+                    </label>
 
                     <input
                         type="text"
                         id="newRetailerId"
-                        placeholder="RET001"
-                        required>
+                        name="retailer_id"
+                        placeholder="Auto Generate"
+                        autocomplete="off"
+                        readonly
+                    >
+
+                    <small
+                        style="
+                            margin-top:5px;
+                            color:#777;
+                        "
+                    >
+                        Retailer ID Code.gs દ્વારા
+                        auto-generate થશે.
+                    </small>
+
                 </div>
 
+
+                <!-- USERNAME -->
+
                 <div class="retailer-field">
-                    <label>Username</label>
+
+                    <label
+                        for="newRetailerUsername"
+                    >
+                        Username *
+                    </label>
 
                     <input
                         type="text"
                         id="newRetailerUsername"
+                        name="retailer_username"
                         placeholder="retailer1"
                         autocomplete="off"
-                        required>
+                        autocapitalize="none"
+                        spellcheck="false"
+                        required
+                    >
+
                 </div>
 
+
+                <!-- PASSWORD -->
+
                 <div class="retailer-field">
-                    <label>Password</label>
+
+                    <label
+                        for="newRetailerPassword"
+                    >
+                        Password *
+                    </label>
 
                     <input
                         type="text"
                         id="newRetailerPassword"
+                        name="retailer_password"
+                        placeholder="Create Password"
                         autocomplete="new-password"
-                        required>
+                        required
+                    >
+
                 </div>
+
 
             </div>
 
+
             <button
                 type="submit"
-                class="create-retailer-button">
-
-                ➕ Create Retailer
-
+                id="createRetailerButton"
+                class="create-retailer-button"
+            >
+                ➕ Create Retailer & Send Email
             </button>
 
-            <div id="retailerCreateMessage"
-                 class="panel-message"></div>
+
+            <div
+                id="retailerCreateMessage"
+                class="panel-message"
+            ></div>
 
         </form>
 
     </div>
 
 
-    <!-- ================= PAYMENT ================= -->
+    <!-- =================================================
+         PAYMENT
+    ================================================== -->
 
-    <div id="paymentPanel"
-         class="admin-panel admin-hidden">
+    <div
+        id="paymentPanel"
+        class="admin-panel admin-hidden"
+    >
 
-        <h2>💳 Payment Status Management</h2>
+        <h2>
+            💳 Payment Status Management
+        </h2>
 
         <p class="panel-description">
             Application નું payment status અહીંથી update કરો.
         </p>
+
 
         <div class="search-row">
 
             <input
                 type="text"
                 id="paymentApplicationId"
-                placeholder="Application ID">
+                placeholder="Application ID"
+            >
 
-            <select id="paymentStatusSelect">
+
+            <select
+                id="paymentStatusSelect"
+            >
 
                 <option value="">
                     Payment Status
@@ -1062,57 +1675,91 @@
 
             </select>
 
+
             <button
+                type="button"
                 class="search-button"
-                onclick="updatePaymentStatus()">
-
+                onclick="updatePaymentStatus()"
+            >
                 Update
-
             </button>
 
         </div>
 
-        <div id="paymentMessage"
-             class="panel-message"></div>
+
+        <div
+            id="paymentMessage"
+            class="panel-message"
+        ></div>
 
     </div>
 
 
-    <!-- ================= SETTINGS ================= -->
+    <!-- =================================================
+         SETTINGS
+    ================================================== -->
 
-    <div id="settingsPanel"
-         class="admin-panel admin-hidden">
+    <div
+        id="settingsPanel"
+        class="admin-panel admin-hidden"
+    >
 
-        <h2>⚙️ Website Settings</h2>
+        <h2>
+            ⚙️ Website Settings
+        </h2>
 
         <p class="panel-description">
             RAJKUMAR RATIONCARD SERVICES Website Settings
         </p>
 
-        <div style="
-            background:#f5f7fa;
-            padding:18px;
-            border-radius:12px;
-        ">
+
+        <div
+            style="
+                background:#f5f7fa;
+                padding:18px;
+                border-radius:12px;
+            "
+        >
 
             <p>
-                <strong>Website:</strong>
+                <strong>
+                    Website:
+                </strong>
+
                 RAJKUMAR RATIONCARD SERVICES
             </p>
 
+
             <p style="margin-top:10px;">
-                <strong>Contact:</strong>
+
+                <strong>
+                    Contact:
+                </strong>
+
                 9429193125
+
             </p>
 
+
             <p style="margin-top:10px;">
-                <strong>UPI:</strong>
+
+                <strong>
+                    UPI:
+                </strong>
+
                 gujrat.nsfa@ybl
+
             </p>
 
+
             <p style="margin-top:10px;">
-                <strong>Storage:</strong>
+
+                <strong>
+                    Storage:
+                </strong>
+
                 Google Sheet + Google Drive
+
             </p>
 
         </div>
@@ -1122,32 +1769,46 @@
 </section>
 
 
-<!-- ================= DETAILS MODAL ================= -->
+<!-- =====================================================
+     APPLICATION DETAILS MODAL
+===================================================== -->
 
-<div id="applicationModal" class="admin-modal">
+<div
+    id="applicationModal"
+    class="admin-modal"
+>
 
     <div class="admin-modal-box">
 
         <div class="modal-header">
 
-            <h2>📋 Application Details</h2>
+            <h2>
+                📋 Application Details
+            </h2>
 
             <button
+                type="button"
                 class="modal-close"
-                onclick="closeApplicationModal()">
-
+                onclick="closeApplicationModal()"
+            >
                 ✕
-
             </button>
 
         </div>
 
-        <div id="applicationDetails"></div>
+
+        <div
+            id="applicationDetails"
+        ></div>
 
     </div>
 
 </div>
 
+
+<!-- =====================================================
+     ADMIN JS
+===================================================== -->
 
 <script src="admin.js"></script>
 
