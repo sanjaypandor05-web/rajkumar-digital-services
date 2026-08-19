@@ -25,7 +25,7 @@
    ============================================================ */
 
 const API_URL =
-  "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+  "https://script.google.com/macros/s/AKfycbzleZG-w2WQ6DClkEcqpRcn6Pv8gil3ym-aP4_9ctLUlzeiHG34MyDQgdV6JMK1r4zLnA/exec";
 
 
 /* ============================================================
