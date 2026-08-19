@@ -1,10 +1,10 @@
 /************************************************************
  * RAJKUMAR RATIONCARD SERVICES
- * RETAILER MANAGEMENT
- * FINAL JS
+ * RETAILER CREATE - FINAL JS
  *
- * WhatsApp completely removed.
- * Retailer account details are sent by EMAIL.
+ * Works with Code.gs:
+ * createRetailer
+ * sendRetailerEmail
  ************************************************************/
 
 
@@ -17,597 +17,624 @@ const API_URL =
 
 
 // ==========================================================
-// PAGE LOAD
+// ELEMENTS
 // ==========================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function () {
+const form =
+  document.getElementById("retailerForm");
 
-    const form =
-      document.getElementById(
-        "retailerForm"
+const retailerNameInput =
+  document.getElementById("retailerName");
+
+const mobileInput =
+  document.getElementById("mobile");
+
+const emailInput =
+  document.getElementById("email");
+
+const usernameInput =
+  document.getElementById("username");
+
+const passwordInput =
+  document.getElementById("password");
+
+const emailError =
+  document.getElementById("emailError");
+
+const createBtn =
+  document.getElementById("createBtn");
+
+const messageBox =
+  document.getElementById("message");
+
+
+// ==========================================================
+// CLEAN
+// ==========================================================
+
+function clean(value) {
+
+  return String(
+    value || ""
+  ).trim();
+
+}
+
+
+// ==========================================================
+// EMAIL VALIDATION
+// ==========================================================
+
+function isValidEmail(email) {
+
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    .test(
+      clean(email)
+    );
+
+}
+
+
+// ==========================================================
+// SHOW MESSAGE
+// ==========================================================
+
+function showMessage(
+  message,
+  type
+) {
+
+  messageBox.textContent =
+    message;
+
+  messageBox.className =
+    "message " + type;
+
+}
+
+
+// ==========================================================
+// CLEAR MESSAGE
+// ==========================================================
+
+function clearMessage() {
+
+  messageBox.textContent = "";
+
+  messageBox.className =
+    "message";
+
+}
+
+
+// ==========================================================
+// EMAIL ERROR
+// ==========================================================
+
+function setEmailError(
+  show,
+  text
+) {
+
+  if (show) {
+
+    emailInput.classList.add(
+      "email-error"
+    );
+
+    emailError.textContent =
+      text ||
+      "Email address ફરજિયાત છે.";
+
+    emailError.classList.add(
+      "show"
+    );
+
+  } else {
+
+    emailInput.classList.remove(
+      "email-error"
+    );
+
+    emailError.classList.remove(
+      "show"
+    );
+
+  }
+
+}
+
+
+// ==========================================================
+// EMAIL LIVE VALIDATION
+// ==========================================================
+
+emailInput.addEventListener(
+  "input",
+  function() {
+
+    const email =
+      clean(
+        emailInput.value
       );
 
-    if (form) {
+    if (!email) {
 
-      form.addEventListener(
-        "submit",
-        function (event) {
-
-          event.preventDefault();
-
-          createRetailer();
-
-        }
+      setEmailError(
+        true,
+        "Email address ફરજિયાત છે."
       );
+
+      return;
 
     }
 
-    loadRetailers();
+    if (!isValidEmail(email)) {
+
+      setEmailError(
+        true,
+        "સાચું Email Address દાખલ કરો."
+      );
+
+      return;
+
+    }
+
+    setEmailError(
+      false
+    );
 
   }
 );
 
 
 // ==========================================================
-// CREATE RETAILER
+// MOBILE ONLY NUMBERS
 // ==========================================================
 
-async function createRetailer() {
+mobileInput.addEventListener(
+  "input",
+  function() {
 
-  const retailerName =
-    document
-      .getElementById("retailerName")
-      .value
-      .trim();
+    mobileInput.value =
+      mobileInput.value
+        .replace(
+          /\D/g,
+          ""
+        )
+        .slice(
+          0,
+          10
+        );
 
-
-  const mobile =
-    document
-      .getElementById("mobile")
-      .value
-      .trim();
-
-
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
+  }
+);
 
 
-  const username =
-    document
-      .getElementById("username")
-      .value
-      .trim();
+// ==========================================================
+// API REQUEST
+// ==========================================================
 
+async function apiRequest(
+  payload
+) {
 
-  const password =
-    document
-      .getElementById("password")
-      .value
-      .trim();
+  const response =
+    await fetch(
+      API_URL,
+      {
+        method: "POST",
 
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
 
-  // --------------------------------------------------------
-  // VALIDATION
-  // --------------------------------------------------------
-
-  if (!retailerName) {
-
-    showMessage(
-      "❌ Retailer Name is required.",
-      "error"
+        body:
+          JSON.stringify(
+            payload
+          )
+      }
     );
 
-    return;
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Server error: HTTP " +
+      response.status
+    );
 
   }
 
 
-  const mobileDigits =
-    mobile.replace(/\D/g, "");
+  const text =
+    await response.text();
 
 
-  if (
-    mobileDigits.length !== 10
-  ) {
+  let result;
 
-    showMessage(
-      "❌ Valid 10 digit Mobile Number નાખો.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if (!email) {
-
-    showMessage(
-      "❌ Retailer Email is required.",
-      "error"
-    );
-
-    document
-      .getElementById("email")
-      .focus();
-
-    return;
-
-  }
-
-
-  const emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-  if (
-    !emailPattern.test(email)
-  ) {
-
-    showMessage(
-      "❌ Valid Email Address નાખો.",
-      "error"
-    );
-
-    document
-      .getElementById("email")
-      .focus();
-
-    return;
-
-  }
-
-
-  if (!username) {
-
-    showMessage(
-      "❌ Username is required.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if (!password) {
-
-    showMessage(
-      "❌ Password is required.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "createRetailerBtn"
-    );
-
-
-  button.disabled = true;
-
-  button.innerText =
-    "Creating...";
-
-
-  showMessage(
-    "Please wait...",
-    "success"
-  );
-
-
-  // --------------------------------------------------------
-  // SEND TO CODE.GS
-  // --------------------------------------------------------
 
   try {
 
-    const response =
-      await fetch(
-        API_URL,
-        {
+    result =
+      JSON.parse(
+        text
+      );
 
-          method:
-            "POST",
+  } catch (error) {
 
-          headers:
-            {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
+    throw new Error(
+      "Invalid server response."
+    );
 
-          body:
-            JSON.stringify({
+  }
 
-              action:
-                "createRetailer",
 
-              retailerName:
-                retailerName,
+  return result;
 
-              mobile:
-                mobile,
+}
 
-              email:
-                email,
 
-              username:
-                username,
+// ==========================================================
+// FORM SUBMIT
+// ==========================================================
 
-              password:
-                password
+form.addEventListener(
+  "submit",
+  async function(event) {
 
-            })
+    event.preventDefault();
 
-        }
+    clearMessage();
+
+
+    // ------------------------------------------------------
+    // GET VALUES
+    // ------------------------------------------------------
+
+    const retailerName =
+      clean(
+        retailerNameInput.value
       );
 
 
-    const result =
-      await response.json();
+    const mobile =
+      clean(
+        mobileInput.value
+      );
 
 
-    console.log(
-      "Create Retailer Result:",
-      result
+    const email =
+      clean(
+        emailInput.value
+      );
+
+
+    const username =
+      clean(
+        usernameInput.value
+      );
+
+
+    const password =
+      clean(
+        passwordInput.value
+      );
+
+
+    // ------------------------------------------------------
+    // RETAILER NAME
+    // ------------------------------------------------------
+
+    if (!retailerName) {
+
+      showMessage(
+        "Retailer Name દાખલ કરો.",
+        "error"
+      );
+
+      retailerNameInput.focus();
+
+      return;
+
+    }
+
+
+    // ------------------------------------------------------
+    // MOBILE
+    // ------------------------------------------------------
+
+    if (
+      mobile.length !== 10
+    ) {
+
+      showMessage(
+        "10 અંકનો Mobile Number દાખલ કરો.",
+        "error"
+      );
+
+      mobileInput.focus();
+
+      return;
+
+    }
+
+
+    // ------------------------------------------------------
+    // EMAIL REQUIRED
+    // ------------------------------------------------------
+
+    if (!email) {
+
+      setEmailError(
+        true,
+        "Email address ફરજિયાત છે."
+      );
+
+      showMessage(
+        "Retailer Email Address નાખવું ફરજિયાત છે.",
+        "error"
+      );
+
+      emailInput.focus();
+
+      return;
+
+    }
+
+
+    // ------------------------------------------------------
+    // EMAIL FORMAT
+    // ------------------------------------------------------
+
+    if (!isValidEmail(email)) {
+
+      setEmailError(
+        true,
+        "સાચું Email Address દાખલ કરો."
+      );
+
+      showMessage(
+        "સાચું Email Address દાખલ કરો.",
+        "error"
+      );
+
+      emailInput.focus();
+
+      return;
+
+    }
+
+
+    setEmailError(
+      false
     );
 
 
     // ------------------------------------------------------
-    // SUCCESS
+    // USERNAME
+    // ------------------------------------------------------
+
+    if (!username) {
+
+      showMessage(
+        "Username દાખલ કરો.",
+        "error"
+      );
+
+      usernameInput.focus();
+
+      return;
+
+    }
+
+
+    // ------------------------------------------------------
+    // PASSWORD
+    // ------------------------------------------------------
+
+    if (!password) {
+
+      showMessage(
+        "Password દાખલ કરો.",
+        "error"
+      );
+
+      passwordInput.focus();
+
+      return;
+
+    }
+
+
+    // ------------------------------------------------------
+    // API URL CHECK
     // ------------------------------------------------------
 
     if (
-      result.success
+      !API_URL ||
+      API_URL.indexOf(
+        "PASTE_YOUR"
+      ) >= 0
     ) {
 
-      let message =
-        "✅ Retailer successfully created.\n\n" +
+      showMessage(
+        "Google Apps Script API URL retailer.js માં નાખો.",
+        "error"
+      );
 
-        "Retailer ID: " +
-        result.retailerId +
-        "\n\n" +
+      return;
 
-        "Username: " +
-        result.username +
-        "\n\n" +
+    }
 
-        "Email: " +
-        result.email;
 
+    // ------------------------------------------------------
+    // DISABLE BUTTON
+    // ------------------------------------------------------
+
+    createBtn.disabled =
+      true;
+
+    createBtn.textContent =
+      "⏳ Creating Retailer...";
+
+
+    try {
+
+      // ----------------------------------------------------
+      // CREATE RETAILER
+      // ----------------------------------------------------
+
+      const result =
+        await apiRequest({
+
+          action:
+            "createRetailer",
+
+          retailerName:
+            retailerName,
+
+          mobile:
+            mobile,
+
+          email:
+            email,
+
+          username:
+            username,
+
+          password:
+            password
+
+        });
+
+
+      // ----------------------------------------------------
+      // SUCCESS
+      // ----------------------------------------------------
 
       if (
-        result.emailSent
+        result &&
+        result.success
       ) {
 
-        message +=
-          "\n\n📧 Login details email દ્વારા મોકલાઈ ગયા છે.";
+        const retailerId =
+          clean(
+            result.retailerId
+          );
+
+
+        const emailSent =
+          result.emailSent === true;
+
+
+        if (emailSent) {
+
+          showMessage(
+
+            "✅ Retailer successfully created!\n\n" +
+
+            "Retailer ID: " +
+            retailerId +
+            "\n\n" +
+
+            "📧 Login details successfully Email પર મોકલવામાં આવ્યા છે.\n\n" +
+
+            "Email: " +
+            email +
+            "\n\n" +
+
+            "Retailer ID, Username અને Password email માં ચેક કરો.",
+
+            "success"
+
+          );
+
+        } else {
+
+          showMessage(
+
+            "✅ Retailer successfully created!\n\n" +
+
+            "Retailer ID: " +
+            retailerId +
+            "\n\n" +
+
+            "⚠️ Retailer create થઈ ગયો છે, પરંતુ Email મોકલવામાં આવ્યો નથી.\n\n" +
+
+            "Reason: " +
+            clean(
+              result.emailMessage ||
+              "Unknown email error."
+            ),
+
+            "error"
+
+          );
+
+        }
+
+
+        // Clear form after successful creation
+
+        form.reset();
+
+        setEmailError(
+          false
+        );
+
 
       } else {
 
-        message +=
-          "\n\n⚠️ Retailer account બની ગયું છે, પરંતુ email મોકલી શકાયો નથી.";
+        showMessage(
+
+          "❌ Retailer create થઈ શક્યો નથી.\n\n" +
+
+          clean(
+            result &&
+            result.message
+              ? result.message
+              : "Unknown error."
+          ),
+
+          "error"
+
+        );
 
       }
 
 
-      showMessage(
-        message,
-        "success"
+    } catch (error) {
+
+      console.error(
+        "Retailer Create Error:",
+        error
       );
 
 
-      // ----------------------------------------------------
-      // CLEAR FORM
-      // ----------------------------------------------------
-
-      document
-        .getElementById(
-          "retailerForm"
-        )
-        .reset();
-
-
-      // ----------------------------------------------------
-      // RELOAD RETAILERS
-      // ----------------------------------------------------
-
-      loadRetailers();
-
-
-    } else {
-
       showMessage(
 
-        "❌ Retailer create failed.\n\n" +
+        "❌ Server / API Error.\n\n" +
 
-        (
-          result.message ||
-          "Unknown error."
+        clean(
+          error.message
         ),
 
         "error"
 
       );
 
-    }
 
+    } finally {
 
-  } catch (error) {
+      createBtn.disabled =
+        false;
 
-    console.error(
-      error
-    );
-
-
-    showMessage(
-
-      "❌ API / Server Error.\n\n" +
-      error.message,
-
-      "error"
-
-    );
-
-  } finally {
-
-    button.disabled =
-      false;
-
-    button.innerText =
-      "Create Retailer";
-
-  }
-
-}
-
-
-// ==========================================================
-// LOAD RETAILERS
-// ==========================================================
-
-async function loadRetailers() {
-
-  const tbody =
-    document.getElementById(
-      "retailerTableBody"
-    );
-
-
-  if (!tbody) {
-
-    return;
-
-  }
-
-
-  try {
-
-    const response =
-      await fetch(
-        API_URL,
-        {
-
-          method:
-            "POST",
-
-          headers:
-            {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
-
-          body:
-            JSON.stringify({
-
-              action:
-                "getRetailers"
-
-            })
-
-        }
-      );
-
-
-    /*
-     * જો તમારા Code.gs માં getRetailers action
-     * નથી, તો table empty રહેશે.
-     */
-
-    const result =
-      await response.json();
-
-
-    if (
-      !result.success
-    ) {
-
-      tbody.innerHTML =
-        `<tr>
-          <td colspan="7">
-            Retailer list loading unavailable.
-          </td>
-        </tr>`;
-
-      return;
+      createBtn.textContent =
+        "➕ CREATE RETAILER";
 
     }
 
-
-    const retailers =
-      result.retailers || [];
-
-
-    if (
-      retailers.length === 0
-    ) {
-
-      tbody.innerHTML =
-        `<tr>
-          <td colspan="7">
-            No retailers found.
-          </td>
-        </tr>`;
-
-      return;
-
-    }
-
-
-    tbody.innerHTML =
-      retailers
-        .map(
-          function (retailer) {
-
-            return `
-
-              <tr>
-
-                <td>
-                  ${escapeHtml(
-                    retailer["Retailer ID"] || ""
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    retailer["Retailer Name"] || ""
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    retailer["Mobile"] || ""
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    retailer["Email"] || ""
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    retailer["Username"] || ""
-                  )}
-                </td>
-
-                <td class="status-active">
-                  ${escapeHtml(
-                    retailer["Status"] || ""
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    String(
-                      retailer["Total Applications"] || 0
-                    )
-                  )}
-                </td>
-
-              </tr>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      "Load retailers error:",
-      error
-    );
-
-
-    tbody.innerHTML =
-      `<tr>
-        <td colspan="7">
-          Unable to load retailer list.
-        </td>
-      </tr>`;
-
   }
-
-}
-
-
-// ==========================================================
-// MESSAGE
-// ==========================================================
-
-function showMessage(
-  text,
-  type
-) {
-
-  const box =
-    document.getElementById(
-      "message"
-    );
-
-
-  if (!box) {
-
-    return;
-
-  }
-
-
-  box.textContent =
-    text;
-
-
-  box.className =
-    "message " +
-    (
-      type === "error"
-        ? "error"
-        : "success"
-    );
-
-}
-
-
-// ==========================================================
-// HTML ESCAPE
-// ==========================================================
-
-function escapeHtml(value) {
-
-  return String(value)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
+);
