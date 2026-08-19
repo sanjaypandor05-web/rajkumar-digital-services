@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="gu">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Retailer Login - Rajkumar Rationcard Services</title>
+  <title>Retailer Management - Rajkumar Rationcard Services</title>
 
   <style>
     * {
@@ -15,403 +15,338 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #eef2ff, #f8fafc);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
+      background: #f4f6f9;
+      color: #222;
     }
 
     .header {
-      background: #ffffff;
-      padding: 18px 22px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,.08);
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .brand h1 {
-      color: #1d4ed8;
-      font-size: 24px;
-    }
-
-    .brand p {
-      color: #64748b;
-      margin-top: 5px;
-    }
-
-    .logout-btn {
-      display: none;
-      border: none;
-      background: #dc2626;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
       color: white;
-      padding: 10px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 25px;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 14px;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 1100px;
+      margin: 25px auto;
     }
 
     .card {
       background: white;
-      border-radius: 18px;
       padding: 25px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.08);
-      margin-bottom: 20px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
     }
 
-    .login-card {
-      max-width: 450px;
-      margin: 50px auto;
+    .card h2 {
+      margin-bottom: 20px;
+      color: #333;
     }
 
-    h2 {
-      color: #1e293b;
-      margin-bottom: 20px;
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
 
     .form-group {
-      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
     }
 
     label {
-      display: block;
+      font-weight: 600;
       margin-bottom: 7px;
-      color: #334155;
-      font-weight: bold;
+      color: #333;
     }
 
-    input,
-    select {
+    .required {
+      color: red;
+      font-size: 18px;
+      margin-left: 3px;
+    }
+
+    input {
       width: 100%;
       padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 9px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
       font-size: 15px;
       outline: none;
     }
 
-    input:focus,
-    select:focus {
-      border-color: #2563eb;
+    input:focus {
+      border-color: #2575fc;
+      box-shadow: 0 0 0 2px rgba(37,117,252,0.12);
     }
 
     .btn {
-      width: 100%;
-      padding: 13px;
       border: none;
-      border-radius: 9px;
-      background: #2563eb;
+      padding: 13px 22px;
+      border-radius: 8px;
+      background: #2575fc;
       color: white;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 20px;
     }
 
     .btn:hover {
-      background: #1d4ed8;
+      background: #1557c0;
     }
 
-    .btn-green {
-      background: #16a34a;
-    }
-
-    .btn-green:hover {
-      background: #15803d;
-    }
-
-    .btn-red {
-      background: #dc2626;
-    }
-
-    .hidden {
-      display: none !important;
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .message {
+      margin-top: 15px;
       padding: 12px;
       border-radius: 8px;
-      margin-bottom: 15px;
       display: none;
-      font-weight: bold;
+      white-space: pre-line;
     }
 
     .success {
       display: block;
-      background: #dcfce7;
-      color: #166534;
+      background: #e8f8ee;
+      color: #16733b;
+      border: 1px solid #b8e6c8;
     }
 
     .error {
       display: block;
-      background: #fee2e2;
-      color: #991b1b;
+      background: #ffecec;
+      color: #b30000;
+      border: 1px solid #ffb5b5;
     }
 
-    .info-box {
-      background: #eff6ff;
-      border-left: 4px solid #2563eb;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    .retailer-info {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .info-item {
-      background: #f8fafc;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    .info-item small {
-      color: #64748b;
-    }
-
-    .info-item strong {
-      display: block;
-      margin-top: 5px;
-      color: #1e293b;
-      word-break: break-word;
-    }
-
-    .table-wrap {
+    .table-wrapper {
       overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 800px;
+      margin-top: 10px;
     }
 
     th,
     td {
-      padding: 11px;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
       text-align: left;
-      font-size: 14px;
+      white-space: nowrap;
     }
 
     th {
-      background: #f1f5f9;
-      color: #334155;
+      background: #f1f4f8;
     }
 
-    .status {
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 12px;
+    .status-active {
+      color: green;
       font-weight: bold;
     }
 
-    .pending {
-      background: #fef3c7;
-      color: #92400e;
-    }
+    @media (max-width: 700px) {
 
-    .completed {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .rejected {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .processing {
-      background: #dbeafe;
-      color: #1e40af;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 20px;
-      color: #64748b;
-    }
-
-    @media (max-width: 800px) {
-      .retailer-info {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .logout-btn {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .retailer-info {
+      .form-grid {
         grid-template-columns: 1fr;
       }
 
-      body {
-        padding: 10px;
+      .form-group.full {
+        grid-column: auto;
       }
 
       .card {
         padding: 18px;
       }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
-
-  <!-- HEADER -->
   <div class="header">
-    <div class="brand">
-      <h1>RAJKUMAR RATIONCARD SERVICES</h1>
-      <p>Retailer Portal</p>
-    </div>
-
-    <button
-      type="button"
-      id="logoutBtn"
-      class="logout-btn"
-      onclick="logoutRetailer()">
-      Logout
-    </button>
+    <h1>RAJKUMAR RATIONCARD SERVICES</h1>
+    <p>Retailer Management</p>
   </div>
 
+  <div class="container">
 
-  <!-- LOGIN -->
-  <div id="loginSection" class="card login-card">
-
-    <h2>🔐 Retailer Login</h2>
-
-    <div id="loginMessage" class="message"></div>
-
-    <form id="loginForm">
-
-      <div class="form-group">
-        <label>Retailer ID / Username</label>
-
-        <input
-          type="text"
-          id="loginUsername"
-          autocomplete="username"
-          required
-          placeholder="RT001 અથવા Username">
-      </div>
-
-
-      <div class="form-group">
-        <label>Password</label>
-
-        <input
-          type="password"
-          id="loginPassword"
-          autocomplete="current-password"
-          required
-          placeholder="Password">
-      </div>
-
-
-      <button
-        type="submit"
-        id="loginBtn"
-        class="btn">
-        LOGIN
-      </button>
-
-    </form>
-
-  </div>
-
-
-  <!-- DASHBOARD -->
-  <div id="dashboardSection" class="hidden">
+    <!-- CREATE RETAILER -->
 
     <div class="card">
 
-      <h2>👤 Retailer Dashboard</h2>
+      <h2>➕ Create Retailer</h2>
 
-      <div id="dashboardMessage" class="message"></div>
+      <form id="retailerForm">
 
-      <div class="retailer-info">
+        <div class="form-grid">
 
-        <div class="info-item">
-          <small>Retailer ID</small>
-          <strong id="showRetailerId">-</strong>
+          <div class="form-group">
+            <label>
+              Retailer Name
+              <span class="required">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="retailerName"
+              name="retailerName"
+              placeholder="Enter Retailer Name"
+              required
+            >
+          </div>
+
+
+          <div class="form-group">
+            <label>
+              Mobile Number
+              <span class="required">*</span>
+            </label>
+
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              placeholder="Enter Mobile Number"
+              maxlength="10"
+              required
+            >
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group full">
+
+            <label>
+              Email
+              <span class="required">*</span>
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter Retailer Email"
+              autocomplete="off"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+            <label>
+              Username
+              <span class="required">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter Username"
+              autocomplete="off"
+              required
+            >
+          </div>
+
+
+          <div class="form-group">
+            <label>
+              Password
+              <span class="required">*</span>
+            </label>
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter Password"
+              autocomplete="new-password"
+              required
+            >
+          </div>
+
         </div>
 
-        <div class="info-item">
-          <small>Retailer Name</small>
-          <strong id="showRetailerName">-</strong>
-        </div>
 
-        <div class="info-item">
-          <small>Mobile</small>
-          <strong id="showMobile">-</strong>
-        </div>
+        <button
+          type="submit"
+          class="btn"
+          id="createRetailerBtn"
+        >
+          Create Retailer
+        </button>
 
-        <div class="info-item">
-          <small>Email</small>
-          <strong id="showEmail">-</strong>
-        </div>
+      </form>
 
-      </div>
 
-      <button
-        type="button"
-        class="btn btn-green"
-        onclick="loadRetailerApplications()">
-        🔄 Refresh Applications
-      </button>
+      <div
+        id="message"
+        class="message"
+      ></div>
 
     </div>
 
 
-    <!-- APPLICATIONS -->
+    <!-- RETAILER LIST -->
+
     <div class="card">
 
-      <h2>📋 My Applications</h2>
+      <h2>👥 Retailer List</h2>
 
-      <div id="applicationsLoading" class="loading hidden">
-        Applications loading...
-      </div>
+      <div class="table-wrapper">
 
-      <div id="noApplications" class="info-box hidden">
-        હજુ કોઈ application મળી નથી.
-      </div>
-
-      <div class="table-wrap">
-
-        <table id="applicationsTable">
+        <table>
 
           <thead>
+
             <tr>
-              <th>Application ID</th>
-              <th>Date</th>
-              <th>Applicant Name</th>
-              <th>Service</th>
-              <th>Amount</th>
-              <th>Payment</th>
+              <th>Retailer ID</th>
+              <th>Name</th>
+              <th>Mobile</th>
+              <th>Email</th>
+              <th>Username</th>
               <th>Status</th>
+              <th>Total Applications</th>
             </tr>
+
           </thead>
 
-          <tbody id="applicationsBody">
+          <tbody id="retailerTableBody">
+
+            <tr>
+              <td colspan="7">
+                Loading...
+              </td>
+            </tr>
+
           </tbody>
 
         </table>
@@ -422,10 +357,8 @@
 
   </div>
 
-</div>
 
-
-<script src="retailer.js"></script>
+  <script src="retailer.js"></script>
 
 </body>
 </html>
