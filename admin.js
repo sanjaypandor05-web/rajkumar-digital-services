@@ -1,117 +1,107 @@
-/* =========================================================
+/* ============================================================
    RAJKUMAR RATIONCARD SERVICES
-   FINAL ADMIN JAVASCRIPT
-   Compatible with current Code.gs
-========================================================= */
+   ADMIN.JS - COMPLETE FINAL VERSION
+   ------------------------------------------------------------
+   Features:
+   - Admin Login
+   - Dashboard
+   - Retailer Create
+   - Retailer Email Required
+   - Retailer List
+   - Applications
+   - Payment Status
+   - Application Status
+   - Search
+   - Logout
+   - API Error Handling
+   ============================================================ */
 
+"use strict";
 
-/* =========================================================
-   IMPORTANT
-   અહીં તમારો Google Apps Script Web App /exec URL મૂકો.
-========================================================= */
+/* ============================================================
+   API URL
+   IMPORTANT:
+   અહીં તમારું DEPLOYED GOOGLE APPS SCRIPT WEB APP URL મૂકો
+   ============================================================ */
 
 const API_URL =
-    "https://script.google.com/macros/s/AKfycbzAQQPhHzepS9LyOASh1KpyFaXh9QPzbP7qV7bO-1urDyeKFpcnEEWhAL7MjnsW9BSaxA/exec";
+  "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 
 
-/* =========================================================
-   GLOBAL DATA
-========================================================= */
-
-let allApplications = [];
-
-let isAdminLoggedIn = false;
-
-
-/* =========================================================
+/* ============================================================
    DOM READY
-========================================================= */
+   ============================================================ */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        setupLoginForm();
+  initAdminPage();
 
-        setupRetailerForm();
-
-        setupSearchEvents();
-
-        checkAdminSession();
-
-    }
-);
+});
 
 
-/* =========================================================
+/* ============================================================
+   INITIALIZE ADMIN PAGE
+   ============================================================ */
+
+function initAdminPage() {
+
+  setupLogout();
+
+  setupRetailerForm();
+
+  setupApplicationEvents();
+
+  loadDashboard();
+
+  loadRetailers();
+
+  loadApplications();
+
+}
+
+
+/* ============================================================
    API REQUEST
-========================================================= */
+   ============================================================ */
 
-async function apiRequest(
-    action,
-    data = {}
-) {
+async function apiRequest(action, data = {}) {
+
+  try {
 
     if (
-        !API_URL ||
-        API_URL.includes(
-            "PASTE_YOUR"
-        )
+      !API_URL ||
+      API_URL.includes("PASTE_YOUR")
     ) {
 
-        throw new Error(
-            "Google Apps Script Web App URL admin.js માં set કરો."
-        );
+      throw new Error(
+        "Google Apps Script API URL set કરેલ નથી."
+      );
 
     }
-
-
-    const payload = {
-
-        action:
-            action,
-
-        ...data
-
-    };
 
 
     const response =
-        await fetch(
-            API_URL,
-            {
+      await fetch(API_URL, {
 
-                method:
-                    "POST",
+        method: "POST",
 
-                headers: {
-                    "Content-Type":
-                        "text/plain;charset=utf-8"
-                },
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
 
-                body:
-                    JSON.stringify(
-                        payload
-                    )
+        body: JSON.stringify({
 
-            }
-        );
+          action: action,
 
+          ...data
 
-    if (
-        !response.ok
-    ) {
+        })
 
-        throw new Error(
-            "Server error: " +
-            response.status
-        );
-
-    }
+      });
 
 
     const text =
-        await response.text();
+      await response.text();
 
 
     let result;
@@ -119,1879 +109,1610 @@ async function apiRequest(
 
     try {
 
-        result =
-            JSON.parse(
-                text
-            );
+      result =
+        JSON.parse(text);
 
     } catch (error) {
 
-        throw new Error(
-            "Server તરફથી invalid response મળ્યો."
-        );
+      throw new Error(
+        "Server તરફથી valid JSON response મળ્યો નથી."
+      );
+
+    }
+
+
+    if (!result) {
+
+      throw new Error(
+        "Empty server response."
+      );
 
     }
 
 
     return result;
 
+
+  } catch (error) {
+
+    console.error(
+      "API Error:",
+      error
+    );
+
+
+    throw error;
+
+  }
+
 }
 
 
-/* =========================================================
-   LOGIN FORM
-========================================================= */
+/* ============================================================
+   ELEMENT HELPER
+   ============================================================ */
 
-function setupLoginForm() {
+function $(selector) {
 
-    const form =
-        document.getElementById(
-            "adminLoginForm"
-        );
+  return document.querySelector(selector);
 
-
-    if (!form) return;
+}
 
 
-    form.addEventListener(
-        "submit",
-        async function (event) {
+function $all(selector) {
 
-            event.preventDefault();
+  return document.querySelectorAll(selector);
+
+}
 
 
-            await adminLogin();
+/* ============================================================
+   SHOW MESSAGE
+   ============================================================ */
 
-        }
+function showMessage(
+  message,
+  type = "info"
+) {
+
+  let box =
+    $("#adminMessage");
+
+
+  if (!box) {
+
+    box =
+      document.createElement("div");
+
+    box.id =
+      "adminMessage";
+
+    box.style.position =
+      "fixed";
+
+    box.style.top =
+      "20px";
+
+    box.style.right =
+      "20px";
+
+    box.style.zIndex =
+      "99999";
+
+    box.style.maxWidth =
+      "420px";
+
+    box.style.padding =
+      "14px 18px";
+
+    box.style.borderRadius =
+      "10px";
+
+    box.style.fontWeight =
+      "600";
+
+    box.style.boxShadow =
+      "0 5px 20px rgba(0,0,0,.2)";
+
+    document.body.appendChild(
+      box
+    );
+
+  }
+
+
+  box.textContent =
+    message;
+
+
+  if (type === "success") {
+
+    box.style.background =
+      "#d1fae5";
+
+    box.style.color =
+      "#065f46";
+
+  } else if (
+    type === "error"
+  ) {
+
+    box.style.background =
+      "#fee2e2";
+
+    box.style.color =
+      "#991b1b";
+
+  } else if (
+    type === "warning"
+  ) {
+
+    box.style.background =
+      "#fef3c7";
+
+    box.style.color =
+      "#92400e";
+
+  } else {
+
+    box.style.background =
+      "#dbeafe";
+
+    box.style.color =
+      "#1e40af";
+
+  }
+
+
+  box.style.display =
+    "block";
+
+
+  clearTimeout(
+    showMessage.timer
+  );
+
+
+  showMessage.timer =
+    setTimeout(
+      function () {
+
+        box.style.display =
+          "none";
+
+      },
+      5000
     );
 
 }
 
 
-/* =========================================================
-   ADMIN LOGIN
-========================================================= */
+/* ============================================================
+   GET FORM VALUE
+   ============================================================ */
 
-async function adminLogin() {
+function getValue(
+  form,
+  names
+) {
 
-    const username =
-        document
-            .getElementById(
-                "adminId"
-            )
-            .value
-            .trim();
+  for (
+    const name of names
+  ) {
 
-
-    const password =
-        document
-            .getElementById(
-                "adminPassword"
-            )
-            .value;
-
-
-    const message =
-        document.getElementById(
-            "adminLoginMessage"
-        );
-
-
-    const button =
-        document.getElementById(
-            "adminLoginButton"
-        );
+    const element =
+      form.querySelector(
+        `[name="${name}"]`
+      );
 
 
     if (
-        !username ||
-        !password
+      element &&
+      element.value !== undefined
     ) {
 
-        showMessage(
-            message,
-            "Admin ID અને Password બંને જરૂરી છે.",
-            false
-        );
-
-        return;
+      return String(
+        element.value
+      ).trim();
 
     }
 
-
-    button.disabled = true;
-
-    button.textContent =
-        "⏳ Login થઈ રહ્યું છે...";
+  }
 
 
-    try {
-
-        const result =
-            await apiRequest(
-                "adminLogin",
-                {
-
-                    username:
-                        username,
-
-                    password:
-                        password
-
-                }
-            );
-
-
-        if (
-            result &&
-            result.success === true
-        ) {
-
-            isAdminLoggedIn =
-                true;
-
-
-            sessionStorage.setItem(
-                "rajkumarAdminLoggedIn",
-                "true"
-            );
-
-
-            sessionStorage.setItem(
-                "rajkumarAdminRole",
-                "admin"
-            );
-
-
-            message.className =
-                "admin-login-message message-success";
-
-
-            message.textContent =
-                "✅ Login Successful";
-
-
-            setTimeout(
-                function () {
-
-                    showDashboard();
-
-                },
-                300
-            );
-
-
-        } else {
-
-            showMessage(
-                message,
-                result.message ||
-                "Invalid admin username or password.",
-                false
-            );
-
-        }
-
-
-    } catch (error) {
-
-        showMessage(
-            message,
-            "❌ " +
-            error.message,
-            false
-        );
-
-    } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-            "🔐 Login";
-
-    }
+  return "";
 
 }
 
 
-/* =========================================================
-   CHECK SESSION
-========================================================= */
+/* ============================================================
+   SET BUTTON LOADING
+   ============================================================ */
 
-function checkAdminSession() {
+function setButtonLoading(
+  button,
+  loading,
+  loadingText = "Processing..."
+) {
 
-    const loggedIn =
-        sessionStorage.getItem(
-            "rajkumarAdminLoggedIn"
-        );
+  if (!button) {
+    return;
+  }
 
 
-    const role =
-        sessionStorage.getItem(
-            "rajkumarAdminRole"
-        );
+  if (loading) {
 
+    button.dataset.oldText =
+      button.innerHTML;
+
+    button.disabled =
+      true;
+
+    button.innerHTML =
+      loadingText;
+
+  } else {
+
+    button.disabled =
+      false;
 
     if (
-        loggedIn === "true" &&
-        role === "admin"
+      button.dataset.oldText
     ) {
 
-        isAdminLoggedIn =
-            true;
-
-        showDashboard();
-
-    } else {
-
-        showLogin();
+      button.innerHTML =
+        button.dataset.oldText;
 
     }
+
+  }
 
 }
 
 
-/* =========================================================
-   SHOW LOGIN
-========================================================= */
-
-function showLogin() {
-
-    const login =
-        document.getElementById(
-            "adminLoginSection"
-        );
-
-
-    const dashboard =
-        document.getElementById(
-            "adminDashboardSection"
-        );
-
-
-    if (login) {
-
-        login.classList.remove(
-            "admin-hidden"
-        );
-
-    }
-
-
-    if (dashboard) {
-
-        dashboard.classList.add(
-            "admin-hidden"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   SHOW DASHBOARD
-========================================================= */
-
-async function showDashboard() {
-
-    const login =
-        document.getElementById(
-            "adminLoginSection"
-        );
-
-
-    const dashboard =
-        document.getElementById(
-            "adminDashboardSection"
-        );
-
-
-    if (login) {
-
-        login.classList.add(
-            "admin-hidden"
-        );
-
-    }
-
-
-    if (dashboard) {
-
-        dashboard.classList.remove(
-            "admin-hidden"
-        );
-
-    }
-
-
-    await loadDashboard();
-
-}
-
-
-/* =========================================================
-   LOAD DASHBOARD
-========================================================= */
-
-async function loadDashboard() {
-
-    if (!isAdminLoggedIn) {
-
-        return;
-
-    }
-
-
-    const tbody =
-        document.getElementById(
-            "applicationsTableBody"
-        );
-
-
-    if (tbody) {
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="9"
-                    style="text-align:center;padding:30px;color:#777;">
-                    ⏳ Applications loading...
-                </td>
-            </tr>
-        `;
-
-    }
-
-
-    try {
-
-        const result =
-            await apiRequest(
-                "getAllApplications"
-            );
-
-
-        if (
-            !result ||
-            result.success !== true
-        ) {
-
-            throw new Error(
-                result.message ||
-                "Applications load થઈ શકી નથી."
-            );
-
-        }
-
-
-        allApplications =
-            Array.isArray(
-                result.applications
-            )
-                ? result.applications
-                : [];
-
-
-        updateStatistics(
-            allApplications
-        );
-
-
-        renderApplications(
-            allApplications
-        );
-
-
-    } catch (error) {
-
-        if (tbody) {
-
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="9"
-                        style="text-align:center;padding:30px;color:#c62828;">
-                        ❌ ${escapeHtml(error.message)}
-                    </td>
-                </tr>
-            `;
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   UPDATE STATISTICS
-========================================================= */
-
-function updateStatistics(
-    applications
-) {
-
-    const total =
-        applications.length;
-
-
-    const pending =
-        applications.filter(
-            function (app) {
-
-                const status =
-                    normalize(
-                        app.applicationStatus
-                    );
-
-                return (
-                    status === "submitted" ||
-                    status === "pending"
-                );
-
-            }
-        ).length;
-
-
-    const paid =
-        applications.filter(
-            function (app) {
-
-                const status =
-                    normalize(
-                        app.paymentStatus
-                    );
-
-                return (
-                    status === "payment received" ||
-                    status === "payment verified" ||
-                    status === "paid"
-                );
-
-            }
-        ).length;
-
-
-    const processing =
-        applications.filter(
-            function (app) {
-
-                return (
-                    normalize(
-                        app.applicationStatus
-                    ) ===
-                    "processing"
-                );
-
-            }
-        ).length;
-
-
-    const completed =
-        applications.filter(
-            function (app) {
-
-                return (
-                    normalize(
-                        app.applicationStatus
-                    ) ===
-                    "completed"
-                );
-
-            }
-        ).length;
-
-
-    setText(
-        "totalApplications",
-        total
-    );
-
-
-    setText(
-        "pendingApplications",
-        pending
-    );
-
-
-    setText(
-        "paidApplications",
-        paid
-    );
-
-
-    setText(
-        "processingApplications",
-        processing
-    );
-
-
-    setText(
-        "completedApplications",
-        completed
-    );
-
-}
-
-
-/* =========================================================
-   RENDER APPLICATIONS
-========================================================= */
-
-function renderApplications(
-    applications
-) {
-
-    const tbody =
-        document.getElementById(
-            "applicationsTableBody"
-        );
-
-
-    if (!tbody) return;
-
-
-    if (
-        !applications.length
-    ) {
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="9"
-                    style="text-align:center;padding:35px;color:#777;">
-                    📭 હાલમાં કોઈ application નથી.
-                </td>
-            </tr>
-        `;
-
-        return;
-
-    }
-
-
-    tbody.innerHTML =
-        applications
-            .map(
-                function (app) {
-
-                    return `
-                        <tr>
-
-                            <td>
-                                <strong>
-                                    ${escapeHtml(
-                                        app.applicationId || "-"
-                                    )}
-                                </strong>
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    app.retailerId || "-"
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    app.applicant ||
-                                    app.englishName ||
-                                    "-"
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    app.mobile || "-"
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    app.service || "-"
-                                )}
-                            </td>
-
-                            <td>
-                                ₹${formatAmount(
-                                    app.amount
-                                )}
-                            </td>
-
-                            <td>
-                                ${statusBadge(
-                                    app.paymentStatus,
-                                    "payment"
-                                )}
-                            </td>
-
-                            <td>
-                                ${statusBadge(
-                                    app.applicationStatus,
-                                    "application"
-                                )}
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="action-button view-button"
-                                    onclick="viewApplication('${escapeJs(
-                                        app.applicationId
-                                    )}')">
-
-                                    👁 View
-
-                                </button>
-
-                                <button
-                                    class="action-button status-button"
-                                    onclick="changeApplicationStatus('${escapeJs(
-                                        app.applicationId
-                                    )}')">
-
-                                    ⚙ Status
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-function setupSearchEvents() {
-
-    const search =
-        document.getElementById(
-            "applicationSearch"
-        );
-
-
-    const filter =
-        document.getElementById(
-            "applicationStatusFilter"
-        );
-
-
-    if (search) {
-
-        search.addEventListener(
-            "input",
-            searchApplications
-        );
-
-    }
-
-
-    if (filter) {
-
-        filter.addEventListener(
-            "change",
-            searchApplications
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   SEARCH APPLICATIONS
-========================================================= */
-
-function searchApplications() {
-
-    const search =
-        normalize(
-            document.getElementById(
-                "applicationSearch"
-            )?.value
-        );
-
-
-    const filter =
-        normalize(
-            document.getElementById(
-                "applicationStatusFilter"
-            )?.value
-        );
-
-
-    const filtered =
-        allApplications.filter(
-            function (app) {
-
-                const text = [
-
-                    app.applicationId,
-
-                    app.applicant,
-
-                    app.englishName,
-
-                    app.gujaratiName,
-
-                    app.mobile,
-
-                    app.retailerId,
-
-                    app.service
-
-                ]
-                    .join(" ")
-                    .toLowerCase();
-
-
-                const matchesSearch =
-                    !search ||
-                    text.includes(
-                        search
-                    );
-
-
-                const matchesStatus =
-                    !filter ||
-                    normalize(
-                        app.applicationStatus
-                    ) === filter;
-
-
-                return (
-                    matchesSearch &&
-                    matchesStatus
-                );
-
-            }
-        );
-
-
-    renderApplications(
-        filtered
-    );
-
-}
-
-
-/* =========================================================
-   VIEW APPLICATION
-========================================================= */
-
-function viewApplication(
-    applicationId
-) {
-
-    const app =
-        allApplications.find(
-            function (item) {
-
-                return String(
-                    item.applicationId
-                )
-                    .toUpperCase() ===
-                    String(
-                        applicationId
-                    )
-                        .toUpperCase();
-
-            }
-        );
-
-
-    if (!app) {
-
-        alert(
-            "Application not found."
-        );
-
-        return;
-
-    }
-
-
-    const details =
-        document.getElementById(
-            "applicationDetails"
-        );
-
-
-    if (!details) return;
-
-
-    details.innerHTML = `
-
-        <div class="detail-grid">
-
-            ${detail(
-                "Application ID",
-                app.applicationId
-            )}
-
-            ${detail(
-                "Date",
-                app.date
-            )}
-
-            ${detail(
-                "Retailer ID",
-                app.retailerId
-            )}
-
-            ${detail(
-                "Retailer Mobile",
-                app.retailerMobile
-            )}
-
-            ${detail(
-                "Applicant",
-                app.applicant
-            )}
-
-            ${detail(
-                "English Name",
-                app.englishName
-            )}
-
-            ${detail(
-                "Gujarati Name",
-                app.gujaratiName
-            )}
-
-            ${detail(
-                "Service",
-                app.service
-            )}
-
-            ${detail(
-                "Amount",
-                "₹" + formatAmount(app.amount)
-            )}
-
-            ${detail(
-                "RATIONCARD Number",
-                app.rationCardNo
-            )}
-
-            ${detail(
-                "Gender",
-                app.gender
-            )}
-
-            ${detail(
-                "Village",
-                app.village
-            )}
-
-            ${detail(
-                "Taluka",
-                app.taluka
-            )}
-
-            ${detail(
-                "District",
-                app.district
-            )}
-
-            ${detail(
-                "Pincode",
-                app.pincode
-            )}
-
-            ${detail(
-                "Mobile",
-                app.mobile
-            )}
-
-            ${detail(
-                "Email",
-                app.email
-            )}
-
-            ${detail(
-                "Birth Date",
-                app.birthDate
-            )}
-
-            ${detail(
-                "Birth Year",
-                app.birthYear
-            )}
-
-            ${detail(
-                "RATIONCARD Status",
-                app.rationcardStatus
-            )}
-
-            ${detail(
-                "UTR Number",
-                app.utrNumber
-            )}
-
-            ${detail(
-                "Payment Status",
-                app.paymentStatus
-            )}
-
-            ${detail(
-                "Application Status",
-                app.applicationStatus
-            )}
-
-            ${detail(
-                "Admin Remark",
-                app.remark
-            )}
-
-            ${detail(
-                "Last Updated",
-                app.updatedAt
-            )}
-
-        </div>
-
-        <div style="
-            margin-top:20px;
-            display:flex;
-            gap:10px;
-            flex-wrap:wrap;
-        ">
-
-            ${
-                app.aadhaarFileUrl
-                ? `<a href="${escapeAttribute(app.aadhaarFileUrl)}"
-                     target="_blank"
-                     class="action-button view-button">
-                     📄 Aadhaar
-                   </a>`
-                : ""
-            }
-
-            ${
-                app.rationcardFileUrl
-                ? `<a href="${escapeAttribute(app.rationcardFileUrl)}"
-                     target="_blank"
-                     class="action-button view-button">
-                     📄 Rationcard
-                   </a>`
-                : ""
-            }
-
-            ${
-                app.paymentScreenshotUrl
-                ? `<a href="${escapeAttribute(app.paymentScreenshotUrl)}"
-                     target="_blank"
-                     class="action-button view-button">
-                     💳 Payment Screenshot
-                   </a>`
-                : ""
-            }
-
-        </div>
-    `;
-
-
-    document
-        .getElementById(
-            "applicationModal"
-        )
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-/* =========================================================
-   CHANGE APPLICATION STATUS
-========================================================= */
-
-async function changeApplicationStatus(
-    applicationId
-) {
-
-    const status =
-        prompt(
-            "Status પસંદ કરો:\n\n" +
-            "Submitted\n" +
-            "Processing\n" +
-            "Completed\n" +
-            "Rejected",
-            "Processing"
-        );
-
-
-    if (!status) return;
-
-
-    const validStatuses = [
-
-        "Submitted",
-        "Processing",
-        "Completed",
-        "Rejected"
-
-    ];
-
-
-    const selected =
-        validStatuses.find(
-            function (item) {
-
-                return (
-                    item.toLowerCase() ===
-                    status.trim().toLowerCase()
-                );
-
-            }
-        );
-
-
-    if (!selected) {
-
-        alert(
-            "Invalid status."
-        );
-
-        return;
-
-    }
-
-
-    const remark =
-        prompt(
-            "Admin Remark (optional):",
-            ""
-        );
-
-
-    try {
-
-        const result =
-            await apiRequest(
-                "updateApplicationStatus",
-                {
-
-                    applicationId:
-                        applicationId,
-
-                    status:
-                        selected,
-
-                    remark:
-                        remark || ""
-
-                }
-            );
-
-
-        if (
-            result.success
-        ) {
-
-            alert(
-                "✅ Application status updated."
-            );
-
-
-            await loadDashboard();
-
-        } else {
-
-            alert(
-                result.message ||
-                "Update failed."
-            );
-
-        }
-
-
-    } catch (error) {
-
-        alert(
-            "❌ " +
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   PAYMENT STATUS
-========================================================= */
-
-async function updatePaymentStatus() {
-
-    const applicationId =
-        document
-            .getElementById(
-                "paymentApplicationId"
-            )
-            .value
-            .trim();
-
-
-    const status =
-        document
-            .getElementById(
-                "paymentStatusSelect"
-            )
-            .value;
-
-
-    const message =
-        document.getElementById(
-            "paymentMessage"
-        );
-
-
-    if (
-        !applicationId ||
-        !status
-    ) {
-
-        showMessage(
-            message,
-            "Application ID અને Payment Status પસંદ કરો.",
-            false
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const result =
-            await apiRequest(
-                "updatePaymentStatus",
-                {
-
-                    applicationId:
-                        applicationId,
-
-                    status:
-                        status
-
-                }
-            );
-
-
-        if (
-            result.success
-        ) {
-
-            showMessage(
-                message,
-                "✅ Payment status updated successfully.",
-                true
-            );
-
-
-            await loadDashboard();
-
-
-        } else {
-
-            showMessage(
-                message,
-                result.message ||
-                "Payment update failed.",
-                false
-            );
-
-        }
-
-
-    } catch (error) {
-
-        showMessage(
-            message,
-            "❌ " +
-            error.message,
-            false
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CREATE RETAILER FORM
-========================================================= */
+/* ============================================================
+   RETAILER FORM SETUP
+   ============================================================ */
 
 function setupRetailerForm() {
 
-    const form =
-        document.getElementById(
-            "createRetailerForm"
-        );
-
-
-    if (!form) return;
-
-
-    form.addEventListener(
-        "submit",
-        async function (event) {
-
-            event.preventDefault();
-
-
-            await createRetailer();
-
-        }
+  const form =
+    document.querySelector(
+      "#retailerForm"
     );
+
+
+  if (!form) {
+
+    console.warn(
+      "retailerForm not found."
+    );
+
+    return;
+
+  }
+
+
+  form.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+      await createRetailer(
+        form
+      );
+
+    }
+  );
+
+
+  const emailInput =
+    form.querySelector(
+      '[name="email"]'
+    );
+
+
+  if (emailInput) {
+
+    emailInput.required =
+      true;
+
+    emailInput.type =
+      "email";
+
+    emailInput.setAttribute(
+      "autocomplete",
+      "email"
+    );
+
+  }
 
 }
 
 
-/* =========================================================
+/* ============================================================
    CREATE RETAILER
-========================================================= */
+   ============================================================ */
 
-async function createRetailer() {
+async function createRetailer(
+  form
+) {
 
-    const name =
-        document
-            .getElementById(
-                "newRetailerName"
-            )
-            .value
-            .trim();
+  const button =
+    form.querySelector(
+      'button[type="submit"]'
+    );
+
+
+  try {
+
+    const retailerName =
+      getValue(
+        form,
+        [
+          "retailerName",
+          "name",
+          "fullName"
+        ]
+      );
 
 
     const mobile =
-        document
-            .getElementById(
-                "newRetailerMobile"
-            )
-            .value
-            .trim();
+      getValue(
+        form,
+        [
+          "mobile",
+          "phone",
+          "mobileNumber"
+        ]
+      );
 
 
     const email =
-        document
-            .getElementById(
-                "newRetailerEmail"
-            )
-            .value
-            .trim();
-
-
-    const retailerId =
-        document
-            .getElementById(
-                "newRetailerId"
-            )
-            .value
-            .trim();
+      getValue(
+        form,
+        [
+          "email",
+          "emailId"
+        ]
+      );
 
 
     const username =
-        document
-            .getElementById(
-                "newRetailerUsername"
-            )
-            .value
-            .trim();
+      getValue(
+        form,
+        [
+          "username",
+          "userName",
+          "user"
+        ]
+      );
 
 
     const password =
-        document
-            .getElementById(
-                "newRetailerPassword"
-            )
-            .value;
+      getValue(
+        form,
+        [
+          "password",
+          "pass"
+        ]
+      );
 
 
-    const message =
-        document.getElementById(
-            "retailerCreateMessage"
-        );
+    /* --------------------------------------------------------
+       VALIDATION
+       -------------------------------------------------------- */
 
+    if (!retailerName) {
 
-    if (
-        !name ||
-        !mobile ||
-        !retailerId ||
-        !username ||
-        !password
-    ) {
+      showMessage(
+        "Retailer Name નાખો.",
+        "error"
+      );
 
-        showMessage(
-            message,
-            "બધી જરૂરી વિગતો ભરો.",
-            false
-        );
-
-        return;
+      return;
 
     }
 
 
+    const mobileDigits =
+      mobile.replace(
+        /\D/g,
+        ""
+      );
+
+
     if (
-        !/^[0-9]{10}$/.test(
-            mobile
+      mobileDigits.length < 10
+    ) {
+
+      showMessage(
+        "Valid 10 digit Mobile Number નાખો.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (!email) {
+
+      showMessage(
+        "Retailer Email નાખવો ફરજિયાત છે.",
+        "error"
+      );
+
+      const emailInput =
+        form.querySelector(
+          '[name="email"]'
+        );
+
+
+      if (emailInput) {
+
+        emailInput.focus();
+
+      }
+
+      return;
+
+    }
+
+
+    const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+    if (
+      !emailPattern.test(email)
+    ) {
+
+      showMessage(
+        "Valid Email Address નાખો.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (!username) {
+
+      showMessage(
+        "Username નાખો.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (!password) {
+
+      showMessage(
+        "Password નાખો.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    /* --------------------------------------------------------
+       LOADING
+       -------------------------------------------------------- */
+
+    setButtonLoading(
+      button,
+      true,
+      "Creating Retailer..."
+    );
+
+
+    showMessage(
+      "Retailer account બનાવવામાં આવી રહ્યું છે...",
+      "info"
+    );
+
+
+    /* --------------------------------------------------------
+       API
+       -------------------------------------------------------- */
+
+    const result =
+      await apiRequest(
+        "createRetailer",
+        {
+
+          retailerName:
+            retailerName,
+
+          mobile:
+            mobile,
+
+          email:
+            email,
+
+          username:
+            username,
+
+          password:
+            password
+
+        }
+      );
+
+
+    console.log(
+      "Create Retailer Result:",
+      result
+    );
+
+
+    /* --------------------------------------------------------
+       RESULT
+       -------------------------------------------------------- */
+
+    if (
+      result.success
+    ) {
+
+      let message =
+        "✅ Retailer successfully created!\n\n" +
+        "Retailer ID: " +
+        (
+          result.retailerId ||
+          "-"
+        ) +
+        "\n\n";
+
+
+      if (
+        result.emailSent === true
+      ) {
+
+        message +=
+          "📧 Login details Email પર successfully મોકલવામાં આવ્યા છે.";
+
+        showMessage(
+          message,
+          "success"
+        );
+
+      } else {
+
+        message +=
+          "⚠️ Retailer create થઈ ગયો છે, પરંતુ Email મોકલવામાં આવ્યો નથી.";
+
+
+        if (
+          result.emailMessage
+        ) {
+
+          message +=
+            "\n\nReason: " +
+            result.emailMessage;
+
+        }
+
+
+        showMessage(
+          message,
+          "warning"
+        );
+
+      }
+
+
+      /* ------------------------------------------------------
+         RESET FORM
+         ------------------------------------------------------ */
+
+      form.reset();
+
+
+      /* ------------------------------------------------------
+         RELOAD DATA
+         ------------------------------------------------------ */
+
+      await loadRetailers();
+
+      await loadDashboard();
+
+    } else {
+
+      showMessage(
+        "❌ " +
+        (
+          result.message ||
+          "Retailer create failed."
+        ),
+        "error"
+      );
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Create retailer error:",
+      error
+    );
+
+
+    showMessage(
+      "❌ Retailer create error:\n" +
+      error.message,
+      "error"
+    );
+
+  } finally {
+
+    setButtonLoading(
+      button,
+      false
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   LOAD RETAILERS
+   ============================================================ */
+
+async function loadRetailers() {
+
+  try {
+
+    const result =
+      await apiRequest(
+        "testAllDatabases"
+      );
+
+
+    if (
+      !result ||
+      !result.retailer
+    ) {
+
+      return;
+
+    }
+
+
+    const tableBody =
+      document.querySelector(
+        "#retailerTableBody"
+      );
+
+
+    if (!tableBody) {
+
+      return;
+
+    }
+
+
+    /*
+     * અહીં backendમાં અલગ getRetailers action નથી,
+     * એટલે page પર retailer list જરૂરી હોય તો
+     * backendમાં getRetailers action add કરી શકાય.
+     */
+
+  } catch (error) {
+
+    console.error(
+      "Load retailers error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   LOAD DASHBOARD
+   ============================================================ */
+
+async function loadDashboard() {
+
+  try {
+
+    const result =
+      await apiRequest(
+        "getAllApplications"
+      );
+
+
+    if (
+      !result ||
+      !result.success
+    ) {
+
+      return;
+
+    }
+
+
+    const applications =
+      Array.isArray(
+        result.applications
+      )
+        ? result.applications
+        : [];
+
+
+    updateDashboardStats(
+      applications
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Dashboard load error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   DASHBOARD STATS
+   ============================================================ */
+
+function updateDashboardStats(
+  applications
+) {
+
+  const total =
+    applications.length;
+
+
+  let pending =
+    0;
+
+  let processing =
+    0;
+
+  let completed =
+    0;
+
+  let rejected =
+    0;
+
+
+  applications.forEach(
+    function (app) {
+
+      const status =
+        String(
+          app["Application Status"] ||
+          ""
         )
-    ) {
-
-        showMessage(
-            message,
-            "Valid 10 digit mobile number નાખો.",
-            false
-        );
-
-        return;
-
-    }
+          .trim()
+          .toLowerCase();
 
 
-    try {
+      if (
+        status === "pending"
+      ) {
 
-        const result =
-            await apiRequest(
-                "createRetailer",
-                {
+        pending++;
 
-                    retailerId:
-                        retailerId,
+      } else if (
+        status === "processing"
+      ) {
 
-                    retailerName:
-                        name,
+        processing++;
 
-                    mobile:
-                        mobile,
+      } else if (
+        status === "completed" ||
+        status === "complete" ||
+        status === "successful" ||
+        status === "success"
+      ) {
 
-                    email:
-                        email,
+        completed++;
 
-                    username:
-                        username,
+      } else if (
+        status === "rejected" ||
+        status === "failed"
+      ) {
 
-                    password:
-                        password
+        rejected++;
 
-                }
-            );
-
-
-        if (
-            result.success
-        ) {
-
-            showMessage(
-                message,
-                "✅ Retailer successfully created. ID: " +
-                result.retailerId,
-                true
-            );
-
-
-            document
-                .getElementById(
-                    "createRetailerForm"
-                )
-                .reset();
-
-
-        } else {
-
-            showMessage(
-                message,
-                result.message ||
-                "Retailer create failed.",
-                false
-            );
-
-        }
-
-
-    } catch (error) {
-
-        showMessage(
-            message,
-            "❌ " +
-            error.message,
-            false
-        );
+      }
 
     }
+  );
+
+
+  setText(
+    [
+      "#totalApplications",
+      "#totalCount",
+      "[data-stat='total']"
+    ],
+    total
+  );
+
+
+  setText(
+    [
+      "#pendingApplications",
+      "#pendingCount",
+      "[data-stat='pending']"
+    ],
+    pending
+  );
+
+
+  setText(
+    [
+      "#processingApplications",
+      "#processingCount",
+      "[data-stat='processing']"
+    ],
+    processing
+  );
+
+
+  setText(
+    [
+      "#completedApplications",
+      "#completedCount",
+      "[data-stat='completed']"
+    ],
+    completed
+  );
+
+
+  setText(
+    [
+      "#rejectedApplications",
+      "#rejectedCount",
+      "[data-stat='rejected']"
+    ],
+    rejected
+  );
 
 }
 
 
-/* =========================================================
-   SHOW ADMIN PANEL
-========================================================= */
-
-function showAdminPanel(
-    panelId
-) {
-
-    const panels = [
-
-        "applicationsPanel",
-        "retailerPanel",
-        "paymentPanel",
-        "settingsPanel"
-
-    ];
-
-
-    panels.forEach(
-        function (id) {
-
-            const panel =
-                document.getElementById(
-                    id
-                );
-
-
-            if (!panel) return;
-
-
-            if (
-                id === panelId
-            ) {
-
-                panel.classList.remove(
-                    "admin-hidden"
-                );
-
-            } else {
-
-                panel.classList.add(
-                    "admin-hidden"
-                );
-
-            }
-
-        }
-    );
-
-
-    const panel =
-        document.getElementById(
-            panelId
-        );
-
-
-    if (panel) {
-
-        panel.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    }
-
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-function adminLogout() {
-
-    isAdminLoggedIn =
-        false;
-
-
-    allApplications =
-        [];
-
-
-    sessionStorage.removeItem(
-        "rajkumarAdminLoggedIn"
-    );
-
-
-    sessionStorage.removeItem(
-        "rajkumarAdminRole"
-    );
-
-
-    const form =
-        document.getElementById(
-            "adminLoginForm"
-        );
-
-
-    if (form) {
-
-        form.reset();
-
-    }
-
-
-    const message =
-        document.getElementById(
-            "adminLoginMessage"
-        );
-
-
-    if (message) {
-
-        message.className =
-            "admin-login-message";
-
-        message.textContent =
-            "";
-
-    }
-
-
-    showLogin();
-
-}
-
-
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
-
-function closeApplicationModal() {
-
-    const modal =
-        document.getElementById(
-            "applicationModal"
-        );
-
-
-    if (modal) {
-
-        modal.classList.remove(
-            "show"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CLOSE MODAL WHEN BACKGROUND CLICK
-========================================================= */
-
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const modal =
-            document.getElementById(
-                "applicationModal"
-            );
-
-
-        if (
-            modal &&
-            event.target === modal
-        ) {
-
-            closeApplicationModal();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function normalize(
-    value
-) {
-
-    return String(
-        value || ""
-    )
-        .trim()
-        .toLowerCase();
-
-}
-
+/* ============================================================
+   SET TEXT
+   ============================================================ */
 
 function setText(
-    id,
-    value
+  selectors,
+  value
 ) {
 
+  for (
+    const selector of selectors
+  ) {
+
     const element =
-        document.getElementById(
-            id
-        );
+      document.querySelector(
+        selector
+      );
 
 
     if (element) {
 
-        element.textContent =
-            value;
+      element.textContent =
+        value;
+
+      return;
 
     }
+
+  }
 
 }
 
 
-function formatAmount(
-    amount
-) {
+/* ============================================================
+   LOAD APPLICATIONS
+   ============================================================ */
 
-    const number =
-        Number(
-            amount || 0
-        );
+async function loadApplications() {
+
+  try {
+
+    const result =
+      await apiRequest(
+        "getAllApplications"
+      );
 
 
-    return number.toLocaleString(
-        "en-IN",
-        {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-        }
+    if (
+      !result ||
+      !result.success
+    ) {
+
+      console.error(
+        result
+      );
+
+      return;
+
+    }
+
+
+    window.adminApplications =
+      Array.isArray(
+        result.applications
+      )
+        ? result.applications
+        : [];
+
+
+    renderApplications(
+      window.adminApplications
     );
 
+
+  } catch (error) {
+
+    console.error(
+      "Applications load error:",
+      error
+    );
+
+  }
+
 }
 
 
-function statusBadge(
-    status,
-    type
+/* ============================================================
+   RENDER APPLICATIONS
+   ============================================================ */
+
+function renderApplications(
+  applications
 ) {
 
-    const value =
-        String(
-            status ||
-            "Pending"
+  const tbody =
+    document.querySelector(
+      "#applicationTableBody"
+    );
+
+
+  if (!tbody) {
+
+    return;
+
+  }
+
+
+  tbody.innerHTML =
+    "";
+
+
+  if (
+    !applications.length
+  ) {
+
+    const tr =
+      document.createElement(
+        "tr"
+      );
+
+
+    tr.innerHTML =
+      '<td colspan="20" style="text-align:center;">No applications found.</td>';
+
+
+    tbody.appendChild(
+      tr
+    );
+
+
+    return;
+
+  }
+
+
+  applications.forEach(
+    function (app) {
+
+      const tr =
+        document.createElement(
+          "tr"
         );
 
 
-    const normalized =
-        normalize(
-            value
+      const applicationId =
+        app["Application ID"] ||
+        "";
+
+
+      const date =
+        app["Application Date"] ||
+        "";
+
+
+      const name =
+        app["Applicant Name"] ||
+        app["English Name"] ||
+        "";
+
+
+      const mobile =
+        app["Mobile"] ||
+        "";
+
+
+      const service =
+        app["Service Name"] ||
+        "";
+
+
+      const amount =
+        app["Amount"] ||
+        "";
+
+
+      const payment =
+        app["Payment Status"] ||
+        "Pending";
+
+
+      const status =
+        app["Application Status"] ||
+        "Pending";
+
+
+      tr.innerHTML =
+
+        "<td>" +
+        escapeHtml(applicationId) +
+        "</td>" +
+
+        "<td>" +
+        escapeHtml(date) +
+        "</td>" +
+
+        "<td>" +
+        escapeHtml(name) +
+        "</td>" +
+
+        "<td>" +
+        escapeHtml(mobile) +
+        "</td>" +
+
+        "<td>" +
+        escapeHtml(service) +
+        "</td>" +
+
+        "<td>₹" +
+        escapeHtml(amount) +
+        "</td>" +
+
+        "<td>" +
+        escapeHtml(payment) +
+        "</td>" +
+
+        "<td>" +
+        escapeHtml(status) +
+        "</td>";
+
+
+      tbody.appendChild(
+        tr
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   APPLICATION EVENTS
+   ============================================================ */
+
+function setupApplicationEvents() {
+
+  const searchInput =
+    document.querySelector(
+      "#applicationSearch"
+    );
+
+
+  if (
+    searchInput
+  ) {
+
+    searchInput.addEventListener(
+      "input",
+      function () {
+
+        filterApplications(
+          searchInput.value
         );
 
+      }
+    );
 
-    let className =
-        "status-pending";
+  }
+
+
+  const statusFilter =
+    document.querySelector(
+      "#statusFilter"
+    );
+
+
+  if (
+    statusFilter
+  ) {
+
+    statusFilter.addEventListener(
+      "change",
+      function () {
+
+        filterApplications();
+
+      }
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   FILTER APPLICATIONS
+   ============================================================ */
+
+function filterApplications(
+  searchValue = null
+) {
+
+  const applications =
+    window.adminApplications ||
+    [];
+
+
+  const searchInput =
+    document.querySelector(
+      "#applicationSearch"
+    );
+
+
+  const statusFilter =
+    document.querySelector(
+      "#statusFilter"
+    );
+
+
+  const search =
+    (
+      searchValue !== null
+        ? searchValue
+        : searchInput
+          ? searchInput.value
+          : ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const status =
+    statusFilter
+      ? statusFilter.value
+      : "";
+
+
+  const filtered =
+    applications.filter(
+      function (app) {
+
+        const id =
+          String(
+            app["Application ID"] ||
+            ""
+          ).toLowerCase();
+
+
+        const name =
+          String(
+            app["Applicant Name"] ||
+            app["English Name"] ||
+            ""
+          ).toLowerCase();
+
+
+        const mobile =
+          String(
+            app["Mobile"] ||
+            ""
+          ).toLowerCase();
+
+
+        const appStatus =
+          String(
+            app["Application Status"] ||
+            ""
+          ).toLowerCase();
+
+
+        const matchesSearch =
+          !search ||
+          id.includes(search) ||
+          name.includes(search) ||
+          mobile.includes(search);
+
+
+        const matchesStatus =
+          !status ||
+          appStatus ===
+            status.toLowerCase();
+
+
+        return (
+          matchesSearch &&
+          matchesStatus
+        );
+
+      }
+    );
+
+
+  renderApplications(
+    filtered
+  );
+
+}
+
+
+/* ============================================================
+   UPDATE APPLICATION STATUS
+   ============================================================ */
+
+async function changeApplicationStatus(
+  applicationId,
+  status,
+  remark = ""
+) {
+
+  try {
+
+    const result =
+      await apiRequest(
+        "updateApplicationStatus",
+        {
+
+          applicationId:
+            applicationId,
+
+          status:
+            status,
+
+          remark:
+            remark
+
+        }
+      );
 
 
     if (
-        normalized.includes(
-            "completed"
-        )
+      result.success
     ) {
 
-        className =
-            "status-completed";
+      showMessage(
+        "✅ Application status updated successfully.",
+        "success"
+      );
 
-    } else if (
-        normalized.includes(
-            "processing"
-        )
-    ) {
 
-        className =
-            "status-processing";
+      await loadApplications();
 
-    } else if (
-        normalized.includes(
-            "rejected"
-        )
-    ) {
+      await loadDashboard();
 
-        className =
-            "status-rejected";
 
-    } else if (
-        normalized.includes(
-            "received"
-        ) ||
-        normalized.includes(
-            "verified"
-        )
-    ) {
+    } else {
 
-        className =
-            "status-paid";
+      showMessage(
+        "❌ " +
+        (
+          result.message ||
+          "Status update failed."
+        ),
+        "error"
+      );
 
     }
 
 
-    return `
-        <span class="status ${className}">
-            ${escapeHtml(value)}
-        </span>
-    `;
+    return result;
+
+
+  } catch (error) {
+
+    showMessage(
+      "❌ " +
+      error.message,
+      "error"
+    );
+
+
+    return {
+      success: false,
+      message: error.message
+    };
+
+  }
 
 }
 
 
-function detail(
-    label,
-    value
+/* ============================================================
+   UPDATE PAYMENT STATUS
+   ============================================================ */
+
+async function changePaymentStatus(
+  applicationId,
+  status
 ) {
 
-    return `
-        <div class="detail-box">
+  try {
 
-            <strong>
-                ${escapeHtml(label)}
-            </strong>
+    const result =
+      await apiRequest(
+        "updatePaymentStatus",
+        {
 
-            <span>
-                ${escapeHtml(
-                    value || "-"
-                )}
-            </span>
+          applicationId:
+            applicationId,
 
-        </div>
-    `;
+          paymentStatus:
+            status
 
-}
-
-
-function showMessage(
-    element,
-    text,
-    success
-) {
-
-    if (!element) return;
-
-
-    element.className =
-        success
-            ? "admin-login-message message-success"
-            : "admin-login-message message-error";
+        }
+      );
 
 
     if (
-        element.classList.contains(
-            "panel-message"
-        )
+      result.success
     ) {
 
-        element.className =
-            success
-                ? "panel-message message-success"
-                : "panel-message message-error";
+      showMessage(
+        "✅ Payment status updated.",
+        "success"
+      );
+
+
+      await loadApplications();
+
+
+    } else {
+
+      showMessage(
+        "❌ " +
+        (
+          result.message ||
+          "Payment update failed."
+        ),
+        "error"
+      );
 
     }
 
 
-    element.textContent =
-        text;
+    return result;
 
 
-    element.style.display =
-        "block";
+  } catch (error) {
+
+    showMessage(
+      "❌ " +
+      error.message,
+      "error"
+    );
+
+
+    return {
+      success: false,
+      message: error.message
+    };
+
+  }
 
 }
 
+
+/* ============================================================
+   LOGOUT
+   ============================================================ */
+
+function setupLogout() {
+
+  const buttons =
+    document.querySelectorAll(
+      "#logoutBtn, .logout-btn, [data-action='logout']"
+    );
+
+
+  buttons.forEach(
+    function (button) {
+
+      button.addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+          logoutAdmin();
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+function logoutAdmin() {
+
+  try {
+
+    localStorage.removeItem(
+      "adminLoggedIn"
+    );
+
+    localStorage.removeItem(
+      "admin"
+    );
+
+    localStorage.removeItem(
+      "adminUser"
+    );
+
+    sessionStorage.removeItem(
+      "adminLoggedIn"
+    );
+
+    sessionStorage.removeItem(
+      "admin"
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  window.location.href =
+    "login.html";
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+   ============================================================ */
 
 function escapeHtml(
-    value
+  value
 ) {
 
-    return String(
-        value ?? ""
+  return String(
+    value === null ||
+    value === undefined
+      ? ""
+      : value
+  )
+    .replace(
+      /&/g,
+      "&amp;"
     )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-function escapeJs(
-    value
-) {
-
-    return String(
-        value ?? ""
+    .replace(
+      /</g,
+      "&lt;"
     )
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        )
-        .replace(
-            /"/g,
-            '\\"'
-        )
-        .replace(
-            /\n/g,
-            "\\n"
-        )
-        .replace(
-            /\r/g,
-            "\\r"
-        );
-
-}
-
-
-function escapeAttribute(
-    value
-) {
-
-    return escapeHtml(
-        value
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
     );
 
 }
 
 
-/* =========================================================
-   PREVENT BACK BUTTON FROM SHOWING DASHBOARD
-   AFTER LOGOUT
-========================================================= */
+/* ============================================================
+   GLOBAL FUNCTIONS
+   ============================================================ */
 
-window.addEventListener(
-    "pageshow",
-    function () {
+window.createRetailer =
+  function () {
 
-        checkAdminSession();
+    const form =
+      document.querySelector(
+        "#retailerForm"
+      );
+
+
+    if (form) {
+
+      return createRetailer(
+        form
+      );
 
     }
+
+  };
+
+
+window.loadApplications =
+  loadApplications;
+
+
+window.loadDashboard =
+  loadDashboard;
+
+
+window.changeApplicationStatus =
+  changeApplicationStatus;
+
+
+window.changePaymentStatus =
+  changePaymentStatus;
+
+
+window.logoutAdmin =
+  logoutAdmin;
+
+
+/* ============================================================
+   PREVENT DOUBLE SUBMIT
+   ============================================================ */
+
+document.addEventListener(
+  "submit",
+  function (event) {
+
+    const form =
+      event.target;
+
+
+    if (
+      form &&
+      form.id ===
+        "retailerForm"
+    ) {
+
+      /*
+       * setupRetailerForm already handles it.
+       * This block intentionally does nothing.
+       */
+
+    }
+
+  }
 );
-
-
-/* =========================================================
-   END
-========================================================= */
