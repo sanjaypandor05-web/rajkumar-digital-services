@@ -1,27 +1,25 @@
 /* ============================================================
    RAJKUMAR RATIONCARD SERVICES
-   ADMIN.JS - COMPLETE FINAL VERSION
+   ADMIN.JS - COMPLETE FINAL
    ------------------------------------------------------------
-   Features:
-   - Admin Login
-   - Dashboard
-   - Retailer Create
-   - Retailer Email Required
-   - Retailer List
-   - Applications
-   - Payment Status
-   - Application Status
-   - Search
-   - Logout
-   - API Error Handling
+   FIXED:
+   ✅ Admin Login
+   ✅ Admin Session
+   ✅ Dashboard
+   ✅ Create Retailer
+   ✅ Retailer Email Required
+   ✅ Email result display
+   ✅ Applications
+   ✅ Search
+   ✅ Payment Status
+   ✅ Application Status
+   ✅ Logout
    ============================================================ */
 
 "use strict";
 
 /* ============================================================
-   API URL
-   IMPORTANT:
-   અહીં તમારું DEPLOYED GOOGLE APPS SCRIPT WEB APP URL મૂકો
+   GOOGLE APPS SCRIPT WEB APP URL
    ============================================================ */
 
 const API_URL =
@@ -40,10 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /* ============================================================
-   INITIALIZE ADMIN PAGE
+   INITIALIZE
    ============================================================ */
 
 function initAdminPage() {
+
+  setupAdminLogin();
 
   setupLogout();
 
@@ -51,11 +51,7 @@ function initAdminPage() {
 
   setupApplicationEvents();
 
-  loadDashboard();
-
-  loadRetailers();
-
-  loadApplications();
+  checkAdminSession();
 
 }
 
@@ -79,29 +75,35 @@ async function apiRequest(action, data = {}) {
 
     }
 
+    const response = await fetch(API_URL, {
 
-    const response =
-      await fetch(API_URL, {
+      method: "POST",
 
-        method: "POST",
+      headers: {
+        "Content-Type":
+          "text/plain;charset=utf-8"
+      },
 
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
+      body: JSON.stringify({
 
-        body: JSON.stringify({
+        action: action,
 
-          action: action,
+        ...data
 
-          ...data
+      })
 
-        })
-
-      });
+    });
 
 
     const text =
       await response.text();
+
+
+    console.log(
+      "API Response:",
+      action,
+      text
+    );
 
 
     let result;
@@ -112,7 +114,7 @@ async function apiRequest(action, data = {}) {
       result =
         JSON.parse(text);
 
-    } catch (error) {
+    } catch (e) {
 
       throw new Error(
         "Server તરફથી valid JSON response મળ્યો નથી."
@@ -137,9 +139,9 @@ async function apiRequest(action, data = {}) {
 
     console.error(
       "API Error:",
+      action,
       error
     );
-
 
     throw error;
 
@@ -149,7 +151,7 @@ async function apiRequest(action, data = {}) {
 
 
 /* ============================================================
-   ELEMENT HELPER
+   ELEMENT HELPERS
    ============================================================ */
 
 function $(selector) {
@@ -167,7 +169,7 @@ function $all(selector) {
 
 
 /* ============================================================
-   SHOW MESSAGE
+   MESSAGE
    ============================================================ */
 
 function showMessage(
@@ -197,10 +199,13 @@ function showMessage(
       "20px";
 
     box.style.zIndex =
-      "99999";
+      "999999";
 
     box.style.maxWidth =
-      "420px";
+      "450px";
+
+    box.style.whiteSpace =
+      "pre-line";
 
     box.style.padding =
       "14px 18px";
@@ -209,7 +214,7 @@ function showMessage(
       "10px";
 
     box.style.fontWeight =
-      "600";
+      "700";
 
     box.style.boxShadow =
       "0 5px 20px rgba(0,0,0,.2)";
@@ -233,9 +238,9 @@ function showMessage(
     box.style.color =
       "#065f46";
 
-  } else if (
-    type === "error"
-  ) {
+  }
+
+  else if (type === "error") {
 
     box.style.background =
       "#fee2e2";
@@ -243,9 +248,9 @@ function showMessage(
     box.style.color =
       "#991b1b";
 
-  } else if (
-    type === "warning"
-  ) {
+  }
+
+  else if (type === "warning") {
 
     box.style.background =
       "#fef3c7";
@@ -253,7 +258,9 @@ function showMessage(
     box.style.color =
       "#92400e";
 
-  } else {
+  }
+
+  else {
 
     box.style.background =
       "#dbeafe";
@@ -281,8 +288,566 @@ function showMessage(
           "none";
 
       },
-      5000
+      6000
     );
+
+}
+
+
+/* ============================================================
+   ADMIN LOGIN
+   ============================================================ */
+
+function setupAdminLogin() {
+
+  const form =
+    $("#adminLoginForm");
+
+
+  if (!form) {
+
+    console.warn(
+      "adminLoginForm not found."
+    );
+
+    return;
+
+  }
+
+
+  form.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+      await adminLogin();
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   ADMIN LOGIN FUNCTION
+   ============================================================ */
+
+async function adminLogin() {
+
+  const usernameInput =
+    $("#adminId");
+
+  const passwordInput =
+    $("#adminPassword");
+
+  const button =
+    $("#adminLoginButton");
+
+  const message =
+    $("#adminLoginMessage");
+
+
+  const username =
+    usernameInput
+      ? usernameInput.value.trim()
+      : "";
+
+
+  const password =
+    passwordInput
+      ? passwordInput.value.trim()
+      : "";
+
+
+  if (!username) {
+
+    showLoginMessage(
+      "Admin ID નાખો.",
+      "error"
+    );
+
+    if (usernameInput)
+      usernameInput.focus();
+
+    return;
+
+  }
+
+
+  if (!password) {
+
+    showLoginMessage(
+      "Password નાખો.",
+      "error"
+    );
+
+    if (passwordInput)
+      passwordInput.focus();
+
+    return;
+
+  }
+
+
+  if (button) {
+
+    button.disabled =
+      true;
+
+    button.innerHTML =
+      "⏳ Login Checking...";
+
+  }
+
+
+  showLoginMessage(
+    "Admin login checking...",
+    "info"
+  );
+
+
+  try {
+
+    /*
+     * IMPORTANT:
+     * Code.gs માં action = adminLogin હોવું જોઈએ.
+     */
+
+    const result =
+      await apiRequest(
+        "adminLogin",
+        {
+
+          username:
+            username,
+
+          password:
+            password,
+
+          adminId:
+            username,
+
+          adminUsername:
+            username
+
+        }
+      );
+
+
+    console.log(
+      "ADMIN LOGIN RESULT:",
+      result
+    );
+
+
+    if (
+      result &&
+      result.success === true
+    ) {
+
+      /* =========================================
+         SAVE ADMIN SESSION
+         ========================================= */
+
+      try {
+
+        localStorage.setItem(
+          "adminLoggedIn",
+          "true"
+        );
+
+        localStorage.setItem(
+          "adminUser",
+          username
+        );
+
+        localStorage.setItem(
+          "admin",
+          JSON.stringify(
+            result.admin ||
+            {
+              username: username
+            }
+          )
+        );
+
+        sessionStorage.setItem(
+          "adminLoggedIn",
+          "true"
+        );
+
+      } catch (storageError) {
+
+        console.warn(
+          "Storage error:",
+          storageError
+        );
+
+      }
+
+
+      showLoginMessage(
+        "✅ Admin Login Successful",
+        "success"
+      );
+
+
+      setTimeout(
+        function () {
+
+          showAdminDashboard();
+
+        },
+        300
+      );
+
+
+    } else {
+
+      showLoginMessage(
+
+        "❌ " +
+        (
+          result &&
+          (
+            result.message ||
+            result.error
+          )
+        ?
+            (
+              result.message ||
+              result.error
+            )
+        :
+            "Wrong Admin ID અથવા Password."
+        ),
+
+        "error"
+
+      );
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Admin login error:",
+      error
+    );
+
+
+    showLoginMessage(
+
+      "❌ Login Error:\n" +
+      error.message,
+
+      "error"
+
+    );
+
+  } finally {
+
+    if (button) {
+
+      button.disabled =
+        false;
+
+      button.innerHTML =
+        "🔐 Login";
+
+    }
+
+  }
+
+}
+
+
+/* ============================================================
+   LOGIN MESSAGE
+   ============================================================ */
+
+function showLoginMessage(
+  message,
+  type
+) {
+
+  const box =
+    $("#adminLoginMessage");
+
+
+  if (!box) {
+
+    showMessage(
+      message,
+      type
+    );
+
+    return;
+
+  }
+
+
+  box.textContent =
+    message;
+
+
+  box.style.display =
+    "block";
+
+
+  box.className =
+    "admin-login-message";
+
+
+  if (type === "success") {
+
+    box.classList.add(
+      "message-success"
+    );
+
+  }
+
+  else if (type === "error") {
+
+    box.classList.add(
+      "message-error"
+    );
+
+  }
+
+  else {
+
+    box.style.background =
+      "#e3f2fd";
+
+    box.style.color =
+      "#0d47a1";
+
+  }
+
+}
+
+
+/* ============================================================
+   SESSION CHECK
+   ============================================================ */
+
+function checkAdminSession() {
+
+  let loggedIn = false;
+
+
+  try {
+
+    loggedIn =
+      localStorage.getItem(
+        "adminLoggedIn"
+      ) === "true";
+
+
+    if (!loggedIn) {
+
+      loggedIn =
+        sessionStorage.getItem(
+          "adminLoggedIn"
+        ) === "true";
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  if (loggedIn) {
+
+    showAdminDashboard();
+
+  } else {
+
+    showAdminLogin();
+
+  }
+
+}
+
+
+/* ============================================================
+   SHOW LOGIN
+   ============================================================ */
+
+function showAdminLogin() {
+
+  const login =
+    $("#adminLoginSection");
+
+  const dashboard =
+    $("#adminDashboardSection");
+
+
+  if (login) {
+
+    login.style.display =
+      "block";
+
+  }
+
+
+  if (dashboard) {
+
+    dashboard.classList.add(
+      "admin-hidden"
+    );
+
+    dashboard.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ============================================================
+   SHOW DASHBOARD
+   ============================================================ */
+
+async function showAdminDashboard() {
+
+  const login =
+    $("#adminLoginSection");
+
+  const dashboard =
+    $("#adminDashboardSection");
+
+
+  if (login) {
+
+    login.style.display =
+      "none";
+
+  }
+
+
+  if (dashboard) {
+
+    dashboard.classList.remove(
+      "admin-hidden"
+    );
+
+    dashboard.style.display =
+      "block";
+
+  }
+
+
+  /*
+   * હવે login થયા પછી જ data load થશે.
+   */
+
+  await loadDashboard();
+
+  await loadApplications();
+
+}
+
+
+/* ============================================================
+   RETAILER FORM SETUP
+   ============================================================ */
+
+function setupRetailerForm() {
+
+  /*
+   * HTML માં actual ID:
+   * createRetailerForm
+   *
+   * જૂના code માં retailerForm હતું.
+   */
+
+  const form =
+    document.querySelector(
+      "#createRetailerForm"
+    );
+
+
+  if (!form) {
+
+    console.warn(
+      "createRetailerForm not found."
+    );
+
+    return;
+
+  }
+
+
+  form.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+      await createRetailer(
+        form
+      );
+
+    }
+  );
+
+
+  const emailInput =
+    form.querySelector(
+      '[name="retailer_email"]'
+    );
+
+
+  if (emailInput) {
+
+    emailInput.required =
+      true;
+
+    emailInput.type =
+      "email";
+
+    emailInput.setAttribute(
+      "autocomplete",
+      "off"
+    );
+
+  }
+
+
+  /*
+   * Mobile number only digits
+   */
+
+  const mobileInput =
+    form.querySelector(
+      '[name="retailer_mobile"]'
+    );
+
+
+  if (mobileInput) {
+
+    mobileInput.addEventListener(
+      "input",
+      function () {
+
+        mobileInput.value =
+          mobileInput.value
+            .replace(/\D/g, "")
+            .slice(0, 10);
+
+      }
+    );
+
+  }
 
 }
 
@@ -326,7 +891,7 @@ function getValue(
 
 
 /* ============================================================
-   SET BUTTON LOADING
+   BUTTON LOADING
    ============================================================ */
 
 function setButtonLoading(
@@ -335,9 +900,8 @@ function setButtonLoading(
   loadingText = "Processing..."
 ) {
 
-  if (!button) {
+  if (!button)
     return;
-  }
 
 
   if (loading) {
@@ -351,7 +915,9 @@ function setButtonLoading(
     button.innerHTML =
       loadingText;
 
-  } else {
+  }
+
+  else {
 
     button.disabled =
       false;
@@ -364,67 +930,6 @@ function setButtonLoading(
         button.dataset.oldText;
 
     }
-
-  }
-
-}
-
-
-/* ============================================================
-   RETAILER FORM SETUP
-   ============================================================ */
-
-function setupRetailerForm() {
-
-  const form =
-    document.querySelector(
-      "#retailerForm"
-    );
-
-
-  if (!form) {
-
-    console.warn(
-      "retailerForm not found."
-    );
-
-    return;
-
-  }
-
-
-  form.addEventListener(
-    "submit",
-    async function (event) {
-
-      event.preventDefault();
-
-      await createRetailer(
-        form
-      );
-
-    }
-  );
-
-
-  const emailInput =
-    form.querySelector(
-      '[name="email"]'
-    );
-
-
-  if (emailInput) {
-
-    emailInput.required =
-      true;
-
-    emailInput.type =
-      "email";
-
-    emailInput.setAttribute(
-      "autocomplete",
-      "email"
-    );
 
   }
 
@@ -447,10 +952,15 @@ async function createRetailer(
 
   try {
 
+    /*
+     * HTML field names પ્રમાણે values.
+     */
+
     const retailerName =
       getValue(
         form,
         [
+          "retailer_name",
           "retailerName",
           "name",
           "fullName"
@@ -462,6 +972,7 @@ async function createRetailer(
       getValue(
         form,
         [
+          "retailer_mobile",
           "mobile",
           "phone",
           "mobileNumber"
@@ -473,8 +984,19 @@ async function createRetailer(
       getValue(
         form,
         [
+          "retailer_email",
           "email",
           "emailId"
+        ]
+      );
+
+
+    const retailerId =
+      getValue(
+        form,
+        [
+          "retailer_id",
+          "retailerId"
         ]
       );
 
@@ -483,6 +1005,7 @@ async function createRetailer(
       getValue(
         form,
         [
+          "retailer_username",
           "username",
           "userName",
           "user"
@@ -494,15 +1017,16 @@ async function createRetailer(
       getValue(
         form,
         [
+          "retailer_password",
           "password",
           "pass"
         ]
       );
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        VALIDATION
-       -------------------------------------------------------- */
+       ======================================================== */
 
     if (!retailerName) {
 
@@ -524,7 +1048,7 @@ async function createRetailer(
 
 
     if (
-      mobileDigits.length < 10
+      mobileDigits.length !== 10
     ) {
 
       showMessage(
@@ -544,9 +1068,10 @@ async function createRetailer(
         "error"
       );
 
+
       const emailInput =
         form.querySelector(
-          '[name="email"]'
+          '[name="retailer_email"]'
         );
 
 
@@ -555,6 +1080,7 @@ async function createRetailer(
         emailInput.focus();
 
       }
+
 
       return;
 
@@ -603,14 +1129,14 @@ async function createRetailer(
     }
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        LOADING
-       -------------------------------------------------------- */
+       ======================================================== */
 
     setButtonLoading(
       button,
       true,
-      "Creating Retailer..."
+      "⏳ Creating Retailer..."
     );
 
 
@@ -620,9 +1146,9 @@ async function createRetailer(
     );
 
 
-    /* --------------------------------------------------------
-       API
-       -------------------------------------------------------- */
+    /* ========================================================
+       SEND TO CODE.GS
+       ======================================================== */
 
     const result =
       await apiRequest(
@@ -632,8 +1158,11 @@ async function createRetailer(
           retailerName:
             retailerName,
 
+          name:
+            retailerName,
+
           mobile:
-            mobile,
+            mobileDigits,
 
           email:
             email,
@@ -642,31 +1171,39 @@ async function createRetailer(
             username,
 
           password:
-            password
+            password,
+
+          retailerId:
+            retailerId
 
         }
       );
 
 
     console.log(
-      "Create Retailer Result:",
+      "CREATE RETAILER RESULT:",
       result
     );
 
 
-    /* --------------------------------------------------------
-       RESULT
-       -------------------------------------------------------- */
+    /* ========================================================
+       SUCCESS
+       ======================================================== */
 
     if (
-      result.success
+      result &&
+      result.success === true
     ) {
 
       let message =
-        "✅ Retailer successfully created!\n\n" +
+        "✅ Retailer successfully created!\n\n";
+
+
+      message +=
         "Retailer ID: " +
         (
           result.retailerId ||
+          retailerId ||
           "-"
         ) +
         "\n\n";
@@ -679,12 +1216,15 @@ async function createRetailer(
         message +=
           "📧 Login details Email પર successfully મોકલવામાં આવ્યા છે.";
 
+
         showMessage(
           message,
           "success"
         );
 
-      } else {
+      }
+
+      else {
 
         message +=
           "⚠️ Retailer create થઈ ગયો છે, પરંતુ Email મોકલવામાં આવ્યો નથી.";
@@ -701,6 +1241,17 @@ async function createRetailer(
         }
 
 
+        if (
+          result.emailError
+        ) {
+
+          message +=
+            "\n\nEmail Error: " +
+            result.emailError;
+
+        }
+
+
         showMessage(
           message,
           "warning"
@@ -709,36 +1260,70 @@ async function createRetailer(
       }
 
 
-      /* ------------------------------------------------------
-         RESET FORM
-         ------------------------------------------------------ */
+      /*
+       * RESET
+       */
 
       form.reset();
 
 
-      /* ------------------------------------------------------
-         RELOAD DATA
-         ------------------------------------------------------ */
+      /*
+       * Retailer ID ફરીથી blank
+       */
 
-      await loadRetailers();
+      const idInput =
+        $("#newRetailerId");
+
+
+      if (idInput) {
+
+        idInput.value =
+          "";
+
+      }
+
+
+      /*
+       * Refresh dashboard
+       */
 
       await loadDashboard();
 
-    } else {
+      await loadApplications();
+
+
+    }
+
+    else {
 
       showMessage(
+
         "❌ " +
         (
-          result.message ||
+          result &&
+          (
+            result.message ||
+            result.error
+          )
+        ?
+          (
+            result.message ||
+            result.error
+          )
+        :
           "Retailer create failed."
         ),
+
         "error"
+
       );
 
     }
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(
       "Create retailer error:",
@@ -752,7 +1337,9 @@ async function createRetailer(
       "error"
     );
 
-  } finally {
+  }
+
+  finally {
 
     setButtonLoading(
       button,
@@ -765,58 +1352,54 @@ async function createRetailer(
 
 
 /* ============================================================
-   LOAD RETAILERS
+   ADMIN PANEL
    ============================================================ */
 
-async function loadRetailers() {
+function showAdminPanel(
+  panelId
+) {
 
-  try {
-
-    const result =
-      await apiRequest(
-        "testAllDatabases"
-      );
-
-
-    if (
-      !result ||
-      !result.retailer
-    ) {
-
-      return;
-
-    }
-
-
-    const tableBody =
-      document.querySelector(
-        "#retailerTableBody"
-      );
-
-
-    if (!tableBody) {
-
-      return;
-
-    }
-
-
-    /*
-     * અહીં backendમાં અલગ getRetailers action નથી,
-     * એટલે page પર retailer list જરૂરી હોય તો
-     * backendમાં getRetailers action add કરી શકાય.
-     */
-
-  } catch (error) {
-
-    console.error(
-      "Load retailers error:",
-      error
+  const panels =
+    document.querySelectorAll(
+      ".admin-panel"
     );
+
+
+  panels.forEach(
+    function (panel) {
+
+      panel.classList.add(
+        "admin-hidden"
+      );
+
+    }
+  );
+
+
+  const panel =
+    document.getElementById(
+      panelId
+    );
+
+
+  if (panel) {
+
+    panel.classList.remove(
+      "admin-hidden"
+    );
+
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
 
   }
 
 }
+
+
+window.showAdminPanel =
+  showAdminPanel;
 
 
 /* ============================================================
@@ -847,8 +1430,10 @@ async function loadDashboard() {
       Array.isArray(
         result.applications
       )
-        ? result.applications
-        : [];
+        ?
+          result.applications
+        :
+          [];
 
 
     updateDashboardStats(
@@ -856,7 +1441,9 @@ async function loadDashboard() {
     );
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(
       "Dashboard load error:",
@@ -880,17 +1467,13 @@ function updateDashboardStats(
     applications.length;
 
 
-  let pending =
-    0;
+  let pending = 0;
 
-  let processing =
-    0;
+  let processing = 0;
 
-  let completed =
-    0;
+  let completed = 0;
 
-  let rejected =
-    0;
+  let paid = 0;
 
 
   applications.forEach(
@@ -899,6 +1482,16 @@ function updateDashboardStats(
       const status =
         String(
           app["Application Status"] ||
+          app["Status"] ||
+          ""
+        )
+          .trim()
+          .toLowerCase();
+
+
+      const payment =
+        String(
+          app["Payment Status"] ||
           ""
         )
           .trim()
@@ -906,18 +1499,25 @@ function updateDashboardStats(
 
 
       if (
-        status === "pending"
+        status === "pending" ||
+        status === "submitted"
       ) {
 
         pending++;
 
-      } else if (
+      }
+
+
+      if (
         status === "processing"
       ) {
 
         processing++;
 
-      } else if (
+      }
+
+
+      if (
         status === "completed" ||
         status === "complete" ||
         status === "successful" ||
@@ -926,12 +1526,17 @@ function updateDashboardStats(
 
         completed++;
 
-      } else if (
-        status === "rejected" ||
-        status === "failed"
+      }
+
+
+      if (
+        payment === "payment received" ||
+        payment === "payment verified" ||
+        payment === "paid" ||
+        payment === "success"
       ) {
 
-        rejected++;
+        paid++;
 
       }
 
@@ -942,8 +1547,7 @@ function updateDashboardStats(
   setText(
     [
       "#totalApplications",
-      "#totalCount",
-      "[data-stat='total']"
+      "#totalCount"
     ],
     total
   );
@@ -952,8 +1556,7 @@ function updateDashboardStats(
   setText(
     [
       "#pendingApplications",
-      "#pendingCount",
-      "[data-stat='pending']"
+      "#pendingCount"
     ],
     pending
   );
@@ -961,9 +1564,17 @@ function updateDashboardStats(
 
   setText(
     [
+      "#paidApplications",
+      "#paidCount"
+    ],
+    paid
+  );
+
+
+  setText(
+    [
       "#processingApplications",
-      "#processingCount",
-      "[data-stat='processing']"
+      "#processingCount"
     ],
     processing
   );
@@ -972,20 +1583,9 @@ function updateDashboardStats(
   setText(
     [
       "#completedApplications",
-      "#completedCount",
-      "[data-stat='completed']"
+      "#completedCount"
     ],
     completed
-  );
-
-
-  setText(
-    [
-      "#rejectedApplications",
-      "#rejectedCount",
-      "[data-stat='rejected']"
-    ],
-    rejected
   );
 
 }
@@ -1015,8 +1615,6 @@ function setText(
       element.textContent =
         value;
 
-      return;
-
     }
 
   }
@@ -1044,6 +1642,7 @@ async function loadApplications() {
     ) {
 
       console.error(
+        "Applications result:",
         result
       );
 
@@ -1056,8 +1655,10 @@ async function loadApplications() {
       Array.isArray(
         result.applications
       )
-        ? result.applications
-        : [];
+        ?
+          result.applications
+        :
+          [];
 
 
     renderApplications(
@@ -1065,7 +1666,9 @@ async function loadApplications() {
     );
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(
       "Applications load error:",
@@ -1085,13 +1688,20 @@ function renderApplications(
   applications
 ) {
 
+  /*
+   * HTML ID:
+   * applicationsTableBody
+   */
+
   const tbody =
-    document.querySelector(
-      "#applicationTableBody"
-    );
+    $("#applicationsTableBody");
 
 
   if (!tbody) {
+
+    console.warn(
+      "applicationsTableBody not found."
+    );
 
     return;
 
@@ -1103,23 +1713,24 @@ function renderApplications(
 
 
   if (
+    !applications ||
     !applications.length
   ) {
 
-    const tr =
-      document.createElement(
-        "tr"
-      );
+    tbody.innerHTML =
 
-
-    tr.innerHTML =
-      '<td colspan="20" style="text-align:center;">No applications found.</td>';
-
-
-    tbody.appendChild(
-      tr
-    );
-
+      `<tr>
+        <td
+          colspan="9"
+          style="
+            text-align:center;
+            padding:30px;
+            color:#777;
+          "
+        >
+          No applications found.
+        </td>
+      </tr>`;
 
     return;
 
@@ -1137,17 +1748,21 @@ function renderApplications(
 
       const applicationId =
         app["Application ID"] ||
+        app["ApplicationID"] ||
         "";
 
 
-      const date =
-        app["Application Date"] ||
+      const retailer =
+        app["Retailer Name"] ||
+        app["Retailer"] ||
+        app["Retailer ID"] ||
         "";
 
 
       const name =
         app["Applicant Name"] ||
         app["English Name"] ||
+        app["Final Name"] ||
         "";
 
 
@@ -1157,6 +1772,7 @@ function renderApplications(
 
 
       const service =
+        app["Service"] ||
         app["Service Name"] ||
         "";
 
@@ -1173,6 +1789,7 @@ function renderApplications(
 
       const status =
         app["Application Status"] ||
+        app["Status"] ||
         "Pending";
 
 
@@ -1183,7 +1800,7 @@ function renderApplications(
         "</td>" +
 
         "<td>" +
-        escapeHtml(date) +
+        escapeHtml(retailer) +
         "</td>" +
 
         "<td>" +
@@ -1208,6 +1825,18 @@ function renderApplications(
 
         "<td>" +
         escapeHtml(status) +
+        "</td>" +
+
+        "<td>" +
+
+        `<button
+          type="button"
+          class="action-button view-button"
+          onclick="viewApplication('${escapeJs(applicationId)}')"
+        >
+          👁 View
+        </button>` +
+
         "</td>";
 
 
@@ -1222,28 +1851,22 @@ function renderApplications(
 
 
 /* ============================================================
-   APPLICATION EVENTS
+   APPLICATION SEARCH
    ============================================================ */
 
 function setupApplicationEvents() {
 
   const searchInput =
-    document.querySelector(
-      "#applicationSearch"
-    );
+    $("#applicationSearch");
 
 
-  if (
-    searchInput
-  ) {
+  if (searchInput) {
 
     searchInput.addEventListener(
       "input",
       function () {
 
-        filterApplications(
-          searchInput.value
-        );
+        searchApplications();
 
       }
     );
@@ -1251,21 +1874,22 @@ function setupApplicationEvents() {
   }
 
 
+  /*
+   * તમારા HTML માં ID:
+   * applicationStatusFilter
+   */
+
   const statusFilter =
-    document.querySelector(
-      "#statusFilter"
-    );
+    $("#applicationStatusFilter");
 
 
-  if (
-    statusFilter
-  ) {
+  if (statusFilter) {
 
     statusFilter.addEventListener(
       "change",
       function () {
 
-        filterApplications();
+        searchApplications();
 
       }
     );
@@ -1276,12 +1900,10 @@ function setupApplicationEvents() {
 
 
 /* ============================================================
-   FILTER APPLICATIONS
+   SEARCH APPLICATIONS
    ============================================================ */
 
-function filterApplications(
-  searchValue = null
-) {
+function searchApplications() {
 
   const applications =
     window.adminApplications ||
@@ -1289,33 +1911,31 @@ function filterApplications(
 
 
   const searchInput =
-    document.querySelector(
-      "#applicationSearch"
-    );
+    $("#applicationSearch");
 
 
   const statusFilter =
-    document.querySelector(
-      "#statusFilter"
-    );
+    $("#applicationStatusFilter");
 
 
   const search =
-    (
-      searchValue !== null
-        ? searchValue
-        : searchInput
-          ? searchInput.value
-          : ""
-    )
-      .trim()
-      .toLowerCase();
+    searchInput
+      ?
+        searchInput.value
+          .trim()
+          .toLowerCase()
+      :
+        "";
 
 
   const status =
     statusFilter
-      ? statusFilter.value
-      : "";
+      ?
+        statusFilter.value
+          .trim()
+          .toLowerCase()
+      :
+        "";
 
 
   const filtered =
@@ -1326,7 +1946,18 @@ function filterApplications(
           String(
             app["Application ID"] ||
             ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
+
+
+        const retailer =
+          String(
+            app["Retailer Name"] ||
+            app["Retailer"] ||
+            app["Retailer ID"] ||
+            ""
+          )
+            .toLowerCase();
 
 
         const name =
@@ -1334,34 +1965,38 @@ function filterApplications(
             app["Applicant Name"] ||
             app["English Name"] ||
             ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
 
 
         const mobile =
           String(
             app["Mobile"] ||
             ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
 
 
         const appStatus =
           String(
             app["Application Status"] ||
+            app["Status"] ||
             ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
 
 
         const matchesSearch =
           !search ||
           id.includes(search) ||
+          retailer.includes(search) ||
           name.includes(search) ||
           mobile.includes(search);
 
 
         const matchesStatus =
           !status ||
-          appStatus ===
-            status.toLowerCase();
+          appStatus === status;
 
 
         return (
@@ -1378,6 +2013,135 @@ function filterApplications(
   );
 
 }
+
+
+window.searchApplications =
+  searchApplications;
+
+
+/* ============================================================
+   VIEW APPLICATION
+   ============================================================ */
+
+function viewApplication(
+  applicationId
+) {
+
+  const applications =
+    window.adminApplications ||
+    [];
+
+
+  const app =
+    applications.find(
+      function (item) {
+
+        return String(
+          item["Application ID"] ||
+          ""
+        ) ===
+        String(
+          applicationId
+        );
+
+      }
+    );
+
+
+  if (!app) {
+
+    showMessage(
+      "Application મળતી નથી.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const modal =
+    $("#applicationModal");
+
+
+  const details =
+    $("#applicationDetails");
+
+
+  if (!modal || !details) {
+
+    return;
+
+  }
+
+
+  const rows = [];
+
+
+  Object.keys(app).forEach(
+    function (key) {
+
+      rows.push(
+
+        `<div class="detail-box">
+
+          <strong>
+            ${escapeHtml(key)}
+          </strong>
+
+          <span>
+            ${escapeHtml(app[key])}
+          </span>
+
+        </div>`
+
+      );
+
+    }
+  );
+
+
+  details.innerHTML =
+
+    `<div class="detail-grid">
+      ${rows.join("")}
+    </div>`;
+
+
+  modal.classList.add(
+    "show"
+  );
+
+}
+
+
+window.viewApplication =
+  viewApplication;
+
+
+/* ============================================================
+   CLOSE MODAL
+   ============================================================ */
+
+function closeApplicationModal() {
+
+  const modal =
+    $("#applicationModal");
+
+
+  if (modal) {
+
+    modal.classList.remove(
+      "show"
+    );
+
+  }
+
+}
+
+
+window.closeApplicationModal =
+  closeApplicationModal;
 
 
 /* ============================================================
@@ -1411,6 +2175,7 @@ async function changeApplicationStatus(
 
 
     if (
+      result &&
       result.success
     ) {
 
@@ -1424,16 +2189,24 @@ async function changeApplicationStatus(
 
       await loadDashboard();
 
+    }
 
-    } else {
+    else {
 
       showMessage(
+
         "❌ " +
         (
-          result.message ||
+          result &&
+          result.message
+        ?
+          result.message
+        :
           "Status update failed."
         ),
+
         "error"
+
       );
 
     }
@@ -1442,7 +2215,9 @@ async function changeApplicationStatus(
     return result;
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     showMessage(
       "❌ " +
@@ -1452,13 +2227,22 @@ async function changeApplicationStatus(
 
 
     return {
-      success: false,
-      message: error.message
+
+      success:
+        false,
+
+      message:
+        error.message
+
     };
 
   }
 
 }
+
+
+window.changeApplicationStatus =
+  changeApplicationStatus;
 
 
 /* ============================================================
@@ -1488,6 +2272,7 @@ async function changePaymentStatus(
 
 
     if (
+      result &&
       result.success
     ) {
 
@@ -1499,16 +2284,26 @@ async function changePaymentStatus(
 
       await loadApplications();
 
+      await loadDashboard();
 
-    } else {
+    }
+
+    else {
 
       showMessage(
+
         "❌ " +
         (
-          result.message ||
+          result &&
+          result.message
+        ?
+          result.message
+        :
           "Payment update failed."
         ),
+
         "error"
+
       );
 
     }
@@ -1517,7 +2312,9 @@ async function changePaymentStatus(
     return result;
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     showMessage(
       "❌ " +
@@ -1527,13 +2324,109 @@ async function changePaymentStatus(
 
 
     return {
-      success: false,
-      message: error.message
+
+      success:
+        false,
+
+      message:
+        error.message
+
     };
 
   }
 
 }
+
+
+window.changePaymentStatus =
+  changePaymentStatus;
+
+
+/* ============================================================
+   PAYMENT BUTTON FROM HTML
+   ============================================================ */
+
+async function updatePaymentStatus() {
+
+  const applicationId =
+    $("#paymentApplicationId")
+      ?
+        $("#paymentApplicationId")
+          .value
+          .trim()
+      :
+        "";
+
+
+  const status =
+    $("#paymentStatusSelect")
+      ?
+        $("#paymentStatusSelect")
+          .value
+      :
+        "";
+
+
+  if (!applicationId) {
+
+    showMessage(
+      "Application ID નાખો.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!status) {
+
+    showMessage(
+      "Payment Status પસંદ કરો.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const result =
+    await changePaymentStatus(
+      applicationId,
+      status
+    );
+
+
+  const message =
+    $("#paymentMessage");
+
+
+  if (
+    message &&
+    result
+  ) {
+
+    message.style.display =
+      "block";
+
+    message.textContent =
+      result.success
+        ?
+          "✅ Payment status updated."
+        :
+          (
+            result.message ||
+            "Update failed."
+          );
+
+  }
+
+}
+
+
+window.updatePaymentStatus =
+  updatePaymentStatus;
 
 
 /* ============================================================
@@ -1557,7 +2450,7 @@ function setupLogout() {
 
           event.preventDefault();
 
-          logoutAdmin();
+          adminLogout();
 
         }
       );
@@ -1568,7 +2461,11 @@ function setupLogout() {
 }
 
 
-function logoutAdmin() {
+/* ============================================================
+   ADMIN LOGOUT
+   ============================================================ */
+
+function adminLogout() {
 
   try {
 
@@ -1592,7 +2489,9 @@ function logoutAdmin() {
       "admin"
     );
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(
       error
@@ -1601,10 +2500,43 @@ function logoutAdmin() {
   }
 
 
-  window.location.href =
-    "login.html";
+  showAdminLogin();
+
+
+  const username =
+    $("#adminId");
+
+  const password =
+    $("#adminPassword");
+
+
+  if (username)
+    username.value = "";
+
+
+  if (password)
+    password.value = "";
+
+
+  showLoginMessage(
+    "Admin logout successfully.",
+    "success"
+  );
 
 }
+
+
+window.adminLogout =
+  adminLogout;
+
+
+/*
+ * જૂના code માં logoutAdmin હતું.
+ * compatibility માટે બંને રાખ્યા છે.
+ */
+
+window.logoutAdmin =
+  adminLogout;
 
 
 /* ============================================================
@@ -1618,25 +2550,32 @@ function escapeHtml(
   return String(
     value === null ||
     value === undefined
-      ? ""
-      : value
+      ?
+        ""
+      :
+        value
   )
+
     .replace(
       /&/g,
       "&amp;"
     )
+
     .replace(
       /</g,
       "&lt;"
     )
+
     .replace(
       />/g,
       "&gt;"
     )
+
     .replace(
       /"/g,
       "&quot;"
     )
+
     .replace(
       /'/g,
       "&#039;"
@@ -1646,17 +2585,52 @@ function escapeHtml(
 
 
 /* ============================================================
-   GLOBAL FUNCTIONS
+   ESCAPE JS
    ============================================================ */
+
+function escapeJs(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
+    .replace(
+      /'/g,
+      "\\'"
+    )
+    .replace(
+      /"/g,
+      '\\"'
+    )
+    .replace(
+      /\n/g,
+      "\\n"
+    )
+    .replace(
+      /\r/g,
+      "\\r"
+    );
+
+}
+
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+
+window.adminLogin =
+  adminLogin;
 
 window.createRetailer =
   function () {
 
     const form =
-      document.querySelector(
-        "#retailerForm"
-      );
-
+      $("#createRetailerForm");
 
     if (form) {
 
@@ -1668,51 +2642,58 @@ window.createRetailer =
 
   };
 
+window.loadDashboard =
+  loadDashboard;
 
 window.loadApplications =
   loadApplications;
 
 
-window.loadDashboard =
-  loadDashboard;
-
-
-window.changeApplicationStatus =
-  changeApplicationStatus;
-
-
-window.changePaymentStatus =
-  changePaymentStatus;
-
-
-window.logoutAdmin =
-  logoutAdmin;
-
-
 /* ============================================================
-   PREVENT DOUBLE SUBMIT
+   CLOSE MODAL ON OUTSIDE CLICK
    ============================================================ */
 
 document.addEventListener(
-  "submit",
+  "click",
   function (event) {
 
-    const form =
-      event.target;
+    const modal =
+      $("#applicationModal");
 
 
     if (
-      form &&
-      form.id ===
-        "retailerForm"
+      modal &&
+      event.target === modal
     ) {
 
-      /*
-       * setupRetailerForm already handles it.
-       * This block intentionally does nothing.
-       */
+      closeApplicationModal();
 
     }
 
   }
 );
+
+
+/* ============================================================
+   ESC KEY - CLOSE MODAL
+   ============================================================ */
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeApplicationModal();
+
+    }
+
+  }
+);
+
+
+/* ============================================================
+   END
+============================================================ */
