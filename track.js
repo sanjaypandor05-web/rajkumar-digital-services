@@ -1,5 +1,5 @@
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbw5yfGMA2be2xYiGXltpyg5xmgF7qyveUenGJtlDttmIVym9Ndo_gYgAXmyarJ7WwBZLg/exec";
+  "https://script.google.com/macros/s/AKfycbzAQQPhHzepS9LyOASh1KpyFaXh9QPzbP7qV7bO-1urDyeKFpcnEEWhAL7MjnsW9BSaxA/exec";
 
 
 document.addEventListener("DOMContentLoaded", function () {
