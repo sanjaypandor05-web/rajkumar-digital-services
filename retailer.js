@@ -13,7 +13,7 @@
 // ==========================================================
 
 const API_URL =
-  "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+  "https://script.google.com/macros/s/AKfycbzAQQPhHzepS9LyOASh1KpyFaXh9QPzbP7qV7bO-1urDyeKFpcnEEWhAL7MjnsW9BSaxA/exec";
 
 
 // ==========================================================
