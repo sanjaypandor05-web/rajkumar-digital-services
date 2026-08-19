@@ -1,223 +1,402 @@
-/* =====================================================
-   RAJKUMAR RATIONCARD SERVICES
-   HOME PAGE JAVASCRIPT
-===================================================== */
-
-"use strict";
-
-
-/* =====================================================
-   DOM READY
-===================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    initializeHomePage();
-
-});
+/************************************************************
+ * RAJKUMAR RATIONCARD SERVICES
+ * RETAILER LOGIN
+ *
+ * IMPORTANT
+ * ----------------------------------------------------------
+ * Retailer Create is NOT available here.
+ * Retailer accounts are created only from Admin Panel.
+ ************************************************************/
 
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
+// ==========================================================
+// GOOGLE APPS SCRIPT API URL
+// ==========================================================
 
-function initializeHomePage() {
-
-    setupSmoothScroll();
-
-    setupCardAnimation();
-
-    setupPhoneLinks();
-
-    console.log(
-        "RAJKUMAR RATIONCARD SERVICES Home loaded successfully."
-    );
-
-}
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzleZG-w2WQ6DClkEcqpRcn6Pv8gil3ym-aP4_9ctLUlzeiHG34MyDQgdV6JMK1r4zLnA/exec";
 
 
-/* =====================================================
-   SMOOTH SCROLL
-===================================================== */
+// ==========================================================
+// PAGE ELEMENTS
+// ==========================================================
 
-function setupSmoothScroll() {
+const loginForm =
+  document.getElementById("retailerLoginForm");
 
-    const links =
-        document.querySelectorAll(
-            'a[href^="#"]'
-        );
+const usernameInput =
+  document.getElementById("username");
 
-    links.forEach(function (link) {
+const passwordInput =
+  document.getElementById("password");
 
-        link.addEventListener(
-            "click",
-            function (event) {
+const loginBtn =
+  document.getElementById("loginBtn");
 
-                const targetId =
-                    link.getAttribute("href");
+const messageBox =
+  document.getElementById("message");
 
-                if (
-                    !targetId ||
-                    targetId === "#"
-                ) {
-                    return;
-                }
+const togglePassword =
+  document.getElementById("togglePassword");
 
-                const target =
-                    document.querySelector(
-                        targetId
-                    );
 
-                if (!target) {
-                    return;
-                }
+// ==========================================================
+// SHOW MESSAGE
+// ==========================================================
 
-                event.preventDefault();
+function showMessage(message, type = "error") {
 
-                target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
+  if (!messageBox) {
+    alert(message);
+    return;
+  }
 
-            }
-        );
+  messageBox.textContent = message;
 
-    });
+  messageBox.className =
+    "message " + type;
 
 }
 
 
-/* =====================================================
-   CARD ANIMATION
-===================================================== */
+// ==========================================================
+// CLEAR MESSAGE
+// ==========================================================
 
-function setupCardAnimation() {
+function clearMessage() {
 
-    const cards =
-        document.querySelectorAll(
-            ".quick-card, .service-box, .contact-card"
+  if (!messageBox) {
+    return;
+  }
+
+  messageBox.textContent = "";
+
+  messageBox.className =
+    "message";
+
+}
+
+
+// ==========================================================
+// PASSWORD SHOW / HIDE
+// ==========================================================
+
+if (togglePassword) {
+
+  togglePassword.addEventListener(
+    "click",
+    function () {
+
+      if (
+        passwordInput.type === "password"
+      ) {
+
+        passwordInput.type =
+          "text";
+
+        togglePassword.textContent =
+          "🙈";
+
+      } else {
+
+        passwordInput.type =
+          "password";
+
+        togglePassword.textContent =
+          "👁";
+
+      }
+
+    }
+  );
+
+}
+
+
+// ==========================================================
+// LOGIN
+// ==========================================================
+
+if (loginForm) {
+
+  loginForm.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+      clearMessage();
+
+
+      const username =
+        usernameInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+
+      if (!username) {
+
+        showMessage(
+          "Please enter Retailer ID or Username."
         );
 
-    if (!cards.length) {
-        return;
-    }
-
-
-    if (
-        !("IntersectionObserver" in window)
-    ) {
-
-        cards.forEach(function (card) {
-            card.classList.add("show-card");
-        });
+        usernameInput.focus();
 
         return;
 
-    }
+      }
 
 
-    const observer =
-        new IntersectionObserver(
-            function (entries) {
+      if (!password) {
 
-                entries.forEach(function (entry) {
+        showMessage(
+          "Please enter your password."
+        );
 
-                    if (
-                        entry.isIntersecting
-                    ) {
+        passwordInput.focus();
 
-                        entry.target.classList.add(
-                            "show-card"
-                        );
+        return;
 
-                        observer.unobserve(
-                            entry.target
-                        );
+      }
 
-                    }
 
-                });
+      if (
+        !API_URL ||
+        API_URL.includes(
+          "YOUR_GOOGLE_APPS_SCRIPT"
+        )
+      ) {
 
-            },
+        showMessage(
+          "Google Apps Script API URL is not configured."
+        );
+
+        return;
+
+      }
+
+
+      loginBtn.disabled =
+        true;
+
+      loginBtn.textContent =
+        "LOGINNING...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL,
             {
-                threshold: 0.12
+
+              method:
+                "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+              },
+
+              body:
+                JSON.stringify({
+
+                  action:
+                    "retailerLogin",
+
+                  username:
+                    username,
+
+                  password:
+                    password
+
+                })
+
             }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        console.log(
+          "Retailer Login Response:",
+          result
         );
 
 
-    cards.forEach(function (card) {
+        if (
+          result &&
+          result.success === true
+        ) {
 
-        card.classList.add(
-            "animate-card"
-        );
+          // ------------------------------------------------
+          // SAVE RETAILER LOGIN SESSION
+          // ------------------------------------------------
 
-        observer.observe(card);
+          const retailerData = {
 
-    });
+            role:
+              "retailer",
 
-}
+            retailerId:
+              result.retailerId || "",
+
+            retailerName:
+              result.retailerName || "",
+
+            mobile:
+              result.mobile || "",
+
+            email:
+              result.email || "",
+
+            username:
+              result.username || username,
+
+            status:
+              result.status || "Active",
+
+            loginTime:
+              new Date().toISOString()
+
+          };
 
 
-/* =====================================================
-   PHONE LINKS
-===================================================== */
+          localStorage.setItem(
+            "retailerSession",
+            JSON.stringify(
+              retailerData
+            )
+          );
 
-function setupPhoneLinks() {
 
-    const phoneLinks =
-        document.querySelectorAll(
-            'a[href="tel:9429193125"]'
-        );
+          localStorage.setItem(
+            "retailerId",
+            result.retailerId || ""
+          );
 
-    phoneLinks.forEach(function (link) {
 
-        link.addEventListener(
-            "click",
+          localStorage.setItem(
+            "retailerName",
+            result.retailerName || ""
+          );
+
+
+          localStorage.setItem(
+            "retailerUsername",
+            result.username || username
+          );
+
+
+          showMessage(
+            "Retailer Login Successful. Redirecting...",
+            "success"
+          );
+
+
+          // ------------------------------------------------
+          // REDIRECT
+          // ------------------------------------------------
+
+          setTimeout(
             function () {
 
-                console.log(
-                    "Calling Rajkumar Rationcard Services."
-                );
+              window.location.href =
+                "retailer-dashboard.html";
 
-            }
+            },
+            700
+          );
+
+
+          return;
+
+        }
+
+
+        showMessage(
+          result && result.message
+            ? result.message
+            : "Invalid Retailer ID / Username or Password."
         );
 
-    });
+
+      } catch (error) {
+
+        console.error(
+          "Retailer Login Error:",
+          error
+        );
+
+
+        showMessage(
+          "Login failed. Please check your internet connection and API URL."
+        );
+
+
+      } finally {
+
+        loginBtn.disabled =
+          false;
+
+        loginBtn.textContent =
+          "LOGIN";
+
+      }
+
+    }
+  );
 
 }
 
 
-/* =====================================================
-   SECURITY HELPER
-===================================================== */
+// ==========================================================
+// ENTER KEY SUPPORT
+// ==========================================================
 
-function escapeHtml(value) {
+if (passwordInput) {
 
-    return String(value)
+  passwordInput.addEventListener(
+    "keydown",
+    function (event) {
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
+      if (
+        event.key === "Enter"
+      ) {
 
-        .replace(
-            /</g,
-            "&lt;"
-        )
+        if (loginForm) {
 
-        .replace(
-            />/g,
-            "&gt;"
-        )
+          loginForm.requestSubmit();
 
-        .replace(
-            /"/g,
-            "&quot;"
-        )
+        }
 
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+      }
+
+    }
+  );
 
 }
+
+
+// ==========================================================
+// PREVENT BROWSER AUTO LOGIN
+// ==========================================================
+
+window.addEventListener(
+  "load",
+  function () {
+
+    try {
+
+      usernameInput.value = "";
+      passwordInput.value = "";
+
+    } catch (error) {
+
+    }
+
+  }
+);
