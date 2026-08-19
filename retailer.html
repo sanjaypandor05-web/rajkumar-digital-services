@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,55 +9,55 @@
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
+      margin: 0;
+      font-family: Arial, "Noto Sans Gujarati", sans-serif;
+      background: #f4f7fb;
       color: #222;
     }
 
     .header {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
       color: white;
       padding: 20px;
       text-align: center;
     }
 
     .header h1 {
+      margin: 0;
       font-size: 25px;
-      margin-bottom: 6px;
     }
 
     .header p {
-      font-size: 14px;
+      margin: 7px 0 0;
+      opacity: 0.95;
     }
 
     .container {
-      width: 95%;
-      max-width: 1100px;
-      margin: 25px auto;
+      max-width: 850px;
+      margin: 30px auto;
+      padding: 0 15px;
     }
 
     .card {
       background: white;
+      border-radius: 15px;
       padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
     }
 
     .card h2 {
-      margin-bottom: 20px;
-      color: #333;
+      margin-top: 0;
+      color: #0d47a1;
+      text-align: center;
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
     }
 
     .form-group {
@@ -70,103 +70,118 @@
     }
 
     label {
-      font-weight: 600;
+      font-weight: bold;
       margin-bottom: 7px;
-      color: #333;
     }
 
-    .required {
+    label span {
       color: red;
-      font-size: 18px;
-      margin-left: 3px;
     }
 
     input {
       width: 100%;
-      padding: 12px;
+      padding: 12px 13px;
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 15px;
       outline: none;
+      transition: 0.2s;
     }
 
     input:focus {
-      border-color: #2575fc;
-      box-shadow: 0 0 0 2px rgba(37,117,252,0.12);
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px rgba(25,118,210,0.10);
     }
 
-    .btn {
+    /* EMAIL EMPTY / INVALID */
+    input.email-error {
+      border: 2px solid red !important;
+      background: #fff5f5;
+    }
+
+    .error-text {
+      color: red;
+      font-size: 13px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-text.show {
+      display: block;
+    }
+
+    .button-area {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    button {
       border: none;
-      padding: 13px 22px;
-      border-radius: 8px;
-      background: #2575fc;
-      color: white;
+      padding: 13px 28px;
+      border-radius: 9px;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 20px;
     }
 
-    .btn:hover {
-      background: #1557c0;
+    .create-btn {
+      background: #0d47a1;
+      color: white;
+      min-width: 220px;
     }
 
-    .btn:disabled {
-      opacity: 0.6;
+    .create-btn:hover {
+      background: #083b87;
+    }
+
+    .create-btn:disabled {
+      background: #999;
       cursor: not-allowed;
     }
 
     .message {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 8px;
       display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 9px;
+      font-weight: bold;
       white-space: pre-line;
     }
 
-    .success {
+    .message.success {
       display: block;
-      background: #e8f8ee;
-      color: #16733b;
-      border: 1px solid #b8e6c8;
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #81c784;
     }
 
-    .error {
+    .message.error {
       display: block;
-      background: #ffecec;
-      color: #b30000;
-      border: 1px solid #ffb5b5;
+      background: #ffebee;
+      color: #b71c1c;
+      border: 1px solid #ef9a9a;
     }
 
-    .table-wrapper {
-      overflow-x: auto;
+    .info-box {
+      margin-top: 20px;
+      padding: 14px;
+      background: #fff8e1;
+      border-left: 5px solid #ffb300;
+      border-radius: 7px;
+      font-size: 14px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      background: #555;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 7px;
     }
 
-    th,
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      background: #f1f4f8;
-    }
-
-    .status-active {
-      color: green;
-      font-weight: bold;
-    }
-
-    @media (max-width: 700px) {
-
+    @media (max-width: 650px) {
       .form-grid {
         grid-template-columns: 1fr;
       }
@@ -182,7 +197,6 @@
       .header h1 {
         font-size: 21px;
       }
-
     }
   </style>
 </head>
@@ -196,113 +210,133 @@
 
   <div class="container">
 
-    <!-- CREATE RETAILER -->
-
     <div class="card">
 
-      <h2>➕ Create Retailer</h2>
+      <h2>➕ Create Retailer Account</h2>
 
-      <form id="retailerForm">
+      <form id="retailerForm" novalidate>
 
         <div class="form-grid">
 
-          <div class="form-group">
+          <!-- RETAILER NAME -->
+          <div class="form-group full">
             <label>
-              Retailer Name
-              <span class="required">*</span>
+              Retailer Name <span>*</span>
             </label>
 
             <input
               type="text"
               id="retailerName"
               name="retailerName"
-              placeholder="Enter Retailer Name"
+              placeholder="Enter retailer name"
+              autocomplete="off"
               required
             >
           </div>
 
 
+          <!-- MOBILE -->
           <div class="form-group">
             <label>
-              Mobile Number
-              <span class="required">*</span>
+              Mobile Number <span>*</span>
             </label>
 
             <input
               type="tel"
               id="mobile"
               name="mobile"
-              placeholder="Enter Mobile Number"
+              placeholder="Enter mobile number"
               maxlength="10"
+              inputmode="numeric"
+              autocomplete="off"
               required
             >
           </div>
 
 
           <!-- EMAIL -->
-
-          <div class="form-group full">
+          <div class="form-group">
 
             <label>
-              Email
-              <span class="required">*</span>
+              Email Address <span>*</span>
             </label>
 
             <input
               type="email"
               id="email"
               name="email"
-              placeholder="Enter Retailer Email"
+              placeholder="Enter retailer email"
               autocomplete="off"
               required
             >
 
+            <div
+              id="emailError"
+              class="error-text"
+            >
+              Email address ફરજિયાત છે.
+            </div>
+
           </div>
 
 
+          <!-- USERNAME -->
           <div class="form-group">
+
             <label>
-              Username
-              <span class="required">*</span>
+              Username <span>*</span>
             </label>
 
             <input
               type="text"
               id="username"
               name="username"
-              placeholder="Enter Username"
+              placeholder="Create username"
               autocomplete="off"
               required
             >
+
           </div>
 
 
+          <!-- PASSWORD -->
           <div class="form-group">
+
             <label>
-              Password
-              <span class="required">*</span>
+              Password <span>*</span>
             </label>
 
             <input
               type="password"
               id="password"
               name="password"
-              placeholder="Enter Password"
+              placeholder="Create password"
               autocomplete="new-password"
               required
             >
+
           </div>
 
         </div>
 
 
-        <button
-          type="submit"
-          class="btn"
-          id="createRetailerBtn"
-        >
-          Create Retailer
-        </button>
+        <div class="info-box">
+          📧 Retailer create થયા પછી <b>Retailer ID, Username અને Password</b>
+          આપેલા Email Address પર મોકલવામાં આવશે.
+        </div>
+
+
+        <div class="button-area">
+
+          <button
+            type="submit"
+            id="createBtn"
+            class="create-btn"
+          >
+            ➕ CREATE RETAILER
+          </button>
+
+        </div>
 
       </form>
 
@@ -312,45 +346,14 @@
         class="message"
       ></div>
 
-    </div>
 
-
-    <!-- RETAILER LIST -->
-
-    <div class="card">
-
-      <h2>👥 Retailer List</h2>
-
-      <div class="table-wrapper">
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Retailer ID</th>
-              <th>Name</th>
-              <th>Mobile</th>
-              <th>Email</th>
-              <th>Username</th>
-              <th>Status</th>
-              <th>Total Applications</th>
-            </tr>
-
-          </thead>
-
-          <tbody id="retailerTableBody">
-
-            <tr>
-              <td colspan="7">
-                Loading...
-              </td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
+      <div style="text-align:center;">
+        <a
+          href="index.html"
+          class="back-btn"
+        >
+          ← Back
+        </a>
       </div>
 
     </div>
