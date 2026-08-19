@@ -1,402 +1,223 @@
-/************************************************************
- * RAJKUMAR RATIONCARD SERVICES
- * RETAILER LOGIN
- *
- * IMPORTANT
- * ----------------------------------------------------------
- * Retailer Create is NOT available here.
- * Retailer accounts are created only from Admin Panel.
- ************************************************************/
+/* =====================================================
+   RAJKUMAR RATIONCARD SERVICES
+   HOME PAGE JAVASCRIPT
+===================================================== */
+
+"use strict";
 
 
-// ==========================================================
-// GOOGLE APPS SCRIPT API URL
-// ==========================================================
+/* =====================================================
+   DOM READY
+===================================================== */
 
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbzleZG-w2WQ6DClkEcqpRcn6Pv8gil3ym-aP4_9ctLUlzeiHG34MyDQgdV6JMK1r4zLnA/exec";
+document.addEventListener("DOMContentLoaded", function () {
 
+    initializeHomePage();
 
-// ==========================================================
-// PAGE ELEMENTS
-// ==========================================================
-
-const loginForm =
-  document.getElementById("retailerLoginForm");
-
-const usernameInput =
-  document.getElementById("username");
-
-const passwordInput =
-  document.getElementById("password");
-
-const loginBtn =
-  document.getElementById("loginBtn");
-
-const messageBox =
-  document.getElementById("message");
-
-const togglePassword =
-  document.getElementById("togglePassword");
+});
 
 
-// ==========================================================
-// SHOW MESSAGE
-// ==========================================================
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
-function showMessage(message, type = "error") {
+function initializeHomePage() {
 
-  if (!messageBox) {
-    alert(message);
-    return;
-  }
+    setupSmoothScroll();
 
-  messageBox.textContent = message;
+    setupCardAnimation();
 
-  messageBox.className =
-    "message " + type;
+    setupPhoneLinks();
+
+    console.log(
+        "RAJKUMAR RATIONCARD SERVICES Home loaded successfully."
+    );
 
 }
 
 
-// ==========================================================
-// CLEAR MESSAGE
-// ==========================================================
+/* =====================================================
+   SMOOTH SCROLL
+===================================================== */
 
-function clearMessage() {
+function setupSmoothScroll() {
 
-  if (!messageBox) {
-    return;
-  }
-
-  messageBox.textContent = "";
-
-  messageBox.className =
-    "message";
-
-}
-
-
-// ==========================================================
-// PASSWORD SHOW / HIDE
-// ==========================================================
-
-if (togglePassword) {
-
-  togglePassword.addEventListener(
-    "click",
-    function () {
-
-      if (
-        passwordInput.type === "password"
-      ) {
-
-        passwordInput.type =
-          "text";
-
-        togglePassword.textContent =
-          "🙈";
-
-      } else {
-
-        passwordInput.type =
-          "password";
-
-        togglePassword.textContent =
-          "👁";
-
-      }
-
-    }
-  );
-
-}
-
-
-// ==========================================================
-// LOGIN
-// ==========================================================
-
-if (loginForm) {
-
-  loginForm.addEventListener(
-    "submit",
-    async function (event) {
-
-      event.preventDefault();
-
-      clearMessage();
-
-
-      const username =
-        usernameInput.value.trim();
-
-      const password =
-        passwordInput.value;
-
-
-      if (!username) {
-
-        showMessage(
-          "Please enter Retailer ID or Username."
+    const links =
+        document.querySelectorAll(
+            'a[href^="#"]'
         );
 
-        usernameInput.focus();
+    links.forEach(function (link) {
 
-        return;
+        link.addEventListener(
+            "click",
+            function (event) {
 
-      }
+                const targetId =
+                    link.getAttribute("href");
 
+                if (
+                    !targetId ||
+                    targetId === "#"
+                ) {
+                    return;
+                }
 
-      if (!password) {
+                const target =
+                    document.querySelector(
+                        targetId
+                    );
 
-        showMessage(
-          "Please enter your password."
-        );
+                if (!target) {
+                    return;
+                }
 
-        passwordInput.focus();
+                event.preventDefault();
 
-        return;
-
-      }
-
-
-      if (
-        !API_URL ||
-        API_URL.includes(
-          "YOUR_GOOGLE_APPS_SCRIPT"
-        )
-      ) {
-
-        showMessage(
-          "Google Apps Script API URL is not configured."
-        );
-
-        return;
-
-      }
-
-
-      loginBtn.disabled =
-        true;
-
-      loginBtn.textContent =
-        "LOGINNING...";
-
-
-      try {
-
-        const response =
-          await fetch(
-            API_URL,
-            {
-
-              method:
-                "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain;charset=utf-8"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "retailerLogin",
-
-                  username:
-                    username,
-
-                  password:
-                    password
-
-                })
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
 
             }
-          );
-
-
-        const result =
-          await response.json();
-
-
-        console.log(
-          "Retailer Login Response:",
-          result
         );
 
+    });
 
-        if (
-          result &&
-          result.success === true
-        ) {
-
-          // ------------------------------------------------
-          // SAVE RETAILER LOGIN SESSION
-          // ------------------------------------------------
-
-          const retailerData = {
-
-            role:
-              "retailer",
-
-            retailerId:
-              result.retailerId || "",
-
-            retailerName:
-              result.retailerName || "",
-
-            mobile:
-              result.mobile || "",
-
-            email:
-              result.email || "",
-
-            username:
-              result.username || username,
-
-            status:
-              result.status || "Active",
-
-            loginTime:
-              new Date().toISOString()
-
-          };
+}
 
 
-          localStorage.setItem(
-            "retailerSession",
-            JSON.stringify(
-              retailerData
-            )
-          );
+/* =====================================================
+   CARD ANIMATION
+===================================================== */
+
+function setupCardAnimation() {
+
+    const cards =
+        document.querySelectorAll(
+            ".quick-card, .service-box, .contact-card"
+        );
+
+    if (!cards.length) {
+        return;
+    }
 
 
-          localStorage.setItem(
-            "retailerId",
-            result.retailerId || ""
-          );
+    if (
+        !("IntersectionObserver" in window)
+    ) {
+
+        cards.forEach(function (card) {
+            card.classList.add("show-card");
+        });
+
+        return;
+
+    }
 
 
-          localStorage.setItem(
-            "retailerName",
-            result.retailerName || ""
-          );
+    const observer =
+        new IntersectionObserver(
+            function (entries) {
 
+                entries.forEach(function (entry) {
 
-          localStorage.setItem(
-            "retailerUsername",
-            result.username || username
-          );
+                    if (
+                        entry.isIntersecting
+                    ) {
 
+                        entry.target.classList.add(
+                            "show-card"
+                        );
 
-          showMessage(
-            "Retailer Login Successful. Redirecting...",
-            "success"
-          );
+                        observer.unobserve(
+                            entry.target
+                        );
 
+                    }
 
-          // ------------------------------------------------
-          // REDIRECT
-          // ------------------------------------------------
-
-          setTimeout(
-            function () {
-
-              window.location.href =
-                "retailer-dashboard.html";
+                });
 
             },
-            700
-          );
-
-
-          return;
-
-        }
-
-
-        showMessage(
-          result && result.message
-            ? result.message
-            : "Invalid Retailer ID / Username or Password."
+            {
+                threshold: 0.12
+            }
         );
 
 
-      } catch (error) {
+    cards.forEach(function (card) {
 
-        console.error(
-          "Retailer Login Error:",
-          error
+        card.classList.add(
+            "animate-card"
         );
 
+        observer.observe(card);
 
-        showMessage(
-          "Login failed. Please check your internet connection and API URL."
-        );
-
-
-      } finally {
-
-        loginBtn.disabled =
-          false;
-
-        loginBtn.textContent =
-          "LOGIN";
-
-      }
-
-    }
-  );
+    });
 
 }
 
 
-// ==========================================================
-// ENTER KEY SUPPORT
-// ==========================================================
+/* =====================================================
+   PHONE LINKS
+===================================================== */
 
-if (passwordInput) {
+function setupPhoneLinks() {
 
-  passwordInput.addEventListener(
-    "keydown",
-    function (event) {
+    const phoneLinks =
+        document.querySelectorAll(
+            'a[href="tel:9429193125"]'
+        );
 
-      if (
-        event.key === "Enter"
-      ) {
+    phoneLinks.forEach(function (link) {
 
-        if (loginForm) {
+        link.addEventListener(
+            "click",
+            function () {
 
-          loginForm.requestSubmit();
+                console.log(
+                    "Calling Rajkumar Rationcard Services."
+                );
 
-        }
+            }
+        );
 
-      }
-
-    }
-  );
+    });
 
 }
 
 
-// ==========================================================
-// PREVENT BROWSER AUTO LOGIN
-// ==========================================================
+/* =====================================================
+   SECURITY HELPER
+===================================================== */
 
-window.addEventListener(
-  "load",
-  function () {
+function escapeHtml(value) {
 
-    try {
+    return String(value)
 
-      usernameInput.value = "";
-      passwordInput.value = "";
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-    } catch (error) {
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-    }
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-  }
-);
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
