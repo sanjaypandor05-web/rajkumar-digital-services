@@ -1,130 +1,104 @@
 /************************************************************
  * RAJKUMAR RATIONCARD SERVICES
- * RETAILER PORTAL JS
+ * RETAILER MANAGEMENT
+ * FINAL JS
  *
- * Works with the provided Code.gs
- * WhatsApp COMPLETELY REMOVED
- * Retailer account details are sent by EMAIL
+ * WhatsApp completely removed.
+ * Retailer account details are sent by EMAIL.
  ************************************************************/
 
 
 // ==========================================================
-// GOOGLE APPS SCRIPT API URL
+// GOOGLE APPS SCRIPT WEB APP URL
 // ==========================================================
 
 const API_URL =
-  "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+  "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 
 
 // ==========================================================
 // PAGE LOAD
 // ==========================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
 
-  checkRetailerSession();
+    const form =
+      document.getElementById(
+        "retailerForm"
+      );
 
-  const loginForm =
-    document.getElementById("loginForm");
+    if (form) {
 
-  if (loginForm) {
+      form.addEventListener(
+        "submit",
+        function (event) {
 
-    loginForm.addEventListener(
-      "submit",
-      function (event) {
+          event.preventDefault();
 
-        event.preventDefault();
+          createRetailer();
 
-        retailerLogin();
+        }
+      );
 
-      }
-    );
+    }
 
-  }
-
-});
-
-
-// ==========================================================
-// API REQUEST
-// ==========================================================
-
-async function apiRequest(data) {
-
-  if (
-    !API_URL ||
-    API_URL.includes(
-      "PASTE_YOUR_GOOGLE_APPS_SCRIPT"
-    )
-  ) {
-
-    throw new Error(
-      "Google Apps Script API URL set કરેલ નથી."
-    );
+    loadRetailers();
 
   }
-
-
-  const response =
-    await fetch(
-      API_URL,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body:
-          JSON.stringify(data)
-      }
-    );
-
-
-  if (!response.ok) {
-
-    throw new Error(
-      "Server Error: " +
-      response.status
-    );
-
-  }
-
-
-  const result =
-    await response.json();
-
-
-  return result;
-
-}
+);
 
 
 // ==========================================================
-// RETAILER LOGIN
+// CREATE RETAILER
 // ==========================================================
 
-async function retailerLogin() {
+async function createRetailer() {
+
+  const retailerName =
+    document
+      .getElementById("retailerName")
+      .value
+      .trim();
+
+
+  const mobile =
+    document
+      .getElementById("mobile")
+      .value
+      .trim();
+
+
+  const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
+
 
   const username =
     document
-      .getElementById("loginUsername")
+      .getElementById("username")
       .value
       .trim();
 
 
   const password =
     document
-      .getElementById("loginPassword")
+      .getElementById("password")
       .value
       .trim();
 
 
-  if (!username || !password) {
+  // --------------------------------------------------------
+  // VALIDATION
+  // --------------------------------------------------------
 
-    showLoginMessage(
-      "Retailer ID / Username અને Password બંને નાખો.",
+  if (!retailerName) {
+
+    showMessage(
+      "❌ Retailer Name is required.",
       "error"
     );
 
@@ -133,663 +107,477 @@ async function retailerLogin() {
   }
 
 
-  const loginBtn =
-    document.getElementById("loginBtn");
+  const mobileDigits =
+    mobile.replace(/\D/g, "");
 
 
-  loginBtn.disabled = true;
+  if (
+    mobileDigits.length !== 10
+  ) {
 
-  loginBtn.textContent =
-    "LOGIN થઈ રહ્યું છે...";
-
-
-  try {
-
-    const result =
-      await apiRequest({
-
-        action:
-          "retailerLogin",
-
-        username:
-          username,
-
-        password:
-          password
-
-      });
-
-
-    if (!result.success) {
-
-      showLoginMessage(
-        result.message ||
-          "Invalid login.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    // ------------------------------------------------------
-    // SAVE SESSION
-    // ------------------------------------------------------
-
-    const retailerSession = {
-
-      role:
-        "retailer",
-
-      retailerId:
-        result.retailerId || "",
-
-      retailerName:
-        result.retailerName || "",
-
-      mobile:
-        result.mobile || "",
-
-      email:
-        result.email || "",
-
-      username:
-        result.username || "",
-
-      status:
-        result.status || "Active"
-
-    };
-
-
-    sessionStorage.setItem(
-      "retailerSession",
-      JSON.stringify(
-        retailerSession
-      )
-    );
-
-
-    showDashboard(
-      retailerSession
-    );
-
-
-    loadRetailerApplications();
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    showLoginMessage(
-      error.message ||
-        "Login failed.",
+    showMessage(
+      "❌ Valid 10 digit Mobile Number નાખો.",
       "error"
     );
-
-
-  } finally {
-
-    loginBtn.disabled = false;
-
-    loginBtn.textContent =
-      "LOGIN";
-
-  }
-
-}
-
-
-// ==========================================================
-// CHECK SESSION
-// ==========================================================
-
-function checkRetailerSession() {
-
-  try {
-
-    const saved =
-      sessionStorage.getItem(
-        "retailerSession"
-      );
-
-
-    if (!saved) {
-
-      return;
-
-    }
-
-
-    const session =
-      JSON.parse(saved);
-
-
-    if (
-      !session ||
-      session.role !==
-        "retailer"
-    ) {
-
-      return;
-
-    }
-
-
-    showDashboard(
-      session
-    );
-
-
-    loadRetailerApplications();
-
-
-  } catch (error) {
-
-    console.error(
-      "Session error:",
-      error
-    );
-
-    sessionStorage.removeItem(
-      "retailerSession"
-    );
-
-  }
-
-}
-
-
-// ==========================================================
-// SHOW DASHBOARD
-// ==========================================================
-
-function showDashboard(session) {
-
-  document
-    .getElementById(
-      "loginSection"
-    )
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById(
-      "dashboardSection"
-    )
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById(
-      "logoutBtn"
-    )
-    .style
-    .display =
-      "block";
-
-
-  document
-    .getElementById(
-      "showRetailerId"
-    )
-    .textContent =
-      session.retailerId || "-";
-
-
-  document
-    .getElementById(
-      "showRetailerName"
-    )
-    .textContent =
-      session.retailerName || "-";
-
-
-  document
-    .getElementById(
-      "showMobile"
-    )
-    .textContent =
-      session.mobile || "-";
-
-
-  document
-    .getElementById(
-      "showEmail"
-    )
-    .textContent =
-      session.email || "-";
-
-}
-
-
-// ==========================================================
-// LOGOUT
-// ==========================================================
-
-function logoutRetailer() {
-
-  sessionStorage.removeItem(
-    "retailerSession"
-  );
-
-
-  document
-    .getElementById(
-      "dashboardSection"
-    )
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById(
-      "loginSection"
-    )
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById(
-      "logoutBtn"
-    )
-    .style
-    .display =
-      "none";
-
-
-  document
-    .getElementById(
-      "loginPassword"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "loginUsername"
-    )
-    .value = "";
-
-
-  showLoginMessage(
-    "",
-    ""
-  );
-
-}
-
-
-// ==========================================================
-// LOAD RETAILER APPLICATIONS
-// ==========================================================
-
-async function loadRetailerApplications() {
-
-  const session =
-    getRetailerSession();
-
-
-  if (!session) {
 
     return;
 
   }
 
 
-  const loading =
+  if (!email) {
+
+    showMessage(
+      "❌ Retailer Email is required.",
+      "error"
+    );
+
+    document
+      .getElementById("email")
+      .focus();
+
+    return;
+
+  }
+
+
+  const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+  if (
+    !emailPattern.test(email)
+  ) {
+
+    showMessage(
+      "❌ Valid Email Address નાખો.",
+      "error"
+    );
+
+    document
+      .getElementById("email")
+      .focus();
+
+    return;
+
+  }
+
+
+  if (!username) {
+
+    showMessage(
+      "❌ Username is required.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!password) {
+
+    showMessage(
+      "❌ Password is required.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
     document.getElementById(
-      "applicationsLoading"
+      "createRetailerBtn"
     );
 
 
-  const noApplications =
-    document.getElementById(
-      "noApplications"
-    );
+  button.disabled = true;
+
+  button.innerText =
+    "Creating...";
 
 
-  const table =
-    document.getElementById(
-      "applicationsTable"
-    );
-
-
-  const tbody =
-    document.getElementById(
-      "applicationsBody"
-    );
-
-
-  loading.classList.remove(
-    "hidden"
+  showMessage(
+    "Please wait...",
+    "success"
   );
 
 
-  noApplications.classList.add(
-    "hidden"
-  );
-
-
-  table.classList.remove(
-    "hidden"
-  );
-
-
-  tbody.innerHTML = "";
-
+  // --------------------------------------------------------
+  // SEND TO CODE.GS
+  // --------------------------------------------------------
 
   try {
 
-    const result =
-      await apiRequest({
+    const response =
+      await fetch(
+        API_URL,
+        {
 
-        action:
-          "getRetailerApplications",
+          method:
+            "POST",
 
-        retailerId:
-          session.retailerId
+          headers:
+            {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
 
-      });
+          body:
+            JSON.stringify({
 
+              action:
+                "createRetailer",
 
-    if (!result.success) {
+              retailerName:
+                retailerName,
 
-      throw new Error(
-        result.message ||
-          "Applications load failed."
-      );
+              mobile:
+                mobile,
 
-    }
+              email:
+                email,
 
+              username:
+                username,
 
-    const applications =
-      result.applications || [];
+              password:
+                password
 
-
-    loading.classList.add(
-      "hidden"
-    );
-
-
-    if (
-      applications.length === 0
-    ) {
-
-      noApplications.classList.remove(
-        "hidden"
-      );
-
-      table.classList.add(
-        "hidden"
-      );
-
-      return;
-
-    }
-
-
-    table.classList.remove(
-      "hidden"
-    );
-
-
-    applications
-      .forEach(
-        function(application) {
-
-          const tr =
-            document.createElement(
-              "tr"
-            );
-
-
-          const applicationId =
-            getValue(
-              application,
-              "Application ID"
-            );
-
-
-          const date =
-            getValue(
-              application,
-              "Application Date"
-            );
-
-
-          const applicant =
-            getValue(
-              application,
-              "Applicant Name"
-            ) ||
-            getValue(
-              application,
-              "English Name"
-            );
-
-
-          const service =
-            getValue(
-              application,
-              "Service Name"
-            );
-
-
-          const amount =
-            getValue(
-              application,
-              "Amount"
-            );
-
-
-          const paymentStatus =
-            getValue(
-              application,
-              "Payment Status"
-            );
-
-
-          const applicationStatus =
-            getValue(
-              application,
-              "Application Status"
-            );
-
-
-          tr.innerHTML = `
-
-            <td>
-              <strong>
-                ${escapeHtml(applicationId)}
-              </strong>
-            </td>
-
-            <td>
-              ${escapeHtml(date)}
-            </td>
-
-            <td>
-              ${escapeHtml(applicant)}
-            </td>
-
-            <td>
-              ${escapeHtml(service)}
-            </td>
-
-            <td>
-              ₹${escapeHtml(amount)}
-            </td>
-
-            <td>
-              ${statusBadge(paymentStatus)}
-            </td>
-
-            <td>
-              ${statusBadge(applicationStatus)}
-            </td>
-
-          `;
-
-
-          tbody.appendChild(
-            tr
-          );
+            })
 
         }
       );
 
 
-  } catch (error) {
+    const result =
+      await response.json();
 
-    console.error(error);
 
-    loading.classList.add(
-      "hidden"
+    console.log(
+      "Create Retailer Result:",
+      result
     );
 
 
-    showDashboardMessage(
-      error.message ||
-        "Applications load failed.",
-      "error"
-    );
+    // ------------------------------------------------------
+    // SUCCESS
+    // ------------------------------------------------------
 
-  }
+    if (
+      result.success
+    ) {
 
-}
+      let message =
+        "✅ Retailer successfully created.\n\n" +
+
+        "Retailer ID: " +
+        result.retailerId +
+        "\n\n" +
+
+        "Username: " +
+        result.username +
+        "\n\n" +
+
+        "Email: " +
+        result.email;
 
 
-// ==========================================================
-// GET SESSION
-// ==========================================================
+      if (
+        result.emailSent
+      ) {
 
-function getRetailerSession() {
+        message +=
+          "\n\n📧 Login details email દ્વારા મોકલાઈ ગયા છે.";
 
-  try {
+      } else {
 
-    const saved =
-      sessionStorage.getItem(
-        "retailerSession"
+        message +=
+          "\n\n⚠️ Retailer account બની ગયું છે, પરંતુ email મોકલી શકાયો નથી.";
+
+      }
+
+
+      showMessage(
+        message,
+        "success"
       );
 
 
-    if (!saved) {
+      // ----------------------------------------------------
+      // CLEAR FORM
+      // ----------------------------------------------------
 
-      return null;
+      document
+        .getElementById(
+          "retailerForm"
+        )
+        .reset();
+
+
+      // ----------------------------------------------------
+      // RELOAD RETAILERS
+      // ----------------------------------------------------
+
+      loadRetailers();
+
+
+    } else {
+
+      showMessage(
+
+        "❌ Retailer create failed.\n\n" +
+
+        (
+          result.message ||
+          "Unknown error."
+        ),
+
+        "error"
+
+      );
 
     }
 
-
-    const session =
-      JSON.parse(saved);
-
-
-    if (
-      !session ||
-      !session.retailerId
-    ) {
-
-      return null;
-
-    }
-
-
-    return session;
 
   } catch (error) {
 
-    return null;
-
-  }
-
-}
-
-
-// ==========================================================
-// GET OBJECT VALUE
-// ==========================================================
-
-function getValue(
-  object,
-  key
-) {
-
-  if (!object) {
-
-    return "";
-
-  }
-
-
-  return (
-    object[key] !== undefined &&
-    object[key] !== null
-  )
-    ? String(object[key])
-    : "";
-
-}
-
-
-// ==========================================================
-// STATUS BADGE
-// ==========================================================
-
-function statusBadge(status) {
-
-  const value =
-    String(
-      status || "-"
+    console.error(
+      error
     );
 
 
-  const lower =
-    value.toLowerCase();
+    showMessage(
+
+      "❌ API / Server Error.\n\n" +
+      error.message,
+
+      "error"
+
+    );
+
+  } finally {
+
+    button.disabled =
+      false;
+
+    button.innerText =
+      "Create Retailer";
+
+  }
+
+}
 
 
-  let className =
-    "pending";
+// ==========================================================
+// LOAD RETAILERS
+// ==========================================================
+
+async function loadRetailers() {
+
+  const tbody =
+    document.getElementById(
+      "retailerTableBody"
+    );
 
 
-  if (
-    lower.includes("complete") ||
-    lower.includes("success") ||
-    lower.includes("paid") ||
-    lower === "verified"
-  ) {
+  if (!tbody) {
 
-    className =
-      "completed";
-
-  } else if (
-    lower.includes("reject") ||
-    lower.includes("fail")
-  ) {
-
-    className =
-      "rejected";
-
-  } else if (
-    lower.includes("process")
-  ) {
-
-    className =
-      "processing";
+    return;
 
   }
 
 
-  return `
-    <span class="status ${className}">
-      ${escapeHtml(value)}
-    </span>
-  `;
+  try {
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+
+          method:
+            "POST",
+
+          headers:
+            {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+          body:
+            JSON.stringify({
+
+              action:
+                "getRetailers"
+
+            })
+
+        }
+      );
+
+
+    /*
+     * જો તમારા Code.gs માં getRetailers action
+     * નથી, તો table empty રહેશે.
+     */
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result.success
+    ) {
+
+      tbody.innerHTML =
+        `<tr>
+          <td colspan="7">
+            Retailer list loading unavailable.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    const retailers =
+      result.retailers || [];
+
+
+    if (
+      retailers.length === 0
+    ) {
+
+      tbody.innerHTML =
+        `<tr>
+          <td colspan="7">
+            No retailers found.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    tbody.innerHTML =
+      retailers
+        .map(
+          function (retailer) {
+
+            return `
+
+              <tr>
+
+                <td>
+                  ${escapeHtml(
+                    retailer["Retailer ID"] || ""
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    retailer["Retailer Name"] || ""
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    retailer["Mobile"] || ""
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    retailer["Email"] || ""
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    retailer["Username"] || ""
+                  )}
+                </td>
+
+                <td class="status-active">
+                  ${escapeHtml(
+                    retailer["Status"] || ""
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    String(
+                      retailer["Total Applications"] || 0
+                    )
+                  )}
+                </td>
+
+              </tr>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Load retailers error:",
+      error
+    );
+
+
+    tbody.innerHTML =
+      `<tr>
+        <td colspan="7">
+          Unable to load retailer list.
+        </td>
+      </tr>`;
+
+  }
+
+}
+
+
+// ==========================================================
+// MESSAGE
+// ==========================================================
+
+function showMessage(
+  text,
+  type
+) {
+
+  const box =
+    document.getElementById(
+      "message"
+    );
+
+
+  if (!box) {
+
+    return;
+
+  }
+
+
+  box.textContent =
+    text;
+
+
+  box.className =
+    "message " +
+    (
+      type === "error"
+        ? "error"
+        : "success"
+    );
 
 }
 
@@ -800,12 +588,7 @@ function statusBadge(status) {
 
 function escapeHtml(value) {
 
-  return String(
-    value === undefined ||
-    value === null
-      ? ""
-      : value
-  )
+  return String(value)
     .replace(
       /&/g,
       "&amp;"
@@ -826,73 +609,5 @@ function escapeHtml(value) {
       /'/g,
       "&#039;"
     );
-
-}
-
-
-// ==========================================================
-// LOGIN MESSAGE
-// ==========================================================
-
-function showLoginMessage(
-  message,
-  type
-) {
-
-  const box =
-    document.getElementById(
-      "loginMessage"
-    );
-
-
-  box.textContent =
-    message || "";
-
-
-  box.className =
-    "message";
-
-
-  if (message && type) {
-
-    box.classList.add(
-      type
-    );
-
-  }
-
-}
-
-
-// ==========================================================
-// DASHBOARD MESSAGE
-// ==========================================================
-
-function showDashboardMessage(
-  message,
-  type
-) {
-
-  const box =
-    document.getElementById(
-      "dashboardMessage"
-    );
-
-
-  box.textContent =
-    message || "";
-
-
-  box.className =
-    "message";
-
-
-  if (message && type) {
-
-    box.classList.add(
-      type
-    );
-
-  }
 
 }
